@@ -10,6 +10,7 @@ node_modules/
 *.xlsx
 *.xls
 *.csv
+!Old datas matrimony_backup_before_142_end.xlsx
 
 # User uploaded member files (profile pictures & horoscopes)
 temp_uploads/
