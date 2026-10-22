@@ -393,7 +393,7 @@ def create_document():
         ["Tiered Monetization", "Free, Silver (₹1,179), Gold (₹2,359), Diamond (₹4,719), and VIP (₹58,999) tiers via Razorpay."],
         ["WebRTC Calling", "Encrypted peer-to-peer audio and video calling directly in the browser with incoming ringing listener."],
         ["Guarded Messaging", "Direct chatting with automated regex filters preventing premature phone/social media sharing."],
-        ["Multilingual Engine", "Zero-dependency global translation across 12 Indian & international languages with cookie persistence."],
+        ["Bilingual Engine", "Instant switching between English and Tamil with cross-page cookie persistence."],
         ["Dual AI Assistants", "Gemini-powered general matrimony assistant and Vedic horoscope counselor with offline fallbacks."],
         ["Excel DB Synchronizer", "Admin upload tool for importing and managing offline matrimonial archives and member listings."]
     ]
@@ -423,7 +423,7 @@ def create_document():
     tech_table = [
         ["Frontend UI", "HTML5, Vanilla CSS3, Modern JavaScript (ES6+)", "Lightweight structure, responsive flex/grid layouts, no framework overhead."],
         ["Client Styling", "Custom Design System (CSS Custom Properties)", "Centralized color variables, card components, modals, and responsive breakpoints."],
-        ["Translation", "Google Translate API + Custom DOM Orchestrator", "Multilingual translation (12 languages) with cross-page cookie persistence."],
+        ["Translation", "Google Translate API + Custom DOM Orchestrator", "Bilingual translation (English and Tamil) with cross-page cookie persistence."],
         ["Backend Runtime", "Node.js (>=20.0.0 LTS)", "High-throughput asynchronous event-driven JavaScript server runtime."],
         ["Web Framework", "Express.js (v4.18.3)", "Modular routing architecture, middleware chain, RESTful API design."],
         ["Database", "Supabase PostgreSQL (Managed Postgres 15+)", "Relational storage, JSONB columns, foreign keys, triggers, and Row Level Security."],
@@ -593,7 +593,7 @@ d:\\vevahamatrimony-website\\
 │   └── ...                          # Terms, privacy, help center, FAQ, safety tips
 │
 └── [Root JavaScript Modules]        # Reusable client-side components and domain engines
-    ├── language.js                  # Client-side multilingual translation coordinator
+    ├── language.js                  # Client-side bilingual translation coordinator (English & Tamil)
     ├── translate-widget.js          # Custom language selection dropdown UI component
     ├── member-card-component.js     # Reusable profile card renderer with action triggers
     ├── full-profile-modal.js        # Comprehensive profile details modal popup
@@ -756,13 +756,13 @@ d:\\vevahamatrimony-website\\
     add_bullet("ai-chat.js, horoscopic-ai-chat.js, vevaha-ai-widget.js.", "Key Components: ")
 
     # Feature 11
-    add_subsection_heading("5.1.11 Multilingual Translation Engine (12 Languages)")
+    add_subsection_heading("5.1.11 Bilingual Translation Engine (English & Tamil)")
     add_bullet("All website visitors.", "Target Users: ")
-    add_bullet("Global language selector in header on every page.", "Access Point: ")
+    add_bullet("Language selector toggle in header on every page.", "Access Point: ")
     add_bullet(
-        "Supports English, Tamil, Telugu, Hindi, Malayalam, Kannada, Bengali, Marathi, Gujarati, Punjabi, French, German. "
-        "Orchestrates Google Translate Element without disruptive UI headers. Stores selected language in googtrans cookie "
-        "and localStorage (selectedLanguage). Dynamically synchronizes language across page navigation and SPA modals.",
+        "Supports instant, seamless switching between English and Tamil across all pages and UI elements. "
+        "Orchestrates Google Translate Element without disruptive banners or layout shift. Stores selected language "
+        "in googtrans cookie and localStorage (selectedLanguage). Dynamically synchronizes language state across page navigation.",
         "Workflow: "
     )
     add_bullet("language.js, translate-widget.js.", "Key Components: ")
@@ -1449,7 +1449,7 @@ module.exports = router;
         ["Vedic Horoscope Engine", "Production Complete", "10 Porutham calculation, Sevvai/Rahu-Ketu dosham analysis, Rasi Kattam chart."],
         ["Razorpay Payments", "Production Complete", "Live order creation, HMAC signature validation, tier provisioning, webhook listener."],
         ["WebRTC Audio & Video Calling", "Production Complete", "Encrypted peer-to-peer browser calling with active incoming call listener."],
-        ["Multilingual Engine", "Production Complete", "12-language translation with cross-page cookie persistence and selector UI."],
+        ["Bilingual Language Toggle", "Production Complete", "English & Tamil translation with cross-page cookie persistence and selector UI."],
         ["In-App Direct Messaging", "Production Complete", "1-on-1 chatting with privacy regex filtering and quota enforcement."],
         ["Mobile Responsive Interface", "Production Complete", "Fully responsive UI with dedicated mobile bottom dock on smartphones."],
         ["OTP Dispatch Pipeline", "Production Complete", "Active Nodemailer SMTP relay with fallback logging."],
@@ -1542,7 +1542,7 @@ pm2 reload vevahamatrimony          # Perform zero-downtime rolling restart
         ["Payment Gateway", "HMAC-SHA256 signature verification validated", "[  ] Verified"],
         ["Astrology Engine", "10-Porutham calculation verified across 27 Nakshatrams", "[  ] Verified"],
         ["Astrology Engine", "Rasi Kattam chart generator renders properly in browser", "[  ] Verified"],
-        ["Translation", "Google Translate engine verified across all 12 target languages", "[  ] Verified"],
+        ["Translation", "Google Translate engine verified for English and Tamil bilingual switching", "[  ] Verified"],
         ["Translation", "Language cookie googtrans persists across page navigation", "[  ] Verified"],
         ["AI Chatbots", "Gemini API key configured and tested on /ai/health", "[  ] Verified"],
         ["AI Chatbots", "Fallback bilingual responses operational when offline", "[  ] Verified"],
