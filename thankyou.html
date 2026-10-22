@@ -1,0 +1,267 @@
+﻿
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Payment Successful - VevahaMatrimony</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link href="style.css" rel="stylesheet"><style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .page-load-animation {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style></head><body class="bg-gradient-to-br from-pink-50 to-white min-h-screen page-load-animation">
+<!-- Navigation --><!-- Navigation --><nav class="bg-white shadow-lg"><div class="w-full"><div class="flex justify-between items-center h-16"><div class="flex items-center flex-shrink-0"><a href="index.html" class="navbar-brand flex items-center text-xl sm:text-2xl font-bold text-pink-600"><img src="images/vevaha-logo.png" alt="VPS Logo" class="w-10 h-10 mr-2">
+                        vevahamatrimony
+                    </a></div><!-- Desktop Navigation --><div class="hidden md:flex items-center space-x-4" id="navbarContent"><a href="index.html" class="text-pink-600 font-semibold px-3 py-2 rounded-md border-b-2 border-pink-600"><span>Home</span></a><a href="register.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Register</span></a><a href="membership.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Premium Plans</span></a><a href="login.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Active Members</span></a><a href="horoscopic-chatbot.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Astro AI</span></a><!-- Search Bar --><div class="relative hidden md:block"><input type="text" id="searchInput" placeholder="Search..." 
+                               class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-48 transition-all duration-300"
+                               onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()" onkeypress="handleSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performSearch()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button><!-- Search Suggestions Dropdown --><div id="searchSuggestions" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 search-suggestions hidden" style="min-width: 300px;"><div class="p-2"><div onmousedown="navigateToPage('advanced-search.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-heart text-pink-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Search your match</span></div><div class="text-sm text-gray-500"><span>Find your perfect life partner</span></div></div></div><div onmousedown="navigateToPage('login.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-users text-blue-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Browse profiles</span></div><div class="text-sm text-gray-500"><span>View active members</span></div></div></div><div onmousedown="navigateToPage('membership.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-crown text-purple-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Premium members</span></div><div class="text-sm text-gray-500"><span>View premium profiles</span></div></div></div><div onmousedown="navigateToPage('settings.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-cog text-gray-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>⚙️ Settings</span></div><div class="text-sm text-gray-500"><span>Customize your experience</span></div></div></div><div onmousedown="navigateToPage('about.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-info-circle text-orange-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>About us</span></div><div class="text-sm text-gray-500"><span>Learn more about vevahamatrimony</span></div></div></div><div onmousedown="navigateToPage('contact.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-envelope text-green-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Contact us</span></div><div class="text-sm text-gray-500"><span>Get in touch with vevahamatrimony</span></div></div></div></div></div></div><a href="login.html" class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700"><span>Login</span></a></div><!-- Mobile menu button --><div class="md:hidden"><button id="mobile-menu-button" class="text-gray-700 hover:text-pink-600 focus:outline-none" onclick="toggleMobileMenu()"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div></div></div></nav><!-- Mobile Navigation Menu --><div id="mobile-nav-menu" class="hidden md:hidden bg-white shadow-lg border-t"><div class="px-4 py-2 space-y-2"><a href="index.html" class="block text-pink-600 font-semibold px-3 py-2 rounded-md">Home</a><a href="register.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Register</a><a href="membership.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Premium Plans</a><a href="login.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Active Members</a><a href="horoscopic-chatbot.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Astro AI</a><!-- Search Bar (Mobile) --><div class="relative"><input type="text" id="mobileSearchInput" placeholder="Search..." 
+                               class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-full transition-all duration-300"
+                               onkeypress="handleMobileSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performMobileSearch()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button></div><a href="login.html" class="block bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 text-center">Login</a></div></div><!-- Footer --><footer class="bg-gray-800 text-white py-12 w-full mt-auto"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"><div class="sm:col-span-2 md:col-span-1"><div class="flex items-center mb-4"><span class="text-xl sm:text-2xl font-bold">vevahamatrimony</span></div><p class="text-gray-400 text-sm sm:text-base leading-relaxed">Connecting hearts, creating families. Your trusted partner in finding true love.</p></div><div><h3 class="text-lg font-semibold mb-4">Quick Links</h3><ul class="space-y-2"><li><a href="about.html" class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">About Us</a></li><li><a href="membership.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Premium Plans</a></li><li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Contact</a></li><li><a href="terms.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Terms & Conditions</a></li></ul></div><div><h3 class="text-lg font-semibold mb-4">Support</h3><ul class="space-y-2"><li><a href="privacy-policy.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Privacy Policy</a></li><li><a href="faq.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">FAQ</a></li><li><a href="help-center.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Help Center</a></li><li><a href="safety-tips.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Safety Tips</a></li></ul></div><div><h3 class="text-lg font-semibold mb-4">Contact Info</h3><div class="space-y-3 text-gray-400"><div class="flex items-center"><i class="fas fa-phone mr-2 text-pink-400 flex-shrink-0"></i><span class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm:text-base" onclick="copyToClipboard('+91 9487161672', 'Phone number copied!')" title="Click to copy">
+                                +91 9487161672
+                            </span></div><div class="flex items-center"><i class="fas fa-envelope mr-2 text-pink-400 flex-shrink-0"></i><a href="mailto:vevahamatrimonydb@gmail.com" class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm:text-base break-all" onclick="copyToClipboard('vevahamatrimonydb@gmail.com', 'Email copied!')" title="Click to copy or send email">
+                                vevahamatrimonydb@gmail.com
+                            </a></div><div class="flex items-center space-x-3 mt-4 pt-2"><span class="text-sm text-gray-400">Follow us:</span><a href="https://www.instagram.com/vevahamatrimony/" target="_blank" rel="noopener noreferrer"
+                                class="bg-pink-500 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-pink-600 transition duration-300 transform hover:scale-110"><i class="fab fa-instagram text-sm:text-base"></i></a><a href="https://www.youtube.com/@VevahaMatrimony" target="_blank" rel="noopener noreferrer"
+                                class="bg-red-600 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-red-700 transition duration-300 transform hover:scale-110"><i class="fab fa-youtube text-sm:text-base"></i></a></div></div></div></div><div class="border-t border-gray-700 mt-8 pt-6 text-center"><p class="text-xs sm:text-sm text-pink-300" id="copyright-text"></p></div></div></footer><!-- Legacy auth removed --><script src="global-settings.js"></script><script src="watermark-system.js"></script><script src="script.js"></script><!-- Domain AI Service Verification --><!-- Swiper.js Script --><script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script><script>
+        // Initialize Premium Members Swiper
+        document.addEventListener('DOMContentLoaded', function() {
+            const premiumSwiper = new Swiper('.premium-members-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 15,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    bulletActiveClass: 'swiper-pagination-bullet-active',
+                },
+                loop: true,
+                centeredSlides: true,
+                grabCursor: true,
+                touchRatio: 1,
+                touchAngle: 45,
+                preventInteractionOnTransition: true,
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 15,
+                    },
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 25,
+                    },
+                },
+                effect: 'slide',
+                speed: 400,
+                resistance: true,
+                resistanceRatio: 0.85,
+            });
+        });
+    </script><script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-nav-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // Initialize copyright year
+        document.addEventListener('DOMContentLoaded', function() {
+            const year = new Date().getFullYear();
+            const copyrightText = document.getElementById('copyright-text');
+            if (copyrightText) {
+                copyrightText.textContent = `© ${year} vevahamatrimony. All rights reserved.`;
+            }
+        });
+
+        // Copy to clipboard function
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Optionally show a success message
+                const notificationContainer = document.createElement('div');
+                notificationContainer.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg bg-green-500 text-white z-50';
+                notificationContainer.innerHTML = `
+                    <div class="flex items-center"><i class="fas fa-check-circle mr-2"></i><span>${message}</span></div>
+                `;
+                document.body.appendChild(notificationContainer);
+                setTimeout(() => {
+                    notificationContainer.remove();
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                // Optionally show an error message
+            });
+        }
+
+        // Search suggestions functionality
+        function showSearchSuggestions() {
+            const suggestions = document.getElementById('searchSuggestions');
+            if (suggestions) {
+                suggestions.classList.remove('hidden');
+            }
+        }
+
+        function hideSearchSuggestions() {
+            setTimeout(() => {
+                const suggestions = document.getElementById('searchSuggestions');
+                if (suggestions) {
+                    suggestions.classList.add('hidden');
+                }
+            }, 150);
+        }
+
+        function navigateToPage(url) {
+            window.location.href = url;
+        }
+
+        // Handle search key press for desktop search
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
+        // Mobile search functionality
+        function handleMobileSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                performMobileSearch();
+            }
+        }
+
+        function performMobileSearch() {
+            const mobileSearchInput = document.getElementById('mobileSearchInput');
+            if (mobileSearchInput) {
+                const query = mobileSearchInput.value.trim();
+                if (query) {
+                    const mainSearchInput = document.getElementById('searchInput');
+                    if (mainSearchInput) {
+                        mainSearchInput.value = query;
+                        performSearch();
+                    }
+                } else {
+                    showNotification('Please enter a search term', 'error');
+                }
+            }
+        }
+
+        // Enhanced search functionality
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            if (!searchTerm) {
+                showNotification('Please enter a search term', 'error');
+                return;
+            }
+
+            // Navigation mappings
+            const navigationMappings = {
+                'home': 'index.html',
+                'homepage': 'index.html',
+                'register': 'register.html',
+                'signup': 'register.html',
+                'sign up': 'register.html',
+                'membership': 'membership.html',
+                'plans': 'membership.html',
+                'premium': 'membership.html',
+                'pricing': 'membership.html',
+                'contact': 'contact.html',
+                'contact us': 'contact.html',
+                'about': 'about.html',
+                'about us': 'about.html',
+                'faq': 'faq.html',
+                'help': 'faq.html',
+                'login': 'login.html',
+                'signin': 'login.html',
+                'sign in': 'login.html',
+                'find': 'advanced-search.html',
+                'search': 'advanced-search.html',
+                'find match': 'advanced-search.html',
+                'search match': 'advanced-search.html',
+                'matches': 'matches.html',
+                'messages': 'messages.html',
+                'chat': 'messages.html',
+                'dashboard': 'home.html',
+                'profile': 'profile.html',
+                'requests': 'requests.html',
+                'active members': 'active-members.html',
+                'members': 'active-members.html',
+                'privacy': 'privacy-policy.html',
+                'privacy policy': 'privacy-policy.html',
+                'terms': 'terms.html',
+                'terms and conditions': 'terms.html',
+                'safety': 'safety-tips.html',
+                'safety tips': 'safety-tips.html',
+                'settings': 'settings.html'
+            };
+
+            // Check if search term matches any page
+            const targetPage = navigationMappings[searchTerm];
+            if (targetPage) {
+                window.location.href = targetPage;
+                return;
+            }
+
+            // Check for partial matches
+            for (const [key, value] of Object.entries(navigationMappings)) {
+                if (key.includes(searchTerm) || searchTerm.includes(key)) {
+                    showNotification(`Redirecting to ${key}...`, 'info');
+                    setTimeout(() => {
+                        window.location.href = value;
+                    }, 1000);
+                    return;
+                }
+            }
+
+            // Redirect to search results
+            showNotification('Redirecting to search results...', 'info');
+            setTimeout(() => {
+                window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
+            }, 1000);
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500' :
+                type === 'error' ? 'bg-red-500' :
+                'bg-blue-500'
+            } text-white max-w-sm`;
+            notification.innerHTML = `
+                <div class="flex items-center"><i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'} mr-2"></i><span>${message}</span></div>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script><script src="vevaha-ai-widget.js"></script><script src="premium-member-actions.js"></script>
+<script src="global-search.js"></script>
+<script src="language.js"></script>
+</body><script src="language.js"></script>
+</body>
+</html>

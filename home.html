@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="call-manager.js"></script>
+    <script src="auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Home - VevahaMatrimony</title><!-- Razorpay MUST load in <head> per official docs -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);
+            background-attachment: fixed;
+            color: #0f172a;
+        }
+
+        @keyframes gradient-shift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(236, 72, 153, 0.5);
+            }
+        }
+
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: #475569;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ec4899, #db2777);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .sidebar-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar-link i {
+            color: inherit;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-link:hover {
+            background: linear-gradient(90deg, #fdf2f8 0%, transparent 100%);
+            color: #db2777;
+            transform: translateX(5px);
+        }
+
+        .sidebar-link:hover i {
+            transform: scale(1.2);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%);
+            color: #db2777;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.1);
+        }
+
+        .sidebar-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .plan-card {
+            border: 2px solid transparent;
+            border-radius: 1.75rem;
+            background: #ffffff;
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 520px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: visible;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(236, 72, 153, 0.15);
+        }
+
+        .plan-card.active {
+            border-color: #ec4899;
+            background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%);
+            box-shadow: 0 20px 60px rgba(236, 72, 153, 0.2);
+            animation: pulse-glow 3s ease-in-out infinite;
+            border-width: 3px;
+        }
+
+        .border-3 {
+            border-width: 3px !important;
+        }
+
+
+        .checklist-item {
+            border: 1px solid #f1f5f9;
+            border-radius: 1.25rem;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .checklist-item.complete {
+            border-color: #86efac;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .glass-card {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(236, 72, 153, 0.08);
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+            transform: translate(30%, -30%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(236, 72, 153, 0.12);
+            border-color: #fbcfe8;
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-radius: 1rem;
+            background: white;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            border-color: #fbcfe8;
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+            transform: translateX(5px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .animate-in {
+            animation: slide-in 0.6s ease-out forwards;
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        @keyframes modal-pop {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-animate {
+            animation: modal-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <div class="min-h-screen">
+        <nav class="bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3"><button id="sidebarToggle"
+                        class="md:hidden text-gray-600 hover:text-pink-600 focus:outline-none"
+                        aria-label="Open navigation"><i class="fas fa-bars text-xl"></i></button><a href="home.html"
+                        class="flex items-center text-xl font-semibold text-pink-600"><img src="images/vevaha-logo.png"
+                            alt="Vevaha" class="w-10 h-10 mr-2">
+                        VevahaMatrimony
+                    </a></div><!-- Search Bar -->
+                <div class="relative hidden md:block"><input type="text" id="searchInput" placeholder="Search..."
+                        class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-64 transition-all duration-300"
+                        onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()"
+                        onkeypress="handleSearchKeyPress(event)"><i
+                        class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button
+                        onclick="performSearch()"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i
+                            class="fas fa-arrow-right"></i></button></div>
+                <div class="flex items-center gap-4"><!-- Online/Offline Toggle -->
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200"><span
+                            class="text-xs font-semibold" id="onlineStatusBadge">Online</span><button
+                            id="onlineToggleBtn"
+                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                            style="background-color: #22c55e;" onclick="handleOnlineToggleClick()"><span
+                                id="toggleSlider"
+                                class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm"
+                                style="margin-left: 0.125rem;"></span></button></div>
+                    <div class="relative"><button id="userMenuButton"
+                            class="flex items-center space-x-3 px-3 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white flex items-center justify-center font-bold"
+                                id="userInitials">VM</div>
+                            <div class="text-left hidden sm:block">
+                                <p id="navUserName" class="text-sm font-semibold text-gray-900">Member</p>
+                                <p class="text-xs text-gray-500" id="navPlanLabel">Free plan</p>
+                            </div><i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                        </button>
+                        <div id="userMenu"
+                            class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                            <a href="profile.html"
+                                class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50"><i
+                                    class="fas fa-id-badge mr-3 text-pink-500"></i> Profile
+                            </a><a href="settings.html"
+                                class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50"><i
+                                    class="fas fa-sliders mr-3 text-pink-500"></i> Settings
+                            </a><button onclick="handleLogout()"
+                                class="w-full text-left flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50"><i
+                                    class="fas fa-arrow-right-from-bracket mr-3 text-pink-500"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="relative flex">
+            <aside id="appSidebar"
+                class="fixed top-0 md:top-16 left-0 bottom-0 w-60 bg-white border-r border-gray-100 z-40 transform -translate-x-full md:translate-x-0 md:transform-none transition-transform duration-300 shadow-lg md:shadow-none">
+                <div class="flex items-center justify-between px-4 py-4 border-b border-gray-100 md:hidden"><span
+                        class="text-sm font-semibold text-gray-700">Navigation</span><button id="sidebarClose"
+                        class="text-gray-500 hover:text-pink-600" aria-label="Close navigation"><i
+                            class="fas fa-times"></i></button></div>
+                <div class="px-4 py-6 space-y-1 overflow-y-auto h-full"><a href="#"
+                        onclick="showDashboardSection('dashboard', event)" class="sidebar-link active"><i
+                            class="fas fa-home"></i><span>Home</span></a><a href="active-members-dash.html"
+                        class="sidebar-link"><i class="fas fa-users"></i><span>Active Members</span></a><a
+                        href="messages.html" class="sidebar-link" data-plan-required="messaging"><i
+                            class="fas fa-comments"></i><span>Messages</span></a><a href="#"
+                        onclick="showDashboardSection('interested', event)" id="navInterestedLink"
+                        class="sidebar-link"><i class="fas fa-star"></i><span>Interested</span></a><a
+                        href="requests.html" class="sidebar-link"><i
+                            class="fas fa-handshake"></i><span>Requests</span></a><a href="horoscopic-chatbot.html"
+                        class="sidebar-link"><i class="fas fa-moon"></i><span>Astro
+                            AI</span></a><a href="connections.html" class="sidebar-link"><i
+                            class="fas fa-user-friends"></i><span>My
+                            Connections</span></a><a href="account-settings.html" class="sidebar-link"><i
+                            class="fas fa-user-edit"></i><span>Edit Profile</span></a><a href="settings.html"
+                        class="sidebar-link"><i class="fas fa-user-cog"></i><span>Settings</span></a><a
+                        href="billing.html" class="sidebar-link"><i
+                            class="fas fa-credit-card"></i><span>Billing</span></a></div>
+            </aside>
+            <div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden md:hidden"></div>
+            <main class="flex-1 md:ml-60 px-4 sm:px-6 lg:px-10 py-8 pt-24">
+                <div id="mainDashboardContent" class="max-w-5xl mx-auto space-y-8">
+                    <div id="homeAlert" class="hidden rounded-2xl p-4 text-sm"></div>
+                    <section class="glass-card rounded-3xl shadow-xl p-8 animate-in" style="animation-delay: 0.1s">
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="flex items-start gap-6 flex-1">
+                                <div class="relative floating">
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-r from-pink-500 to-pink-600 rounded-3xl blur-xl opacity-30">
+                                    </div><img id="summaryAvatar"
+                                        src="https://ui-avatars.com/api/?name=VM&background=ec4899&color=fff"
+                                        alt="Profile photo"
+                                        class="relative w-28 h-28 rounded-3xl object-cover border-4 border-white shadow-2xl">
+                                    <div
+                                        class="absolute -bottom-2 -right-2 w-10 h-10 bg-gradient-to-r from-green-400 to-green-500 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-check text-white text-sm"></i>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 flex-1">
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1" id="welcomeLine">Welcome to
+                                            VevahaMatrimony</p>
+                                        <h1 class="text-3xl font-bold gradient-text mb-2" id="summaryName">Member Name
+                                        </h1><span id="summaryMemberId"
+                                            class="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-pink-50 to-purple-50 text-pink-600 text-xs font-semibold border border-pink-100">Member
+                                            - #0000</span>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                                        <div class="flex items-center gap-2"><i
+                                                class="fas fa-birthday-cake text-pink-500"></i><span id="summaryAge">Age
+                                                --</span></div>
+                                        <div class="flex items-center gap-2"><i
+                                                class="fas fa-heart text-pink-500"></i><span id="summaryStatus">Marital
+                                                Status</span></div>
+                                        <div class="flex items-center gap-2"><i
+                                                class="fas fa-calendar text-pink-500"></i><span>Since <span
+                                                    id="summaryMemberSince">--</span></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3">
+                                <div
+                                    class="bg-gradient-to-br from-pink-500 to-pink-600 text-white rounded-2xl p-4 shadow-lg">
+                                    <p class="text-xs opacity-90 mb-1">Current Membership</p>
+                                    <p id="summaryPlanTag" class="text-xl font-bold">Free plan</p>
+                                </div><button onclick="openMembershipDetails()"
+                                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl font-semibold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"><i
+                                        class="fas fa-crown"></i>
+                                    Membership Details
+                                </button><a href="profile.html"
+                                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white rounded-2xl font-semibold text-pink-600 border-2 border-pink-100 hover:border-pink-300 hover:shadow-lg transition-all w-full"><i
+                                        class="fas fa-id-badge"></i>
+                                    View Full Profile
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- VIP Personal Assistance Box (Prominent Top Placement) -->
+                    <section id="vipAssistanceBox" class="hidden glass-card rounded-3xl shadow-xl p-8 animate-in"
+                        style="animation-delay: 0.15s; background: linear-gradient(135deg, #ffffff 0%, #fdf2f8 100%); border: 1px solid #fce7f3;">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div class="flex items-center gap-5">
+                                <div
+                                    class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-100">
+                                    <i class="fas fa-user-tie text-white text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-2xl font-bold text-gray-900">Personal Assistance</h2>
+                                    <p class="text-sm text-pink-500 font-semibold uppercase tracking-widest">Exclusive
+                                        VIP Concierge Service</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap gap-4 w-full md:w-auto">
+                                <a href="mailto:vpsamyenterprises@gmail.com"
+                                    class="flex-1 md:flex-none flex items-center gap-3 p-4 bg-white rounded-2xl border border-purple-100 transition-all hover:shadow-md hover:border-purple-300 group">
+                                    <div
+                                        class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-purple-400 font-bold uppercase tracking-wider">Email
+                                            Us</p>
+                                        <p class="text-sm font-bold text-gray-800">vpsamyenterprises@gmail.com</p>
+                                    </div>
+                                </a>
+
+                                <a href="tel:9487161672"
+                                    class="flex-1 md:flex-none flex items-center gap-3 p-4 bg-white rounded-2xl border border-pink-100 transition-all hover:shadow-md hover:border-pink-300 group">
+                                    <div
+                                        class="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                                        <i class="fas fa-phone-alt"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-pink-400 font-bold uppercase tracking-wider">Direct
+                                            Call</p>
+                                        <p class="text-sm font-bold text-gray-800">+91 9487161672</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div
+                            class="mt-4 pt-4 border-t border-pink-50 flex items-center justify-center gap-2 text-xs text-gray-400">
+                            <i class="fas fa-clock text-pink-300"></i>
+                            <span>Your dedicated relationship manager is available for you from 10:00 AM to 06:00 PM
+                                (IST)</span>
+                        </div>
+                    </section>
+
+                    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in" style="animation-delay: 0.2s">
+                        <div class="stat-card">
+                            <div class="flex items-center justify-between mb-3">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl flex items-center justify-center">
+                                    <i class="fas fa-eye text-pink-600 text-xl"></i>
+                                </div><span
+                                    class="text-xs font-semibold text-pink-600 bg-pink-50 px-2 py-1 rounded-full">This
+                                    Month</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900" id="profileViewsCount">0</p>
+                            <p class="text-sm text-gray-500 mt-1">Profile Views</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="flex items-center justify-between mb-3">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center">
+                                    <i class="fas fa-heart text-purple-600 text-xl"></i>
+                                </div><span
+                                    class="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded-full">Active</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900" id="newMatchesCount">0</p>
+                            <p class="text-sm text-gray-500 mt-1">New Matches</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="flex items-center justify-between mb-3">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center">
+                                    <i class="fas fa-comments text-blue-600 text-xl"></i>
+                                </div><span
+                                    class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">New</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900" id="messagesCount">0</p>
+                            <p class="text-sm text-gray-500 mt-1">Messages</p>
+                        </div>
+                    </section>
+                    <section class="space-y-6 animate-in" id="plans" style="animation-delay: 0.3s">
+                        <div class="glass-card rounded-2xl p-6">
+                            <div class="flex items-center justify-between flex-wrap gap-4">
+                                <div>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <div
+                                            class="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center">
+                                            <i class="fas fa-crown text-white"></i>
+                                        </div>
+                                        <h2 class="text-2xl font-bold text-gray-900">Membership Plans</h2>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Unlock premium matchmaking with secure Razorpay
+                                        checkout &#x20B9; Instant activation</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500 mb-1">Your current plan</p>
+                                    <p id="plansCurrentLabel" class="text-lg font-bold gradient-text">Free Discovery</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="planGrid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-4 whitespace-normal">
+                            <!-- Populated by script -->
+                        </div>
+                    </section>
+                    <div class="grid lg:grid-cols-3 gap-6">
+                        <section class="lg:col-span-2 glass-card rounded-3xl shadow-lg p-6 space-y-6 animate-in"
+                            style="animation-delay: 0.4s">
+                            <div class="flex items-center justify-between flex-wrap gap-3">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-chart-line text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-gray-900">Profile Completion</h2>
+                                        <p class="text-sm text-gray-500">Complete to boost visibility by 3x</p>
+                                    </div>
+                                </div>
+                                <div class="text-right"><span id="profileCompletionValue"
+                                        class="text-3xl font-bold gradient-text">0%</span>
+                                    <p class="text-xs text-gray-500 mt-1">completed</p>
+                                </div>
+                            </div>
+                            <div class="relative w-full bg-gray-100 rounded-full h-4 overflow-hidden shadow-inner">
+                                <div id="profileCompletionBar"
+                                    class="h-4 rounded-full bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 transition-all duration-1000 ease-out relative"
+                                    style="width:0%">
+                                    <div class="absolute inset-0 bg-white opacity-30 animate-pulse"></div>
+                                </div>
+                            </div>
+                            <div id="profileChecklist" class="grid gap-4 md:grid-cols-2">
+                                <!-- Checklist populated by script -->
+                            </div>
+                        </section>
+                        <div class="space-y-6">
+                            <section class="glass-card rounded-3xl shadow-lg p-6 space-y-6 animate-in"
+                                style="animation-delay: 0.5s">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-headset text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-gray-900">Customer Support</h2>
+                                        <p class="text-sm text-gray-500">Need assistance? We're here to help.</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-4">
+                                    <p class="text-sm text-gray-600 leading-relaxed">
+                                        Our support team is available from 10:00 AM to 06:00 PM (IST) to help you with
+                                        any queries regarding your profile or membership.
+                                    </p>
+                                    <a href="contact.html"
+                                        class="block w-full text-center py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+                                        <i class="fas fa-envelope mr-2"></i>Contact Support
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div id="interestedContent" class="hidden max-w-5xl mx-auto space-y-8 w-full">
+                    <section class="bg-gradient-to-r from-pink-100 to-pink-200 py-12 rounded-3xl mb-8">
+                        <div class="px-4 sm:px-6 lg:px-8">
+                            <div class="text-center">
+                                <h1 class="text-4xl font-bold text-gray-800 mb-4"><i
+                                        class="fas fa-heart text-pink-600 mr-3"></i>
+                                    My Interested Profiles
+                                </h1>
+                                <p class="text-xl text-gray-600 mb-6">
+                                    Profiles you've expressed interest in or liked
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-8 w-full">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-gray-800">Your Interested Profiles</h2><span
+                                id="interestedProfileCount" class="text-gray-600 text-sm">0 profiles found</span>
+                        </div>
+                        <div id="interestedProfilesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Dynamic profiles will be loaded here -->
+                        </div>
+                        <div id="interestedLoadingState" class="text-center py-12">
+                            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600">
+                            </div>
+                            <p class="mt-4 text-gray-600">Loading your interested profiles...</p>
+                        </div>
+                        <div id="interestedEmptyState" class="hidden text-center py-12">
+                            <div class="bg-white rounded-xl p-8"><i
+                                    class="fas fa-heart-broken text-6xl text-gray-300 mb-4"></i>
+                                <h3 class="text-xl font-semibold text-gray-800 mb-2">No Interested Profiles Yet</h3>
+                                <p class="text-gray-600 mb-6">You haven't expressed interest in any profiles yet.</p><a
+                                    href="active-members-dash.html"
+                                    class="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700">Find
+                                    Matches</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div><!-- Plan Action Modal -->
+    <div id="planActionModal" class="hidden fixed inset-0 z-[120] items-center justify-center p-4">
+        <div class="absolute inset-0 modal-backdrop" onclick="closePlanModal()"></div>
+        <div class="relative bg-white rounded-[2.5rem] shadow-2xl max-w-lg w-full p-8 modal-animate">
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <p class="text-sm uppercase tracking-wide text-pink-500 font-semibold mb-1">Membership Upgrade</p>
+                    <h3 id="selectedPlanName" class="text-3xl font-bold text-gray-900">Premium Plan</h3>
+                </div><button onclick="closePlanModal()" class="text-gray-400 hover:text-gray-600 transition"><i
+                        class="fas fa-times text-xl"></i></button>
+            </div>
+            <p id="selectedPlanDetails" class="text-gray-600 leading-relaxed mb-6">
+                Choose this plan to unlock premium features and find your perfect match faster.
+            </p>
+            <div class="bg-pink-50 border border-pink-100 rounded-3xl p-6 space-y-4 mb-8">
+                <div class="flex items-center text-sm text-pink-700"><i
+                        class="fas fa-shield-alt mr-3 text-lg"></i><span>Secure payment processing via Razorpay.</span>
+                </div>
+                <div class="flex items-center text-sm text-pink-700"><i class="fas fa-bolt mr-3 text-lg"></i><span>Plan
+                        activation is instant after successful payment.</span></div>
+            </div>
+            <div id="paymentArea"><button id="payNowBtn" onclick="handleDashboardPaymentClick()"
+                    class="w-full py-5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3"><i
+                        class="fas fa-lock text-sm"></i><span>Pay Now with Razorpay</span></button></div>
+        </div>
+    </div><!-- Full Profile Modal -->
+    <div id="profileModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 modal-backdrop" onclick="closeProfileModal()"></div>
+        <div class="relative w-full max-w-4xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden modal-animate  flex flex-col"
+            style="max-height: 85vh;">
+            <div
+                class="bg-gradient-to-br from-pink-500 to-purple-600 p-6 text-white flex justify-between items-center shrink-0">
+                <h2 class="text-2xl font-bold">Full Profile Details</h2><button onclick="closeProfileModal()"
+                    class="text-white opacity-70 hover:opacity-100 transition"><i
+                        class="fas fa-times text-2xl"></i></button>
+            </div>
+            <div class="flex-1 min-h-0 overflow-y-auto p-8">
+                <div id="modalProfileContent" class="grid md:grid-cols-2 gap-8"><!-- Populated by JS --></div>
+            </div>
+        </div>
+    </div><!-- Profile Completion Modal -->
+    <div id="completionModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 modal-backdrop" onclick="closeCompletionModal()"></div>
+        <div class="relative w-full max-w-lg bg-white rounded-[2.5rem] shadow-2xl overflow-hidden modal-animate">
+            <div class="bg-gradient-to-br from-pink-500 to-pink-600 p-8 text-white relative"><button
+                    onclick="closeCompletionModal()"
+                    class="absolute top-6 right-6 text-white opacity-60 hover:opacity-100 transition"><i
+                        class="fas fa-times text-xl"></i></button>
+                <div class="flex items-center gap-4 mb-4">
+                    <div
+                        class="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center backdrop-blur-md">
+                        <i class="fas fa-heart-pulse text-3xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold">Complete Your Profile</h3>
+                        <p class="text-pink-100 text-sm opacity-90">Find your life partner faster</p>
+                    </div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-2xl p-4 mt-6">
+                    <div class="flex justify-between items-center mb-2"><span class="text-sm font-medium">Completion
+                            Progress</span><span id="modalPercent" class="text-lg font-bold">0%</span></div>
+                    <div class="w-full bg-white bg-opacity-20 rounded-full h-2">
+                        <div id="modalBar" class="bg-white h-2 rounded-full transition-all duration-1000"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-8 space-y-6">
+                <div class="space-y-4">
+                    <p class="text-gray-600 leading-relaxed font-medium">
+                        Profiles with 100% completion get <span class="text-pink-600 font-bold">3x more views</span> and
+                        <span class="text-purple-600 font-bold">better matches</span>. Complete yours today!
+                    </p>
+                    <div id="missingStepsList" class="space-y-3"><!-- Missing steps will be injected here --></div>
+                </div>
+                <div class="flex flex-col gap-3"><a href="account-settings.html"
+                        class="w-full py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-2xl font-bold text-center shadow-lg shadow-pink-200 hover:shadow-pink-300 hover:-translate-y-1 transition-all">
+                        Update Profile Now
+                    </a><button onclick="closeCompletionModal()"
+                        class="w-full py-4 bg-gray-50 text-gray-500 rounded-2xl font-bold hover:bg-gray-100 transition-all">
+                        Maybe Later
+                    </button></div>
+            </div>
+        </div>
+    </div>
+    <!-- -- Membership Details Modal ---------------------------------- -->
+    <div id="membershipModal" class="hidden fixed inset-0 z-[130] items-center justify-center p-4"
+        style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
+        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl flex flex-col overflow-hidden"
+            style="max-height: 85vh;">
+            <div class="bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 p-5 text-white relative shrink-0">
+                <button onclick="closeMembershipDetails()"
+                    class="absolute top-5 right-5 text-white/70 hover:text-white transition"><i
+                        class="fas fa-times text-xl"></i></button>
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur shrink-0">
+                        <i class="fas fa-crown text-2xl text-yellow-300"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-white/70 mb-0.5">Active Membership</p>
+                        <h3 id="mdPlanName" class="text-2xl font-black">Free Plan</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 min-h-0 overflow-y-auto p-5 space-y-4" style="max-height: 60vh;">
+                <h4 class="text-lg font-bold text-gray-900 mb-3"><i
+                        class="fas fa-list-check text-pink-500 mr-2"></i>Your Plan Features</h4>
+                <div id="mdFeatureTable" class="bg-gray-50 rounded-2xl p-4"></div>
+            </div>
+            <div class="shrink-0 px-5 py-4 border-t border-gray-100 flex gap-3">
+                <button onclick="window.printMembershipBill()"
+                    class="flex-1 py-3 bg-gray-900 text-white rounded-2xl font-bold hover:bg-gray-700 transition text-sm">Download
+                    Bill</button>
+                <a href="#plans" onclick="closeMembershipDetails()"
+                    class="flex-1 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold text-center text-sm">Upgrade
+                    Plan</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Features Modal -->
+    <div id="planFeaturesModal" class="hidden fixed inset-0 z-[140] items-center justify-center p-4"
+        style="background:rgba(0,0,0,0.65);backdrop-filter:blur(5px)">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden"
+            style="max-height: 85vh;">
+            <div id="pfmHeader"
+                class="bg-gradient-to-r from-pink-500 to-purple-600 p-5 text-white relative flex-shrink-0">
+                <button onclick="closePlanFeaturesModal()"
+                    class="absolute top-4 right-4 text-white/70 hover:text-white"><i
+                        class="fas fa-times text-xl"></i></button>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur flex-shrink-0">
+                        <i class="fas fa-medal text-3xl text-yellow-300"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Plan Details</span>
+                        <h3 id="pfmPlanName" class="text-2xl font-black mt-0.5">Plan Name</h3>
+                        <div class="flex items-baseline gap-2 mt-1"><span id="pfmPrice"
+                                class="text-xl font-bold">&#x20B9;0</span><span class="text-white/70 text-sm">/ <span
+                                    id="pfmDuration">Time</span></span></div>
+                        <div class="text-[10px] text-white/80 mt-0.5">(18% GST included)</div>
+                        <p id="pfmTagline" class="text-white/80 text-xs mt-1">Tagline</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 min-h-0 overflow-y-auto p-5" style="max-height: 60vh;">
+                <h4 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">What's Included</h4>
+                <div id="pfmFeatureList"></div>
+            </div>
+            <div class="flex-shrink-0 px-5 py-4 border-t border-gray-100 flex gap-3">
+                <button onclick="closePlanFeaturesModal()"
+                    class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-2xl font-bold hover:bg-gray-200 transition text-sm">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Bill Template (hidden) -->
+    <div id="__printBill" style="display:none">
+        <style>
+            @media print {
+                body>*:not(#__printBill) {
+                    display: none !important
+                }
+
+                #__printBill {
+                    display: block !important;
+                    padding: 40px;
+                    max-width: 600px;
+                    margin: auto
+                }
+
+                .pb-logo {
+                    font-size: 24px;
+                    font-weight: 900;
+                    color: #ec4899
+                }
+
+                .pb-title {
+                    font-size: 18px;
+                    color: #374151;
+                    margin: 8px 0 24px
+                }
+
+                .pb-row {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 8px 0;
+                    border-bottom: 1px solid #f3f4f6
+                }
+            }
+        </style>
+        <div class="pb-logo">vevahamatrimony</div>
+        <div class="pb-title">Membership Invoice</div>
+        <div id="__pbContent"></div>
+    </div>
+
+    <script src="global-settings.js?v=2"></script>
+    <script src="plan-features.js"></script>
+    <script src="watermark-system.js"></script>
+    <script src="script.js"></script>
+    <script src="mobile-bottom-nav.js"></script>
+    <script src="global-search.js"></script>
+    <script src="api-client.js?v=2"></script>
+    <script src="premium-gate.js"></script>
+    <script src="call-manager.js"></script>
+    <script src="language.js"></script>
+    <script>
+        (function () {
+            // --- Constants & Data ---
+            const PLAN_DATA = [{
+                key: 'silver',
+                name: 'Silver Plan',
+                price: '₹1,179',
+                duration: '1 Month',
+                icon: 'fa-medal',
+                color: 'gray'
+            },
+            {
+                key: 'gold',
+                name: 'Gold Plan',
+                price: '₹2,359',
+                duration: '3 Months',
+                icon: 'fa-award',
+                color: 'yellow',
+                popular: true
+            },
+            {
+                key: 'diamond',
+                name: 'Diamond Plan',
+                price: '₹4,719',
+                duration: '6 Months',
+                icon: 'fa-gem',
+                color: 'blue',
+                recommended: true
+            },
+            {
+                key: 'vip',
+                name: 'VIP Plan',
+                price: '₹58,999',
+                duration: '12 Months',
+                icon: 'fa-crown',
+                color: 'pink'
+            }
+            ];
+
+            const PLAN_FEATURES_DATA = {
+                silver: {
+                    tagline: 'Kickstart your matrimony journey',
+                    color: 'gray',
+                    features: [{
+                        label: 'Profile Views',
+                        value: '15 Contacts',
+                        icon: 'fa-eye'
+                    }, {
+                        label: 'Send Interest',
+                        value: 'Unlimited',
+                        icon: 'fa-heart'
+                    }, {
+                        label: 'Messaging',
+                        value: '15 / Day',
+                        icon: 'fa-comments'
+                    }, {
+                        label: 'Voice Calls',
+                        value: '\u274C Not Included',
+                        icon: 'fa-phone'
+                    }, {
+                        label: 'Video Calls',
+                        value: '\u274C Not Included',
+                        icon: 'fa-video'
+                    }, {
+                        label: 'Horoscope AI',
+                        value: '\u2705 Included',
+                        icon: 'fa-moon'
+                    }, {
+                        label: 'Duration',
+                        value: '1 Month',
+                        icon: 'fa-calendar'
+                    }]
+                },
+                gold: {
+                    tagline: 'Perfect for serious seekers',
+                    color: 'yellow',
+                    features: [{
+                        label: 'Profile Views',
+                        value: '30 Contacts',
+                        icon: 'fa-eye'
+                    }, {
+                        label: 'Send Interest',
+                        value: 'Unlimited',
+                        icon: 'fa-heart'
+                    }, {
+                        label: 'Messaging',
+                        value: 'Unlimited',
+                        icon: 'fa-comments'
+                    }, {
+                        label: 'Voice Calls',
+                        value: '\u274C Not Included',
+                        icon: 'fa-phone'
+                    }, {
+                        label: 'Video Calls',
+                        value: '\u274C Not Included',
+                        icon: 'fa-video'
+                    }, {
+                        label: 'Horoscope AI',
+                        value: '\u2705 Included',
+                        icon: 'fa-moon'
+                    }, {
+                        label: 'Priority Listing',
+                        value: '\u2705 Included',
+                        icon: 'fa-bolt'
+                    }, {
+                        label: 'Duration',
+                        value: '3 Months',
+                        icon: 'fa-calendar'
+                    }]
+                },
+                diamond: {
+                    tagline: 'Maximum reach & all features unlocked',
+                    color: 'blue',
+                    features: [{
+                        label: 'Profile Views',
+                        value: 'Unlimited',
+                        icon: 'fa-eye'
+                    }, {
+                        label: 'Send Interest',
+                        value: 'Unlimited',
+                        icon: 'fa-heart'
+                    }, {
+                        label: 'Messaging',
+                        value: 'Unlimited',
+                        icon: 'fa-comments'
+                    }, {
+                        label: 'Voice Calls',
+                        value: '\u2705 Included',
+                        icon: 'fa-phone'
+                    }, {
+                        label: 'Video Calls',
+                        value: '\u2705 Included',
+                        icon: 'fa-video'
+                    }, {
+                        label: 'Horoscope AI',
+                        value: '\u2705 Included',
+                        icon: 'fa-moon'
+                    }, {
+                        label: 'Priority Listing',
+                        value: '\u2705 Included',
+                        icon: 'fa-bolt'
+                    }, {
+                        label: 'Duration',
+                        value: '6 Months',
+                        icon: 'fa-calendar'
+                    }]
+                },
+                vip: {
+                    tagline: 'White-glove service with personal guidance',
+                    color: 'pink',
+                    features: [{
+                        label: 'Profile Views',
+                        value: 'Unlimited',
+                        icon: 'fa-eye'
+                    }, {
+                        label: 'Send Interest',
+                        value: 'Unlimited',
+                        icon: 'fa-heart'
+                    }, {
+                        label: 'Messaging',
+                        value: 'Unlimited',
+                        icon: 'fa-comments'
+                    }, {
+                        label: 'Voice Calls',
+                        value: '\u2705 Included',
+                        icon: 'fa-phone'
+                    }, {
+                        label: 'Video Calls',
+                        value: '\u2705 Included',
+                        icon: 'fa-video'
+                    }, {
+                        label: 'Horoscope AI',
+                        value: '\u2705 Included',
+                        icon: 'fa-moon'
+                    }, {
+                        label: 'Priority Listing',
+                        value: '\u2705 Top of Search',
+                        icon: 'fa-bolt'
+                    }, {
+                        label: 'Personal Manager',
+                        value: '\u2705 Dedicated',
+                        icon: 'fa-user-tie'
+                    }, {
+                        label: 'Duration',
+                        value: '12 Months',
+                        icon: 'fa-calendar'
+                    }]
+                }
+            };
+
+            const PLAN_MODAL_COPY = {
+                silver: {
+                    title: 'Silver Plan',
+                    message: 'Kickstart your search with 15 contact views and profile verification.'
+                },
+                gold: {
+                    title: 'Gold Plan',
+                    message: 'Perfect for serious seekers with messaging access and 3 months reach.'
+                },
+                diamond: {
+                    title: 'Diamond Plan',
+                    message: 'Unlock unlimited messaging and voice/video calls for 6 months.'
+                },
+                vip: {
+                    title: 'VIP Plan',
+                    message: 'Personal relationship manager guides your search end-to-end.'
+                }
+            };
+
+            let currentSelectedPlan = null;
+
+            // --- Core Logic ---
+            async function syncProfile() {
+                if (!window.VMAuth || !VMAuth.isLoggedIn()) return;
+                try {
+                    var resp = await VM.profile.me();
+                    var p = resp.profile;
+                    if (!p) return;
+                    VMAuth.save({
+                        access_token: localStorage.getItem('vm_token'),
+                        refresh_token: localStorage.getItem('vm_refresh'),
+                        user: p
+                    });
+                    // Notify navbar to update
+                    window.dispatchEvent(new CustomEvent('profileSynced'));
+                    return p;
+                } catch (err) {
+                    console.warn('Sync failed:', err);
+                    return VMAuth.user();
+                }
+            }
+
+            var formatTxt = function (s) {
+                return (s || '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            };
+
+            async function initDashboard() {
+                console.log('--- VM Dashboard Init ---');
+                if (!window.VMAuth || !VMAuth.isLoggedIn()) {
+                    console.warn('Not logged in');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // Check for payment success in URL query parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('payment') === 'success') {
+                    const planName = urlParams.get('plan') || 'Premium';
+                    setTimeout(() => {
+                        VM.toast(`🎉 Payment successful! Your ${planName.toUpperCase()} plan is now active.`, 'success');
+                    }, 500);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+
+                var p = await syncProfile();
+                if (!p) return;
+
+                // --- Fetch & Update Dynamic Stats ---
+                try {
+                    const stats = await VM.profile.stats();
+                    if (stats) {
+                        const viewsEl = document.getElementById('profileViewsCount');
+                        if (viewsEl) viewsEl.textContent = stats.profile_views || 0;
+
+                        const matchesEl = document.getElementById('newMatchesCount');
+                        if (matchesEl) matchesEl.textContent = stats.new_matches || 0;
+
+                        const msgsEl = document.getElementById('messagesCount');
+                        if (msgsEl) msgsEl.textContent = stats.unread_messages || 0;
+                    }
+                } catch (e) {
+                    console.error('[Dashboard] Failed to fetch stats:', e);
+                }
+
+                // --- Header Details ---
+                const welcomeLine = document.getElementById('welcomeLine');
+                if (welcomeLine) welcomeLine.textContent = 'Welcome back, ' + (p.full_name ? p.full_name.split(' ')[0] : 'Member');
+
+                const summaryName = document.getElementById('summaryName');
+                if (summaryName) summaryName.textContent = p.full_name || 'Member';
+
+                const summaryId = document.getElementById('summaryMemberId');
+                if (summaryId) summaryId.textContent = 'Member - ' + (p.member_id || '#0000');
+
+                const summaryTag = document.getElementById('summaryPlanTag');
+                if (summaryTag) {
+                    const plan = (p.plan_name || 'Free').toUpperCase();
+                    summaryTag.textContent = plan + ' PLAN';
+                    const planColors = {
+                        SILVER: 'bg-gray-500',
+                        GOLD: 'bg-yellow-500',
+                        DIAMOND: 'bg-blue-500',
+                        VIP: 'bg-purple-600',
+                        FREE: 'bg-pink-500'
+                    };
+                    if (summaryTag.parentElement) summaryTag.parentElement.className = `${planColors[plan] || 'bg-pink-500'} text-white rounded-2xl p-4 shadow-lg`;
+                }
+
+                if (p.date_of_birth) {
+                    var age = Math.floor((Date.now() - new Date(p.date_of_birth)) / (365.25 * 24 * 3600 * 1000));
+                    var el = document.getElementById('summaryAge');
+                    if (el) el.textContent = 'Age ' + age;
+                }
+
+                var statusEl = document.getElementById('summaryStatus');
+                if (statusEl && p.marital_status) statusEl.textContent = formatTxt(p.marital_status);
+
+                var sinceEl = document.getElementById('summaryMemberSince');
+                if (sinceEl && p.created_at) sinceEl.textContent = new Date(p.created_at).toLocaleDateString();
+
+                if (p.profile_picture_url) {
+                    document.querySelectorAll('#summaryAvatar, #userAvatar, #profilePhoto').forEach(img => img.src = p.profile_picture_url);
+                }
+
+                // --- Profile Completion ---
+                if (p.profile_completion !== undefined) {
+                    var valEl = document.getElementById('profileCompletionValue');
+                    if (valEl) valEl.textContent = p.profile_completion + '%';
+                    var bar = document.getElementById('profileCompletionBar');
+                    if (bar) bar.style.width = p.profile_completion + '%';
+
+                    var listContainer = document.getElementById('profileChecklist');
+                    if (listContainer && p.missing_fields) {
+                        var html = '';
+                        p.missing_fields.slice(0, 4).forEach(f => {
+                            html += `<div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-dashed border-gray-200">
+                                <div class="w-5 h-5 rounded-full border-2 border-pink-200 flex-shrink-0"></div>
+                                <span class="text-sm text-gray-600">Add ${f.replace(/_/g, ' ')}</span>
+                            </div>`;
+                        });
+                        if (p.missing_fields.length === 0) html = '<div class="col-span-2 text-center py-4 text-green-600 font-bold"><i class="fas fa-check-circle mr-2"></i>Profile 100% complete!</div>';
+                        listContainer.innerHTML = html;
+                    }
+                }
+
+                renderPlans(p.plan_name);
+                if (window.PlanFeatures) window.PlanFeatures.applyGating(p.plan_name);
+
+                // --- VIP Personal Assistance ---
+                if (p.plan_name && p.plan_name.toLowerCase() === 'vip') {
+                    const vipBox = document.getElementById('vipAssistanceBox');
+                    if (vipBox) vipBox.classList.remove('hidden');
+                }
+
+                // --- Dynamic Membership Label ---
+                const plansCurrentLabel = document.getElementById('plansCurrentLabel');
+                if (plansCurrentLabel) {
+                    const pName = p.plan_name || 'free';
+                    plansCurrentLabel.textContent = pName.toLowerCase() === 'free' ? 'Free Discovery' : formatTxt(pName) + ' Plan';
+                }
+            }
+
+            // --- UI Rendering ---
+            function renderPlans(currentPlan) {
+                console.log('Rendering plans for:', currentPlan);
+                const grid = document.getElementById('planGrid');
+                if (!grid) {
+                    console.error('planGrid not found!');
+                    return;
+                }
+                const cur = (currentPlan || 'free').toLowerCase();
+
+                grid.innerHTML = PLAN_DATA.map(plan => {
+                    const isActive = cur === plan.key;
+                    const features = PLAN_FEATURES_DATA[plan.key]?.features || [];
+                    const colorClasses = {
+                        gray: {
+                            border: 'border-gray-400',
+                            iconBg: 'bg-gray-100',
+                            iconText: 'text-gray-600',
+                            btn: 'bg-gray-500 hover:bg-gray-600'
+                        },
+                        yellow: {
+                            border: 'border-yellow-400',
+                            iconBg: 'bg-yellow-100',
+                            iconText: 'text-yellow-600',
+                            btn: 'bg-yellow-500 hover:bg-yellow-600'
+                        },
+                        blue: {
+                            border: 'border-blue-500',
+                            iconBg: 'bg-blue-100',
+                            iconText: 'text-blue-600',
+                            btn: 'bg-blue-600 hover:bg-blue-700'
+                        },
+                        pink: {
+                            border: 'border-pink-500',
+                            iconBg: 'bg-pink-100',
+                            iconText: 'text-pink-600',
+                            btn: 'bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700'
+                        }
+                    };
+                    const c = colorClasses[plan.color] || colorClasses.pink;
+
+                    const badge = plan.popular ? `<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-1 rounded-full text-[10px] font-bold z-10 shadow-lg border-2 border-white uppercase whitespace-nowrap" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);"><i class="fas fa-fire mr-1"></i>Popular</div>` :
+                        plan.recommended ? `<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-1 rounded-full text-[10px] font-bold z-10 shadow-lg border-2 border-white uppercase whitespace-nowrap" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);"><i class="fas fa-crown mr-1"></i>Best Value</div>` :
+                            plan.key === 'vip' ? `<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-1 rounded-full text-[10px] font-bold z-10 shadow-lg border-2 border-white uppercase whitespace-nowrap" style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);"><i class="fas fa-star mr-1"></i>VIP</div>` :
+                                '';
+
+                    const actionBtn = isActive ? `<div class="w-full py-3 px-4 bg-pink-50 text-pink-600 font-bold rounded-xl text-center text-sm border-2 border-pink-200 mt-auto"><i class="fas fa-check-circle mr-2"></i>Current Plan</div>` :
+                        `<button onclick="openPlanModal('${plan.key}')" class="w-full py-3 px-4 ${c.btn} text-white font-bold rounded-xl transition-all duration-300 hover:shadow-lg text-sm mt-auto">Choose ${plan.name.replace(' Plan', '')}</button>`;
+
+                    const featuresHtml = features.slice(0, 5).map(f => {
+                        const isInc = f.value.indexOf('\u274C') === -1;
+                        return `<li class="flex items-center ${isInc ? 'text-gray-700' : 'text-gray-400'}">
+                            <i class="fas ${isInc ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-400'} mr-2 text-xs"></i>
+                            <span class="text-[12px] truncate">${f.label}</span>
+                        </li>`;
+                    }).join('');
+
+                    return `
+                    <div class="plan-card ${isActive ? 'active border-3' : 'border-2'} ${c.border} flex flex-col pt-9 pb-6 px-6 bg-white rounded-2xl transition-all relative overflow-visible group h-[520px]">
+                        ${badge}
+                        <div class="${c.iconBg} w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shrink-0 transition-transform group-hover:scale-110">
+                            <i class="fas ${plan.icon} text-2xl ${c.iconText}"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-1 text-center">${plan.name}</h3>
+                        <div class="text-center mb-1">
+                            <span class="text-2xl font-black text-pink-600" style="font-family: 'Arial Black', 'Helvetica', sans-serif; letter-spacing: -0.5px; font-weight: 900;">${plan.price}</span>
+                        </div>
+                        <p class="text-gray-500 text-xs text-center mb-1">${plan.duration}</p>
+                        <div class="text-[10px] text-gray-400 text-center mb-4">(18% GST included)</div>
+                        <ul class="space-y-2.5 mb-6 flex-grow">
+                            ${featuresHtml}
+                            <li class="text-center">
+                                <button onclick="openPlanFeaturesModal('${plan.key}')" class="text-[10px] text-pink-500 font-semibold hover:underline">
+                                    + See All Features
+                                </button>
+                            </li>
+                        </ul>
+                        ${actionBtn}
+                    </div>`;
+                }).join('');
+            }
+
+            // --- Handlers ---
+            window.openPlanFeaturesModal = function (planKey) {
+                const data = PLAN_FEATURES_DATA[planKey];
+                const plan = PLAN_DATA.find(p => p.key === planKey);
+                if (!data || !plan) return;
+                const modal = document.getElementById('planFeaturesModal');
+                const hdr = document.getElementById('pfmHeader');
+                if (hdr) hdr.style.background = `linear-gradient(135deg, ${planKey === 'silver' ? '#9ca3af,#4b5563' : planKey === 'gold' ? '#fbbf24,#d97706' : planKey === 'diamond' ? '#60a5fa,#2563eb' : '#ec4899,#a855f7'})`;
+                document.getElementById('pfmPlanName').textContent = plan.name;
+                document.getElementById('pfmPrice').textContent = plan.price;
+                document.getElementById('pfmDuration').textContent = plan.duration;
+                document.getElementById('pfmTagline').textContent = data.tagline;
+                document.getElementById('pfmFeatureList').innerHTML = data.features.map(f => {
+                    const isInc = f.value.indexOf('\u274C') === -1;
+                    return `<div class="flex items-center justify-between p-3 rounded-xl ${isInc ? 'bg-green-50' : 'bg-gray-50'} mb-2">
+                        <div class="flex items-center gap-3">
+                            <i class="fas ${f.icon} text-gray-400 w-5"></i>
+                            <span class="text-xs font-semibold text-gray-700">${f.label}</span>
+                        </div>
+                        <span class="text-xs font-bold ${isInc ? 'text-green-600' : 'text-gray-400'}">${f.value.replace('\u2705 ', '').replace('\u274C ', '')}</span>
+                    </div>`;
+                }).join('');
+                modal.classList.replace('hidden', 'flex');
+            };
+
+            window.closePlanFeaturesModal = () => document.getElementById('planFeaturesModal')?.classList.replace('flex', 'hidden');
+
+            window.openPlanModal = (pKey) => {
+                window.location.href = 'billing.html';
+            };
+
+            window.closePlanModal = () => document.getElementById('planActionModal')?.classList.replace('flex', 'hidden');
+
+            window.handleDashboardPaymentClick = async function (event) {
+                if (event) event.preventDefault();
+                if (!currentSelectedPlan) return;
+
+                const btn = document.getElementById('payNowBtn');
+                const originalText = btn.innerHTML;
+
+                try {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Initializing...';
+
+                    const resp = await VM.payment.createOrder(currentSelectedPlan);
+
+                    if (!resp.key_id) {
+                        throw new Error('Payment config missing: key_id not returned from server.');
+                    }
+                    if (!resp.order_id && !resp.subscription_id) {
+                        throw new Error('Payment config missing: order_id or subscription_id not returned from server.');
+                    }
+
+                    const options = {
+                        key: resp.key_id,
+                        name: "VevahaMatrimony",
+                        description: `${currentSelectedPlan.toUpperCase()} Membership Upgrade`,
+                        theme: { color: "#ec4899" },
+                        handler: async function (res) {
+                            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...';
+                            try {
+                                const verifyData = {
+                                    razorpay_payment_id: res.razorpay_payment_id,
+                                    razorpay_signature: res.razorpay_signature,
+                                    plan: currentSelectedPlan
+                                };
+                                if (resp.type === 'subscription') {
+                                    verifyData.razorpay_subscription_id = res.razorpay_subscription_id || resp.subscription_id;
+                                } else {
+                                    verifyData.razorpay_order_id = res.razorpay_order_id || resp.order_id;
+                                }
+                                await VM.payment.verify(verifyData);
+                                window.location.href = 'home.html?payment=success&plan=' + currentSelectedPlan;
+                            } catch (e) {
+                                console.error('Verification error:', e);
+                                VM.toast(e.message || 'Verification failed', 'error');
+                                btn.disabled = false;
+                                btn.innerHTML = originalText;
+                            }
+                        },
+                        modal: {
+                            ondismiss: function () {
+                                btn.disabled = false;
+                                btn.innerHTML = originalText;
+                            }
+                        }
+                    };
+
+                    if (resp.type === 'subscription') {
+                        options.subscription_id = resp.subscription_id;
+                    } else {
+                        options.order_id = resp.order_id;
+                        options.amount = resp.amount;
+                        options.currency = resp.currency || 'INR';
+                    }
+
+                    // Prefill customer details if available
+                    const u = window.VMAuth?.user();
+                    if (u) {
+                        options.prefill = {};
+                        if (u.full_name) options.prefill.name = u.full_name;
+                        if (u.email_address || u.email) options.prefill.email = u.email_address || u.email;
+                        if (u.mobile_number) {
+                            let num = u.mobile_number;
+                            if (!num.startsWith('+') && num.length === 10) num = '+91' + num;
+                            options.prefill.contact = num;
+                        }
+                    }
+
+                    console.log('🐞 [DEBUG] Initiating Razorpay with options:', JSON.stringify(options, null, 2));
+
+                    const rzp = new Razorpay(options);
+                    rzp.on('payment.failed', function (response) {
+                        console.error('Razorpay payment.failed:', response.error);
+                        const msg = response.error ? `Error: ${response.error.description}\nReason: ${response.error.reason}\nStep: ${response.error.step}\nSource: ${response.error.source}` : 'Unknown payment error';
+                        alert('Payment failed!\n' + msg);
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    });
+
+                    try {
+                        rzp.open();
+                    } catch (e) {
+                        console.error('Razorpay open() exception:', e);
+                        alert('Browser issue opening Razorpay: ' + e.message + '\n\nPlease ensure your browser allows popups, third-party cookies, and you are not in strict private mode.');
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    }
+
+                } catch (e) {
+                    VM.toast(e.message || 'Payment initialization failed', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            };
+
+            window.openProfileModal = async function (memberId) {
+                const m = document.getElementById('profileModal');
+                const c = document.getElementById('modalProfileContent');
+                if (!m || !c) return;
+                m.classList.replace('hidden', 'flex');
+                c.innerHTML = '<div class="col-span-2 text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-pink-500"></i></div>';
+                try {
+                    let p;
+                    if (memberId) {
+                        const resp = await VM.profile.get(memberId);
+                        p = resp.profile;
+                    } else {
+                        p = await syncProfile();
+                    }
+
+                    if (!p) throw new Error('Profile not found');
+
+                    let html = '';
+                    const sections = [{
+                        t: 'Personal Details',
+                        f: ['full_name', 'gender', 'marital_status', 'religion', 'mother_tongue']
+                    },
+                    {
+                        t: 'Appearance & Habits',
+                        f: ['height', 'weight', 'diet', 'hobbies']
+                    },
+                    {
+                        t: 'Education & Career',
+                        f: ['education', 'job_roles', 'annual_income']
+                    }
+                    ];
+
+                    sections.forEach(s => {
+                        html += `<div class="bg-gray-50 p-6 rounded-3xl h-full">
+                            <h3 class="text-sm font-black text-pink-600 mb-4 uppercase tracking-wider">${s.t}</h3>`;
+                        s.f.forEach(f => {
+                            const val = p[f] || '-';
+                            html += `<div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
+                                <span class="text-[11px] text-gray-500 font-bold uppercase">${f.replace(/_/g, ' ')}</span>
+                                <span class="text-sm font-bold text-gray-800">${val}</span>
+                            </div>`;
+                        });
+                        html += '</div>';
+                    });
+                    c.innerHTML = html;
+                } catch (e) {
+                    console.error(e);
+                    c.innerHTML = `<div class="col-span-2 text-center py-10 text-gray-500">
+                        <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
+                        <p>Failed to load profile details.</p>
+                    </div>`;
+                }
+            };
+
+            window.closeProfileModal = () => document.getElementById('profileModal')?.classList.replace('flex', 'hidden');
+
+            // --- Membership Modal Handlers ---
+            window.openMembershipDetails = async function () {
+                const modal = document.getElementById('membershipModal');
+                const table = document.getElementById('mdFeatureTable');
+                if (!modal || !table) return;
+
+                try {
+                    const p = await syncProfile();
+                    if (!p) return;
+
+                    const planKey = (p.plan_name || 'free').toLowerCase();
+                    const planInfo = PLAN_DATA.find(pd => pd.key === planKey) || PLAN_DATA[0];
+                    const features = PLAN_FEATURES_DATA[planKey]?.features || [];
+
+                    document.getElementById('mdPlanName').textContent = planInfo.name;
+
+                    table.innerHTML = features.map(f => {
+                        const isInc = f.value.indexOf('\u274C') === -1;
+                        return `
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                            <div class="flex items-center gap-3">
+                                <i class="fas ${f.icon} text-gray-400 w-5 text-center"></i>
+                                <span class="text-xs font-semibold text-gray-700">${f.label}</span>
+                            </div>
+                            <span class="text-xs font-bold ${isInc ? 'text-green-600' : 'text-gray-400'}">${f.value.replace('\u2705 ', '').replace('\u274C ', '')}</span>
+                        </div>`;
+                    }).join('');
+
+                    modal.classList.replace('hidden', 'flex');
+                } catch (e) {
+                    console.error('Failed to open membership details:', e);
+                }
+            };
+
+            window.closeMembershipDetails = () => document.getElementById('membershipModal')?.classList.replace('flex', 'hidden');
+
+            window.printMembershipBill = () => {
+                const p = VMAuth.user();
+                if (!p) return;
+
+                const planName = document.getElementById('mdPlanName').textContent;
+                const modal = document.getElementById('membershipModal');
+
+                // Simple print template
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Membership Receipt - ${p.member_id || 'N/A'}</title>
+                            <style>
+                                body { font-family: sans-serif; padding: 40px; color: #1e293b; line-height: 1.5; }
+                                .header { border-bottom: 2px solid #ec4899; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+                                .logo { font-size: 24px; font-weight: 900; color: #ec4899; }
+                                .receipt-title { font-size: 14px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+                                .info-grid { display: grid; grid-template-cols: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+                                .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold; }
+                                .value { font-size: 14px; font-weight: 600; margin-top: 4px; }
+                                .footer { margin-top: 60px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; pt: 20px; }
+                                @media print { .no-print { display: none; } }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="header">
+                                <div class="logo">vevahamatrimony</div>
+                                <div class="receipt-title">Official Receipt</div>
+                            </div>
+                            <div class="info-grid">
+                                <div><p class="label">Member Name</p><p class="value">${p.full_name || 'N/A'}</p></div>
+                                <div><p class="label">Member ID</p><p class="value">${p.member_id || '#0000'}</p></div>
+                                <div><p class="label">Plan Details</p><p class="value">${planName}</p></div>
+                                <div><p class="label">Date</p><p class="value">${new Date().toLocaleDateString()}</p></div>
+                            </div>
+                            <div class="footer">
+                                <p>Thank you for being a valued member of VevahaMatrimony.</p>
+                                <p>&copy; ${new Date().getFullYear()} VevahaMatrimony. All rights reserved.</p>
+                            </div>
+                            <script>window.onload = () => { window.print(); setTimeout(() => window.close(), 500); };<\/script>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            };
+
+            window.addEventListener('load', initDashboard);
+        })();
+
+        // --- Other Scripts ---
+    </script>
+    <script src="vevaha-ai-widget.js"></script>
+    <script src="navbar-init.js"></script>
+    <script>
+        window.handleLogout = async () => {
+            if (window.VM?.auth) await VM.auth.logout();
+            else {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        };
+
+        window.handleOnlineToggleClick = async () => {
+            try {
+                const cur = VMAuth.user()?.is_manually_online !== false;
+                await VM.profile.setOnlineStatus(!cur);
+                const badge = document.getElementById('onlineStatusBadge'),
+                    btn = document.getElementById('onlineToggleBtn'),
+                    slider = document.getElementById('toggleSlider');
+                if (badge) badge.textContent = !cur ? 'Online' : 'Offline';
+                if (btn) btn.style.backgroundColor = !cur ? '#22c55e' : '#9ca3af';
+                if (slider) slider.style.marginLeft = !cur ? '0.125rem' : '1.625rem';
+                VM.toast(`You are now ${!cur ? 'online' : 'offline'}`, 'success');
+            } catch (e) {
+                VM.toast('Failed', 'error');
+            }
+        };
+
+        function showDashboardSection(sid, e) {
+            if (e) e.preventDefault();
+            document.getElementById('mainDashboardContent').classList.toggle('hidden', sid !== 'dashboard');
+            document.getElementById('interestedContent').classList.toggle('hidden', sid !== 'interested');
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.toggle('active', l.getAttribute('onclick')?.includes(sid)));
+            if (sid === 'interested') loadInterestedProfiles();
+        }
+
+        async function loadInterestedProfiles() {
+            const grid = document.getElementById('interestedProfilesGrid'),
+                count = document.getElementById('interestedProfileCount');
+            grid.innerHTML = '<div class="col-span-full py-20 text-center"><i class="fas fa-spinner fa-spin text-4xl text-pink-500"></i></div>';
+            try {
+                const r = await fetch(`${window.VMAPI_BASE}/api/requests/sent`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('vm_token')}`
+                    }
+                });
+                const d = await r.json();
+                const reqs = d.requests || [];
+                count.textContent = `${reqs.length} profiles found`;
+                if (!reqs.length) {
+                    grid.innerHTML = '<p class="col-span-full py-20 text-center text-gray-400">No profiles found.</p>';
+                    return;
+                }
+                grid.innerHTML = reqs.map(req => {
+                    const p = req.receiver;
+                    if (!p) return '';
+                    return `<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
+                        <img src="${p.profile_picture_url || 'https://ui-avatars.com/api/?name=User'}" class="h-48 w-full object-cover">
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-gray-900">${p.full_name}</h3>
+                            <p class="text-xs text-gray-500">${p.age || '--'} Yrs • ${p.city || '--'}</p>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex gap-2">
+                                <button onclick="openProfileModal('${p.id}')" class="flex-1 py-2 bg-gray-50 rounded-lg text-xs font-bold">View Profile</button>
+                                <button class="w-10 h-10 bg-pink-50 text-pink-600 rounded-lg"><i class="fas fa-video"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch (e) {
+                grid.innerHTML = '<p class="col-span-full py-20 text-center text-red-500">Error loading profiles.</p>';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="auth-guard.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Details - VevahaMatrimony</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <script src="auth-guard.js"></script>
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%); background-attachment: fixed; }
+        
+        @media (min-width: 768px) {
+            #appSidebar { transform: translateX(0) !important; top: 4rem; }
+            #sidebarToggle { display: none !important; }
+        }
+
+        .sidebar-link {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.75rem 1rem; border-radius: 0.75rem;
+            color: #475569; font-weight: 500; text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
+        }
+
+        .sidebar-link::before {
+            content: ''; position: absolute; left: 0; top: 0;
+            height: 100%; width: 3px;
+            background: linear-gradient(180deg, #ec4899, #db2777);
+            transform: scaleY(0); transition: transform 0.3s;
+        }
+
+        .sidebar-link:hover::before, .sidebar-link.active::before { transform: scaleY(1); }
+        .sidebar-link i { color: inherit; transition: transform 0.3s; }
+        .sidebar-link:hover { background: linear-gradient(90deg, #fdf2f8 0%, transparent 100%); color: #db2777; transform: translateX(5px); }
+        .sidebar-link:hover i { transform: scale(1.2); }
+        .sidebar-link.active { background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%); color: #db2777; font-weight: 600; box-shadow: 0 4px 15px rgba(236,72,153,0.1); }
+
+        .glass-card {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(236, 72, 153, 0.08);
+        }
+
+        .page-load-animation {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen page-load-animation">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <button id="sidebarToggle" class="md:hidden text-gray-600 hover:text-pink-600 focus:outline-none" aria-label="Open navigation">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <a href="home.html" class="flex items-center text-xl font-semibold text-pink-600">
+                    <img src="images/vevaha-logo.png" alt="Vevaha" class="w-10 h-10 mr-2">VevahaMatrimony
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200">
+                    <span class="text-xs font-semibold" id="onlineStatusBadge">Online</span>
+                    <button id="onlineToggleBtn" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                        style="background-color: #22c55e;" onclick="handleOnlineToggleClick()">
+                        <span id="toggleSlider" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm" style="margin-left: 0.125rem;"></span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <button id="userMenuButton" class="flex items-center space-x-3 px-3 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white flex items-center justify-center font-bold" id="userInitials">VM</div>
+                        <div class="text-left hidden sm:block">
+                            <p id="navUserName" class="text-sm font-semibold text-gray-900">Member</p>
+                            <p class="text-xs text-gray-500" id="navPlanLabel">Free plan</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </button>
+                    <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                        <a href="profile.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                            <i class="fas fa-id-badge mr-3 text-pink-500"></i> Profile
+                        </a>
+                        <a href="settings.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                            <i class="fas fa-sliders mr-3 text-pink-500"></i> Settings
+                        </a>
+                        <button onclick="handleLogout()" class="w-full text-left flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                            <i class="fas fa-arrow-right-from-bracket mr-3 text-pink-500"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative flex">
+        <!-- Sidebar -->
+        <aside id="appSidebar" class="fixed top-0 md:top-16 left-0 bottom-0 w-60 bg-white border-r border-gray-100 z-40 transform -translate-x-full md:translate-x-0 md:transform-none transition-transform duration-300 shadow-lg md:shadow-none">
+            <div class="flex items-center justify-between px-4 py-4 border-b border-gray-100 md:hidden">
+                <span class="text-sm font-semibold text-gray-700">Navigation</span>
+                <button id="sidebarClose" class="text-gray-500 hover:text-pink-600" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="px-4 py-6 space-y-1 overflow-y-auto h-full">
+                <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="active-members-dash.html" class="sidebar-link"><i class="fas fa-users"></i><span>Active Members</span></a>
+                <a href="messages.html" class="sidebar-link"><i class="fas fa-comments"></i><span>Messages</span></a>
+                <a href="interested-profiles.html" class="sidebar-link"><i class="fas fa-star"></i><span>Interested</span></a>
+                <a href="requests.html" class="sidebar-link"><i class="fas fa-handshake"></i><span>Requests</span></a>
+                <a href="horoscopic-chatbot.html" class="sidebar-link"><i class="fas fa-moon"></i><span>Astro AI</span></a>
+                <a href="connections.html" class="sidebar-link"><i class="fas fa-user-friends"></i><span>My Connections</span></a>
+                <a href="account-settings.html" class="sidebar-link"><i class="fas fa-user-edit"></i><span>Edit Profile</span></a>
+                <a href="settings.html" class="sidebar-link"><i class="fas fa-user-cog"></i><span>Settings</span></a>
+                <a href="billing.html" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Billing</span></a>
+            </div>
+        </aside>
+
+        <!-- Sidebar Backdrop -->
+        <div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden md:hidden"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 md:ml-60 px-4 sm:px-6 lg:px-10 py-8 pt-24">
+            <div class="max-w-5xl mx-auto space-y-8">
+                <!-- Profile Header Card -->
+                <div class="glass-card rounded-3xl shadow-xl overflow-hidden animate-in" style="animation-delay: 0.1s">
+                    <div class="flex flex-col md:flex-row items-center md:items-start gap-8 p-8">
+                        <!-- Profile Photo -->
+                        <div class="flex-shrink-0">
+                            <div class="relative">
+                                <img id="profilePhoto" src="https://ui-avatars.com/api/?name=Member&background=ec4899&color=fff" alt="Profile Photo"
+                                    class="w-48 h-48 rounded-3xl object-cover border-8 border-white shadow-2xl">
+                                <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-gradient-to-r from-green-400 to-green-500 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Basic Information -->
+                        <div class="flex-1 text-center md:text-left">
+                            <h1 id="profileName" class="text-4xl font-bold text-gray-900 mb-2">Member Name</h1>
+                            <div class="flex flex-wrap justify-center md:justify-start gap-3 mb-6">
+                                <span id="profileAge" class="bg-pink-100 text-pink-700 px-4 py-1.5 rounded-full text-sm font-bold border border-pink-200"></span>
+                                <span id="profileStatus" class="bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-bold border border-blue-200"></span>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 text-gray-600">
+                                <div class="flex items-center justify-center md:justify-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center text-pink-500"><i class="fas fa-users"></i></div>
+                                    <span id="profileCommunity"></span>
+                                </div>
+                                <div class="flex items-center justify-center md:justify-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center text-pink-500"><i class="fas fa-star"></i></div>
+                                    <span id="profileRasi"></span>
+                                </div>
+                                <div class="flex items-center justify-center md:justify-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center text-pink-500"><i class="fas fa-map-marker-alt"></i></div>
+                                    <span id="profileLocation"></span>
+                                </div>
+                                <div class="flex items-center justify-center md:justify-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center text-pink-500"><i class="fas fa-briefcase"></i></div>
+                                    <span id="profileProfession"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-3 min-w-[200px]">
+                            <a href="account-settings.html" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-pink-600 rounded-2xl font-bold text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all w-full">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Detailed Info Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in" style="animation-delay: 0.2s">
+
+                    <!-- Personal Details -->
+                    <div class="glass-card rounded-3xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center text-pink-600"><i class="fas fa-user"></i></div>
+                            Personal Details
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Gender</span>
+                                <span id="profileGender" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Date of Birth</span>
+                                <span id="profileDOB" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Time of Birth</span>
+                                <span id="profileTOB" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Place of Birth</span>
+                                <span id="profilePOB" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Marital Status</span>
+                                <span id="profileStatus2" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Height</span>
+                                <span id="profileHeight" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Weight</span>
+                                <span id="profileWeight" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Body Type</span>
+                                <span id="profileBodyType" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Complexion</span>
+                                <span id="profileComplexion" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Mother Tongue</span>
+                                <span id="profileMotherTongue" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3">
+                                <span class="font-semibold text-gray-500 italic">Disability</span>
+                                <span id="profileDisability" class="text-gray-900 font-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cultural Details -->
+                    <div class="glass-card rounded-3xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600"><i class="fas fa-om"></i></div>
+                            Cultural & Religious Details
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Religion</span>
+                                <span id="profileCommunityDetail" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Caste</span>
+                                <span id="profileSubcaste" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Sub-caste</span>
+                                <span id="profileSubcasteDetail" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Rasi (Zodiac)</span>
+                                <span id="profileRasiDetail" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Nakshatra (Star)</span>
+                                <span id="profileNakshatra" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3">
+                                <span class="font-semibold text-gray-500 italic">Gothram</span>
+                                <span id="profileGothram" class="text-gray-900 font-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education & Career -->
+                    <div class="glass-card rounded-3xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600"><i class="fas fa-graduation-cap"></i></div>
+                            Education & Career
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Education</span>
+                                <span id="profileEducation" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Studied At</span>
+                                <span id="profileStudiedAt" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Employment</span>
+                                <span id="profileEmployment" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Profession</span>
+                                <span id="profileProfessionDetail" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Works At</span>
+                                <span id="profileWorkLocation" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3">
+                                <span class="font-semibold text-gray-500 italic">Annual Income</span>
+                                <span id="profileIncome" class="text-gray-900 font-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Family Details -->
+                    <div class="glass-card rounded-3xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center text-yellow-600"><i class="fas fa-home"></i></div>
+                            Family Details
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Father's Name</span>
+                                <span id="profileFatherName" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Father's Occupation</span>
+                                <span id="profileFatherOcc" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Mother's Name</span>
+                                <span id="profileMotherName" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Mother's Occupation</span>
+                                <span id="profileMotherOcc" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Family Type</span>
+                                <span id="profileFamilyType" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3">
+                                <span class="font-semibold text-gray-500 italic">Family Status</span>
+                                <span id="profileFamilyStatus" class="text-gray-900 font-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lifestyle -->
+                    <div class="glass-card rounded-3xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600"><i class="fas fa-utensils"></i></div>
+                            Lifestyle
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Eating Habits</span>
+                                <span id="profileEating" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">Smoking</span>
+                                <span id="profileSmoking" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3">
+                                <span class="font-semibold text-gray-500 italic">Drinking</span>
+                                <span id="profileDrinking" class="text-gray-900 font-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Information -->
+                    <div class="glass-card rounded-3xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600"><i class="fas fa-map-marker-alt"></i></div>
+                            Address Information
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">City</span>
+                                <span id="profileCity" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">State</span>
+                                <span id="profileState" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100">
+                                <span class="font-semibold text-gray-500 italic">PIN Code</span>
+                                <span id="profilePinCode" class="text-gray-900 font-medium"></span>
+                            </div>
+                            <div class="py-3">
+                                <span class="font-semibold text-gray-500 italic block mb-3">Full Address</span>
+                                <div id="profileFullAddress" class="text-gray-900 font-medium bg-gray-50/50 p-4 rounded-2xl border border-gray-100"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- About Me Section -->
+                <div class="glass-card rounded-3xl p-8 shadow-lg animate-in" style="animation-delay: 0.3s">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600"><i class="fas fa-comment-alt"></i></div>
+                        About Me
+                    </h2>
+                    <div id="profileBio" class="text-gray-700 leading-relaxed bg-gray-50/50 p-6 rounded-2xl border border-gray-100 font-medium italic">
+                        No bio information available.
+                    </div>
+                </div>
+
+                <!-- Member Info -->
+                <div class="glass-card rounded-3xl p-6 shadow-lg animate-in" style="animation-delay: 0.4s">
+                    <div class="flex flex-wrap gap-6 text-sm text-gray-500">
+                        <span><i class="fas fa-id-badge mr-2 text-pink-400"></i>Member ID: <strong id="profileMemberId" class="text-gray-800">-</strong></span>
+                        <span><i class="fas fa-envelope mr-2 text-pink-400"></i>Email: <strong id="profileEmail" class="text-gray-800">-</strong></span>
+                        <span><i class="fas fa-phone mr-2 text-pink-400"></i>Mobile: <strong id="profileMobile" class="text-gray-800">-</strong></span>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="global-settings.js"></script>
+    <script src="api-client.js"></script>
+    <script src="navbar-init.js"></script>
+    <script src="language.js"></script>
+    <script>
+        (function () {
+            var formatTxt = function (s) { return (s || '').replace(/-/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); }); };
+            var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v || "-"; };
+
+            async function initProfile() {
+                if (!window.VMAuth || !VMAuth.isLoggedIn()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // ── STEP 1: Always fetch fresh from backend (uses service key, bypasses RLS) ──
+                var u = null;
+                try {
+                    var resp = await VM.profile.me(); // already has ?_t=Date.now() cache-busting
+                    if (resp && resp.profile) {
+                        u = resp.profile;
+                        console.log('✅ Profile loaded from backend. City:', u.city);
+                        // Update localStorage with fresh data
+                        localStorage.setItem('userData', JSON.stringify(u));
+                        if (window.VMAuth && VMAuth.save) {
+                            VMAuth.save({
+                                access_token: localStorage.getItem('vm_token'),
+                                refresh_token: localStorage.getItem('vm_refresh'),
+                                user: u
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.warn('Backend fetch failed, trying Supabase direct:', err);
+                }
+
+                // ── STEP 2: If backend failed, fetch directly from Supabase ──
+                if (!u) {
+                    try {
+                        var token = localStorage.getItem('vm_token');
+                        var SUPA_URL  = 'https://kpmbiatjlfdbuerzxpch.supabase.co';
+                        var SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbWJpYXRqbGZkYnVlcnp4cGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMDMwNDEsImV4cCI6MjA4Nzc3OTA0MX0.QOx05PZucB5l8U4kQrZbGOX8cQ8ArABiU8-l1t9VfH0';
+                        var userResp = await fetch(SUPA_URL + '/auth/v1/user', {
+                            headers: { 'apikey': SUPA_ANON, 'Authorization': 'Bearer ' + token }
+                        });
+                        if (userResp.ok) {
+                            var authUser = await userResp.json();
+                            var uid = authUser.id;
+                            if (uid) {
+                                var profResp = await fetch(
+                                    SUPA_URL + '/rest/v1/profiles?id=eq.' + uid + '&select=*&limit=1',
+                                    { headers: { 'apikey': SUPA_ANON, 'Authorization': 'Bearer ' + token, 'Cache-Control': 'no-cache, no-store' } }
+                                );
+                                if (profResp.ok) {
+                                    var rows = await profResp.json();
+                                    if (rows && rows.length > 0) {
+                                        u = rows[0];
+                                        console.log('✅ Profile loaded from Supabase direct. City:', u.city);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (err2) { console.warn('Supabase direct fetch also failed:', err2); }
+                }
+
+                // ── STEP 3: Absolute last resort — use localStorage (may be stale) ──
+                if (!u) {
+                    u = VMAuth.user() || {};
+                    console.warn('⚠️ Using stale localStorage data. City:', u.city);
+                }
+
+                if (!u) return;
+
+                var rawCity = (u.city || '').trim();
+                var rawLocality = (u.locality || '').trim();
+                var rawState = (u.state || '').trim();
+                var rawBuilding = (u.house_building || '').trim();
+
+                var displayLocality = (rawLocality && rawLocality.toLowerCase() !== rawCity.toLowerCase()) ? rawLocality : '';
+                var fullLoc = rawCity + (rawCity && rawState ? ', ' : '') + rawState;
+
+                var addressParts = [];
+                if (rawBuilding) addressParts.push(rawBuilding);
+                if (displayLocality) addressParts.push(displayLocality);
+                if (rawCity) addressParts.push(rawCity);
+                if (rawState) addressParts.push(rawState);
+                if (u.pin_code) addressParts.push(u.pin_code);
+
+                var fullAddressStr = addressParts.join(', ');
+
+                set('profileName', u.full_name || 'Member');
+                set('profileAge', u.date_of_birth ? (Math.floor((Date.now() - new Date(u.date_of_birth)) / (365.25 * 24 * 3600 * 1000)) + ' Years') : '-');
+                set('profileStatus', formatTxt(u.marital_status));
+                set('profileCommunity', (u.religion || '') + ((u.caste ? ' / ' + u.caste : '')));
+                set('profileRasi', formatTxt(u.rasi));
+                set('profileLocation', fullLoc || '-');
+                set('profileProfession', u.job_roles || u.occupation || '-');
+
+                // Personal Details
+                set('profileGender', formatTxt(u.gender));
+                set('profileDOB', u.date_of_birth ? new Date(u.date_of_birth).toLocaleDateString('en-IN', {day:'2-digit', month:'long', year:'numeric'}) : '-');
+                set('profileTOB', u.time_of_birth || '-');
+                set('profilePOB', u.place_of_birth || '-');
+                set('profileStatus2', formatTxt(u.marital_status));
+                set('profileHeight', u.height);
+                set('profileWeight', u.weight);
+                set('profileBodyType', formatTxt(u.body_type));
+                set('profileComplexion', formatTxt(u.skin_colour));
+                set('profileMotherTongue', u.mother_tongue);
+                set('profileDisability', formatTxt(u.disability) || 'None');
+
+                // Cultural Details
+                set('profileCommunityDetail', u.religion);
+                set('profileSubcaste', u.caste);
+                set('profileSubcasteDetail', u.subcaste);
+                set('profileRasiDetail', formatTxt(u.rasi));
+                set('profileNakshatra', formatTxt(u.star));
+                set('profileGothram', u.gotra);
+
+                // Education & Career
+                set('profileEducation', u.education);
+                set('profileStudiedAt', u.studied_at);
+                set('profileEmployment', formatTxt(u.employment_status));
+                set('profileProfessionDetail', u.job_roles || u.occupation);
+                set('profileIncome', formatTxt(u.annual_income));
+                set('profileWorkLocation', u.works_at);
+
+                // Family Details
+                set('profileFatherName', u.father_name);
+                set('profileFatherOcc', u.father_occupation);
+                set('profileMotherName', u.mother_name);
+                set('profileMotherOcc', u.mother_occupation);
+                set('profileFamilyType', u.family_type);
+                set('profileFamilyStatus', u.family_status);
+
+                // Lifestyle
+                set('profileEating', formatTxt(u.eating_habits));
+                set('profileSmoking', formatTxt(u.smoking_habits));
+                set('profileDrinking', formatTxt(u.drinking_habits));
+
+                // Address
+                set('profileCity', rawCity || '-');
+                set('profileState', rawState || '-');
+                set('profilePinCode', u.pin_code || '-');
+                set('profileFullAddress', fullAddressStr || '-');
+
+                // Bio
+                set('profileBio', u.about_myself || 'No bio available.');
+
+                // Member Info bar
+                set('profileMemberId', u.member_id);
+                set('profileEmail', u.email_address);
+                set('profileMobile', u.mobile_number ? ('+91 ' + u.mobile_number) : '-');
+
+                var ph = document.getElementById('profilePhoto');
+                if (ph && u.profile_picture_url) ph.src = u.profile_picture_url;
+            }
+
+            window.addEventListener('load', initProfile);
+
+            // Standard Online status and Menu handlers
+            window.handleOnlineToggleClick = function() {
+                const btn = document.getElementById('onlineToggleBtn');
+                const slider = document.getElementById('toggleSlider');
+                const badge = document.getElementById('onlineStatusBadge');
+                if (btn.style.backgroundColor === 'rgb(34, 197, 94)') {
+                    btn.style.backgroundColor = '#94a3b8'; slider.style.marginLeft = '1.375rem'; badge.textContent = 'Offline';
+                } else {
+                    btn.style.backgroundColor = '#22c55e'; slider.style.marginLeft = '0.125rem'; badge.textContent = 'Online';
+                }
+            };
+            window.handleLogout = async function() {
+                if (window.VM && VM.auth) await VM.auth.logout();
+                else { localStorage.clear(); window.location.href = 'login.html'; }
+            };
+        })();
+    </script>
+    <script src="navbar-init.js"></script>
+    <script src="mobile-bottom-nav.js"></script>
+    <script src="language.js"></script>
+</body>
+</html>

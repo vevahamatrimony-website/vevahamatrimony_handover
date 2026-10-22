@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+ <head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>
+ VEVAHA HOROSCOPIC AI - Astrological Guidance | VevahaMatrimony
+ </title>
+ <link rel="icon" type="image/png" href="images/vevaha-logo.png" />
+ <script src="https://cdn.tailwindcss.com"></script>
+ <link
+ rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+ />
+ <link
+ href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+ rel="stylesheet"
+ />
+ <link
+ href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;500;600;700&display=swap"
+ rel="stylesheet"
+ />
+ <link rel="stylesheet" href="style.css" />
+
+ <style>
+ * {
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ text-rendering: optimizeLegibility;
+ font-feature-settings: "kern" 1;
+ }
+
+ body {
+ font-family: "Poppins", sans-serif;
+ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+ min-height: 100vh;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ text-rendering: optimizeLegibility;
+ }
+
+.lang-ta {
+ font-family: "Noto Sans Tamil", sans-serif;
+ display: none;
+ }
+
+.lang-en {
+ font-family: "Poppins", sans-serif;
+ display: block;
+ }
+
+ [data-lang="ta"].lang-ta {
+ display: block !important;
+ }
+
+ [data-lang="ta"].lang-en {
+ display: none !important;
+ }
+
+.chat-container {
+ background: rgba(255, 255, 255, 0.98);
+ border: 1px solid rgba(255, 255, 255, 0.3);
+ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+ }
+
+.premium-button {
+ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+ transition: all 0.3s ease;
+ }
+
+.premium-button:hover {
+ transform: translateY(-2px);
+ box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+ }
+
+.message-animation {
+ animation: slideInUp 0.3s ease-out;
+ }
+
+ @keyframes slideInUp {
+ from {
+ opacity: 0;
+ transform: translateY(20px);
+ }
+ to {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+
+.typing-indicator {
+ animation: pulse 1.5s infinite;
+ }
+
+ @keyframes pulse {
+ 0%,
+ 100% {
+ opacity: 1;
+ }
+ 50% {
+ opacity: 0.5;
+ }
+ }
+
+.star-icon {
+ color: #fbbf24;
+ animation: twinkle 2s infinite;
+ }
+
+ @keyframes twinkle {
+ 0%,
+ 100% {
+ opacity: 1;
+ }
+ 50% {
+ opacity: 0.7;
+ }
+ }
+
+ /* Enhanced text rendering for all elements */
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6,
+ p,
+ span,
+ div,
+ button,
+ input,
+ textarea,
+ a {
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ text-rendering: optimizeLegibility;
+ font-feature-settings: "kern" 1;
+ letter-spacing: 0.01em;
+ }
+
+ /* Specific text sharpening for message content */
+.message-animation p,
+.chat-header h1,
+.chat-header p,
+ #chat-messages {
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ text-rendering: optimizeLegibility;
+ font-weight: 500;
+ line-height: 1.5;
+ }
+
+ /* Enhanced contrast for better readability */
+.text-gray-800 {
+ color: #1f2937 !important;
+ font-weight: 600 !important;
+ }
+
+.text-white {
+ color: #ffffff !important;
+ text-shadow: none !important;
+ }
+
+ /* Input field text clarity */
+ input,
+ textarea,
+ select {
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ text-rendering: optimizeLegibility;
+ font-size: 16px;
+ line-height: 1.5;
+ font-weight: 500;
+ }
+
+ /* Button text enhancement */
+ button {
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ text-rendering: optimizeLegibility;
+ font-weight: 600;
+ }
+
+ /* Footer styling */
+.footer-branding {
+ background: rgba(255, 255, 255, 0.1);
+ border-top: 1px solid rgba(255, 255, 255, 0.2);
+ }
+
+.horoscope-form-panel {
+ border: 1px solid rgba(99, 102, 241, 0.2);
+ box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+ border-radius: 1rem;
+ }
+
+.horoscope-form-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+ gap: 1rem 1.25rem;
+ }
+
+.horoscope-field-label {
+ font-weight: 600;
+ color: #4338ca;
+ font-size: 0.9rem;
+ }
+
+.horoscope-input,
+.horoscope-select {
+ width: 100%;
+ border: 1px solid rgba(99, 102, 241, 0.3);
+ border-radius: 0.75rem;
+ padding: 0.65rem 0.85rem;
+ font-size: 0.95rem;
+ transition: border-color 0.2s ease, box-shadow 0.2s ease;
+ }
+
+.horoscope-input:focus,
+.horoscope-select:focus {
+ outline: none;
+ border-color: #818cf8;
+ box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+ }
+
+.form-hint {
+ font-size: 0.8rem;
+ color: #6b7280;
+ }
+
+.form-actions button {
+ min-width: 180px;
+ }
+
+.lock-badge {
+ display: inline-flex;
+ align-items: center;
+ gap: 0.35rem;
+ font-size: 0.8rem;
+ font-weight: 600;
+ color: #047857;
+ }
+ </style>
+ <script src="./auth-guard.js"></script>
+ </head>
+ <body
+ class="bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-700 min-h-screen font-poppins"
+>
+ <!-- Main Container -->
+ <div class="min-h-screen flex flex-col">
+ <!-- Header -->
+ <div
+ class="bg-gradient-to-r from-pink-600 to-purple-700 text-white shadow-xl relative z-10"
+>
+ <div class="flex items-center justify-between px-6 py-4">
+ <!-- Logo and Title -->
+ <div class="flex items-center space-x-4">
+ <div class="flex items-center space-x-3">
+ <svg
+ class="w-10 h-10 text-yellow-300"
+ fill="currentColor"
+ viewBox="0 0 24 24"
+>
+ <!-- Zodiac wheel -->
+ <circle
+ cx="12"
+ cy="12"
+ r="9"
+ stroke="currentColor"
+ stroke-width="1.5"
+ fill="none"
+ opacity="0.7"
+ />
+ <!-- Inner star -->
+ <path
+ d="M12 2l1.09 3.26L16 4l-1.91 2.74L16 10l-3.91-1.26L12 12l-1.09-3.26L8 10l1.91-2.26L8 4l3.91 1.26L12 2z"
+ opacity="0.9"
+ />
+ <!-- Constellation dots -->
+ <circle cx="7" cy="7" r="0.8" />
+ <circle cx="17" cy="7" r="0.8" />
+ <circle cx="7" cy="17" r="0.8" />
+ <circle cx="17" cy="17" r="0.8" />
+ </svg>
+ <div>
+ <div class="text-2xl font-bold">
+ <span class="lang-en"
+>VEVAHA HOROSCOPIC AI</span
+>
+ <span class="lang-ta"
+> AI</span
+>
+ </div>
+ <div class="text-sm text-pink-100">
+ <span class="lang-en"
+>Your intelligent astrological
+ companion</span
+>
+ <span class="lang-ta"
+> 
+ </span
+>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Header Controls -->
+ <div class="flex items-center space-x-3">
+ <!-- Language Toggle -->
+ <div class="flex bg-white bg-opacity-20 rounded-lg p-1">
+ <button
+ onclick="changeLanguage('en')"
+ id="langEnBtn"
+ class="px-3 py-1 rounded-md text-sm font-medium transition-all duration-200 bg-white bg-opacity-30 text-white"
+>
+ EN
+ </button>
+ <button
+ onclick="changeLanguage('ta')"
+ id="langTaBtn"
+ class="px-3 py-1 rounded-md text-sm font-medium transition-all duration-200 text-pink-200"
+>
+ TA
+ </button>
+ </div>
+
+ <!-- Clear Chat -->
+ <button
+ id="clear-chat-btn"
+ class="text-white hover:text-pink-200 transition-colors p-2 rounded-lg hover:bg-white hover:bg-opacity-10"
+ title="Clear Chat"
+>
+ <i class="fas fa-trash text-lg"></i>
+ </button>
+
+ <!-- Exit Button -->
+ <button
+ id="exit-btn"
+ class="text-white hover:text-pink-200 transition-colors p-2 rounded-lg hover:bg-white hover:bg-opacity-10"
+ title="Exit"
+>
+ <i class="fas fa-times text-lg"></i>
+ </button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Chat Interface -->
+ <div class="flex-1 flex flex-col bg-white">
+ <!-- Quick Action Cards -->
+ <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+ <div class="text-sm text-gray-600 mb-3">
+ Quick Questions
+ 
+ </div>
+ <div class="flex flex-wrap gap-3">
+ <button
+ onclick="sendQuickQuestion('find_match')"
+ class="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105 shadow-sm"
+>
+ <i class="fas fa-heart mr-2"></i>
+ Find my horoscope match
+ <span class="lang-ta"
+> </span
+>
+ </button>
+ <button
+ id="fill-blanks-btn"
+ class="bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105 shadow-sm"
+>
+ <i class="fas fa-clipboard-list mr-2"></i>
+ <span data-i18n="fillButtonLabel">📝 Fill horoscope details</span>
+ </button>
+ <button
+ id="bride-groom-match-btn"
+ type="button"
+ class="bg-orange-100 hover:bg-orange-200 text-orange-700 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105 shadow-sm"
+>
+ <i class="fas fa-user-friends mr-2"></i>
+ <span class="lang-en"
+>Bride &amp; Groom Horoscope Match</span
+>
+ <span class="lang-ta"
+> &amp; </span
+>
+ </button>
+ </div>
+ </div>
+
+ <!-- Fill in the Blanks Form Panel -->
+ <div
+ id="horoscope-form-panel"
+ class="mx-6 mt-4 mb-2 bg-white hidden horoscope-form-panel"
+>
+ <div class="p-6 space-y-4">
+ <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+ <div>
+ <h2
+ class="text-xl font-semibold text-indigo-700"
+ data-i18n="formTitle"
+>
+ 📝 Fill in the Blanks Horoscope Form
+ </h2>
+ <p class="text-sm text-gray-600" data-i18n="formIntro">
+ Complete every field to unlock in-depth horoscope analysis.
+ </p>
+ </div>
+ <div
+ id="horoscope-lock-state"
+ class="lock-badge hidden"
+>
+ <i class="fas fa-lock"></i>
+ <span data-i18n="lockedLabel">Profile locked</span>
+ </div>
+ </div>
+
+ <div
+ id="horoscope-form-alert"
+ class="hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+></div>
+
+ <form id="horoscope-profile-form" class="space-y-6">
+ <div class="horoscope-form-grid">
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="nameLabel">Name</label>
+ <input
+ type="text"
+ class="horoscope-input"
+ data-field="name"
+ data-placeholder="namePlaceholder"
+ />
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="genderLabel">Gender</label>
+ <div class="flex items-center gap-4" data-field-group="gender">
+ <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+ <input
+ type="radio"
+ name="horoscopeGender"
+ value="male"
+ data-field="gender"
+ class="text-indigo-600"
+ />
+ <span data-i18n="genderMale">Male</span>
+ </label>
+ <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+ <input
+ type="radio"
+ name="horoscopeGender"
+ value="female"
+ data-field="gender"
+ class="text-indigo-600"
+ />
+ <span data-i18n="genderFemale">Female</span>
+ </label>
+ </div>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="rasiLabel">Rasi</label>
+ <select
+ class="horoscope-select"
+ data-field="rasi"
+ data-options="rasi"
+></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="nakshatraLabel">Nakshatram</label>
+ <select
+ class="horoscope-select"
+ data-field="nakshatra"
+ data-options="nakshatra"
+></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="gotraLabel">Gotra</label>
+ <input
+ type="text"
+ class="horoscope-input"
+ data-field="gotra"
+ data-placeholder="gotraPlaceholder"
+ />
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="lagnamLabel">Lagnam</label>
+ <select
+ class="horoscope-select"
+ data-field="lagnam"
+ data-options="lagnam"
+></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="doshamLabel">Dosham</label>
+ <input
+ type="text"
+ class="horoscope-input"
+ data-field="dosham"
+ data-placeholder="doshamPlaceholder"
+ />
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="dobLabel">Date of Birth</label>
+ <input
+ type="date"
+ class="horoscope-input"
+ data-field="dob"
+ />
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label" data-i18n="tobLabel">Time of Birth</label>
+ <input
+ type="time"
+ class="horoscope-input"
+ data-field="tob"
+ />
+ </div>
+ </div>
+
+ <p class="form-hint" data-i18n="formHint">
+ Tip: Save once to lock your horoscope details. Use Erase to edit later.
+ </p>
+
+ <div class="form-actions grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+ <button
+ type="button"
+ class="rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+ data-action="save"
+ data-i18n="saveButton"
+>
+ 💾 Save Details
+ </button>
+ <button
+ type="button"
+ class="rounded-xl bg-purple-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-purple-700"
+ data-action="result"
+ data-i18n="resultButton"
+>
+ 🔍 Get Horoscope Result
+ </button>
+ <button
+ type="button"
+ class="rounded-xl bg-gray-100 px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-200"
+ data-action="reset"
+ data-i18n="resetButton"
+>
+ ♻ Reset
+ </button>
+ <button
+ type="button"
+ class="rounded-xl bg-red-100 px-4 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-200"
+ data-action="erase"
+ data-i18n="eraseButton"
+>
+ 🗑 Erase Permanently
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+
+ <!-- Bride & Groom Match Form Panel -->
+ <div
+ id="bride-groom-form-panel"
+ class="mx-6 mt-4 mb-2 bg-white hidden horoscope-form-panel"
+>
+ <div class="p-6 space-y-6">
+ <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+ <div>
+ <h2 class="text-xl font-semibold text-indigo-700">
+ Bride &amp; Groom Horoscope Match
+ </h2>
+ <p class="text-sm text-gray-600">
+ Enter both horoscopes in this structured form to run a strict 10 Porutham evaluation without chat.
+ </p>
+ </div>
+ <div class="text-xs font-semibold uppercase tracking-wide text-indigo-600">
+ Deterministic Vedic computation • No AI calls
+ </div>
+ </div>
+
+ <div
+ id="bride-groom-form-alert"
+ class="hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+></div>
+
+ <form id="bride-groom-form" class="space-y-6">
+ <div class="grid gap-6 lg:grid-cols-2">
+ <section class="space-y-4">
+ <header>
+ <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wide">Bride Details</p>
+ <p class="text-xs text-gray-500">Provide complete Rasi, Nakshatram, Lagnam, Dosham, and Gotram.</p>
+ </header>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Name</label>
+ <input type="text" name="brideName" class="horoscope-input" autocomplete="off" />
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Rasi</label>
+ <select name="brideRasi" class="horoscope-select" data-match-select="rasi"></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Nakshatram</label>
+ <select name="brideNakshatra" class="horoscope-select" data-match-select="nakshatra"></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Lagnam</label>
+ <select name="brideLagnam" class="horoscope-select" data-match-select="lagnam"></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Dosham</label>
+ <select name="brideDosham" class="horoscope-select">
+ <option value="">-- Select --</option>
+ <option value="No">No</option>
+ <option value="Yes">Yes</option>
+ </select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Gotram</label>
+ <input type="text" name="brideGotra" class="horoscope-input" autocomplete="off" />
+ </div>
+ </section>
+ <section class="space-y-4">
+ <header>
+ <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wide">Groom Details</p>
+ <p class="text-xs text-gray-500">Matching cannot run unless both horoscopes are complete.</p>
+ </header>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Name</label>
+ <input type="text" name="groomName" class="horoscope-input" autocomplete="off" />
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Rasi</label>
+ <select name="groomRasi" class="horoscope-select" data-match-select="rasi"></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Nakshatram</label>
+ <select name="groomNakshatra" class="horoscope-select" data-match-select="nakshatra"></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Lagnam</label>
+ <select name="groomLagnam" class="horoscope-select" data-match-select="lagnam"></select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Dosham</label>
+ <select name="groomDosham" class="horoscope-select">
+ <option value="">-- Select --</option>
+ <option value="No">No</option>
+ <option value="Yes">Yes</option>
+ </select>
+ </div>
+ <div class="space-y-2">
+ <label class="horoscope-field-label">Gotram</label>
+ <input type="text" name="groomGotra" class="horoscope-input" autocomplete="off" />
+ </div>
+ </section>
+ </div>
+
+ <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+ <button type="submit" class="rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700" data-match-action="analyze">
+ Analyze Match
+ </button>
+ <button type="button" class="rounded-xl bg-purple-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-purple-700" data-match-action="save">
+ Save Details (localStorage)
+ </button>
+ <button type="button" class="rounded-xl bg-gray-100 px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-200" data-match-action="reset">
+ Reset Form
+ </button>
+ <button type="button" class="rounded-xl bg-red-100 px-4 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-200" data-match-action="delete">
+ Delete Saved Data
+ </button>
+ </div>
+ </form>
+
+ <div id="bride-groom-results" class="hidden rounded-2xl border border-indigo-100 bg-indigo-50 p-5 text-sm text-gray-800"></div>
+ </div>
+ </div>
+
+ <!-- Chat Messages Area -->
+ <div
+ class="flex-1 overflow-y-auto p-6 space-y-4"
+ id="chat-messages"
+>
+ <!-- Welcome Message -->
+ <div class="message-animation">
+ <div class="flex items-start space-x-3">
+ <div
+ class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0"
+>
+ <svg
+ class="w-6 h-6 text-white star-icon"
+ fill="currentColor"
+ viewBox="0 0 24 24"
+>
+ <!-- Zodiac wheel -->
+ <circle
+ cx="12"
+ cy="12"
+ r="9"
+ stroke="currentColor"
+ stroke-width="1.5"
+ fill="none"
+ opacity="0.7"
+ />
+ <!-- Inner star -->
+ <path
+ d="M12 2l1.09 3.26L16 4l-1.91 2.74L16 10l-3.91-1.26L12 12l-1.09-3.26L8 10l1.91-2.26L8 4l3.91 1.26L12 2z"
+ opacity="0.9"
+ />
+ <!-- Constellation dots -->
+ <circle cx="7" cy="7" r="0.8" />
+ <circle cx="17" cy="7" r="0.8" />
+ <circle cx="7" cy="17" r="0.8" />
+ <circle cx="17" cy="17" r="0.8" />
+ </svg>
+ </div>
+ <div
+ class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl rounded-tl-md p-4 max-w-2xl border border-purple-200"
+>
+ <p class="text-gray-800">
+ <span class="lang-en"
+>I am VEVAHA HOROSCOPIC AI – your
+ dedicated Tamil Vedic astrology
+ assistant for horoscope-based
+ matchmaking only. 💫 To begin, please
+ type your name, Rasi, Nakshatra, and
+ Gotra. ex "my name is.." (or Matrimony
+ ID like VM12345678). 👉 This is not a
+ general chatbot – I can only assist with
+ authentic 10 Porutham, Rasi-Nakshatra,
+ and Gotra compatibility using authentic
+ Vedic principle for precise astrological
+ match analysis.</span
+>
+ <span class="lang-ta"
+> AI – 
+ 
+ 
+. 💫, 
+,, 
+.. "
+.." ( VM12345678 
+ ID). 👉 
+ – 
+ 
+ 10
+, - 
+ 
+.</span
+>
+ </p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Quick Tip -->
+ <div class="pl-13">
+ <div
+ class="bg-purple-50 border-l-4 border-purple-300 rounded-r-lg p-3 max-w-2xl"
+>
+ <p class="text-purple-700 text-sm">
+ <span class="lang-en"
+>💡 <strong>Tip:</strong> Tap
+ <strong>"Bride &amp; Groom Horoscope Match"</strong>
+ to start the full porutham workflow, or ask me
+ to match two specific horoscopes in chat for
+ a traditional analysis.</span
+>
+ <span class="lang-ta"
+>💡 <strong>:</strong>
+ <strong
+>" &amp; "</strong
+>
+ 
+ ; 10
+.</span
+>
+ </p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Message Input Area -->
+ <div class="border-t border-gray-200 bg-gray-50 p-4">
+ <div class="max-w-6xl mx-auto">
+ <div class="flex items-end space-x-3">
+ <div class="flex-1 relative">
+ <textarea
+ id="message-input"
+ placeholder="Ask about horoscope, compatibility, auspicious dates..."
+ class="w-full px-4 py-3 pr-16 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-800 shadow-sm resize-none"
+ maxlength="500"
+ autocomplete="off"
+ rows="2"
+></textarea>
+ <div
+ class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400"
+>
+ <span id="char-count">0</span>/500
+ </div>
+ </div>
+ <button
+ id="send-button"
+ type="button"
+ class="premium-button text-white p-3.5 rounded-xl shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 hover:shadow-xl"
+ disabled
+>
+ <i class="fas fa-paper-plane text-lg"></i>
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Legacy auth removed -->
+ <script src="horoscopeEngine.js"></script>
+ <script src="horoscopeFillForm.js"></script>
+ <script src="porutham-calculator.js"></script>
+ <script src="bride-groom-match.js"></script>
+ <script src="global-settings.js"></script>
+ <script src="watermark-system.js"></script>
+ <script src="script.js"></script>
+ <!-- Domain AI Service Verification -->
+ <script src="domain-ai-service.js"></script>
+
+ <!-- Swiper.js Script -->
+ <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+ <script>
+ // Initialize Premium Members Swiper
+ document.addEventListener('DOMContentLoaded', function() {
+ const premiumSwiper = new Swiper('.premium-members-swiper', {
+ slidesPerView: 1,
+ spaceBetween: 15,
+ autoplay: {
+ delay: 4000,
+ disableOnInteraction: false,
+ pauseOnMouseEnter: true,
+ },
+ pagination: {
+ el: '.swiper-pagination',
+ clickable: true,
+ bulletActiveClass: 'swiper-pagination-bullet-active',
+ },
+ loop: true,
+ centeredSlides: true,
+ grabCursor: true,
+ touchRatio: 1,
+ touchAngle: 45,
+ preventInteractionOnTransition: true,
+ breakpoints: {
+ 480: {
+ slidesPerView: 1,
+ spaceBetween: 15,
+ },
+ 640: {
+ slidesPerView: 2,
+ spaceBetween: 20,
+ },
+ 1024: {
+ slidesPerView: 3,
+ spaceBetween: 25,
+ },
+ },
+ effect: 'slide',
+ speed: 400,
+ resistance: true,
+ resistanceRatio: 0.85,
+ });
+ });
+ </script>
+ <script>
+ // Mobile menu toggle
+ function toggleMobileMenu() {
+ const menu = document.getElementById('mobile-nav-menu');
+ if (menu) {
+ menu.classList.toggle('hidden');
+ }
+ }
+
+ // Initialize copyright year
+ document.addEventListener('DOMContentLoaded', function() {
+ const year = new Date().getFullYear();
+ const copyrightText = document.getElementById('copyright-text');
+ if (copyrightText) {
+ copyrightText.textContent = `© ${year} vevahamatrimony. All rights reserved.`;
+ }
+ });
+
+ // Copy to clipboard function
+ function copyToClipboard(text, message) {
+ navigator.clipboard.writeText(text).then(() => {
+ // Optionally show a success message
+ const notificationContainer = document.createElement('div');
+ notificationContainer.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg bg-green-500 text-white z-50';
+ notificationContainer.innerHTML = `
+ <div class="flex items-center">
+ <i class="fas fa-check-circle mr-2"></i>
+ <span>${message}</span>
+ </div>
+ `;
+ document.body.appendChild(notificationContainer);
+ setTimeout(() => {
+ notificationContainer.remove();
+ }, 2000);
+ }).catch(err => {
+ console.error('Failed to copy text: ', err);
+ // Optionally show an error message
+ });
+ }
+
+ // Search suggestions functionality
+ function showSearchSuggestions() {
+ const suggestions = document.getElementById('searchSuggestions');
+ if (suggestions) {
+ suggestions.classList.remove('hidden');
+ }
+ }
+
+ function hideSearchSuggestions() {
+ setTimeout(() => {
+ const suggestions = document.getElementById('searchSuggestions');
+ if (suggestions) {
+ suggestions.classList.add('hidden');
+ }
+ }, 150);
+ }
+
+ function navigateToPage(url) {
+ window.location.href = url;
+ }
+
+ // Handle search key press for desktop search
+ function handleSearchKeyPress(event) {
+ if (event.key === 'Enter') {
+ performSearch();
+ }
+ }
+
+ // Mobile search functionality
+ function handleMobileSearchKeyPress(event) {
+ if (event.key === 'Enter') {
+ performMobileSearch();
+ }
+ }
+
+ function performMobileSearch() {
+ const mobileSearchInput = document.getElementById('mobileSearchInput');
+ if (mobileSearchInput) {
+ const query = mobileSearchInput.value.trim();
+ if (query) {
+ const mainSearchInput = document.getElementById('searchInput');
+ if (mainSearchInput) {
+ mainSearchInput.value = query;
+ performSearch();
+ }
+ } else {
+ showNotification('Please enter a search term', 'error');
+ }
+ }
+ }
+
+ // Enhanced search functionality
+ function performSearch() {
+ const searchInput = document.getElementById('searchInput');
+ if (!searchInput) return;
+
+ const searchTerm = searchInput.value.trim().toLowerCase();
+
+ if (!searchTerm) {
+ showNotification('Please enter a search term', 'error');
+ return;
+ }
+
+ // Navigation mappings
+ const navigationMappings = {
+ 'home': 'index.html',
+ 'homepage': 'index.html',
+ 'register': 'register.html',
+ 'signup': 'register.html',
+ 'sign up': 'register.html',
+ 'membership': 'membership.html',
+ 'plans': 'membership.html',
+ 'premium': 'membership.html',
+ 'pricing': 'membership.html',
+ 'contact': 'contact.html',
+ 'contact us': 'contact.html',
+ 'about': 'about.html',
+ 'about us': 'about.html',
+ 'faq': 'faq.html',
+ 'help': 'faq.html',
+ 'login': 'login.html',
+ 'signin': 'login.html',
+ 'sign in': 'login.html',
+ 'find': 'advanced-search.html',
+ 'search': 'advanced-search.html',
+ 'find match': 'advanced-search.html',
+ 'search match': 'advanced-search.html',
+ 'matches': 'matches.html',
+ 'messages': 'messages.html',
+ 'chat': 'messages.html',
+ 'dashboard': 'home.html',
+ 'profile': 'profile.html',
+ 'requests': 'requests.html',
+ 'active members': 'active-members.html',
+ 'members': 'active-members.html',
+ 'privacy': 'privacy-policy.html',
+ 'privacy policy': 'privacy-policy.html',
+ 'terms': 'terms.html',
+ 'terms and conditions': 'terms.html',
+ 'safety': 'safety-tips.html',
+ 'safety tips': 'safety-tips.html',
+ 'settings': 'settings.html'
+ };
+
+ // Check if search term matches any page
+ const targetPage = navigationMappings[searchTerm];
+ if (targetPage) {
+ window.location.href = targetPage;
+ return;
+ }
+
+ // Check for partial matches
+ for (const [key, value] of Object.entries(navigationMappings)) {
+ if (key.includes(searchTerm) || searchTerm.includes(key)) {
+ showNotification(`Redirecting to ${key}...`, 'info');
+ setTimeout(() => {
+ window.location.href = value;
+ }, 1000);
+ return;
+ }
+ }
+
+ // Redirect to search results
+ showNotification('Redirecting to search results...', 'info');
+ setTimeout(() => {
+ window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
+ }, 1000);
+ }
+
+ // Notification system
+ function showNotification(message, type = 'info') {
+ const notification = document.createElement('div');
+ notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+ type === 'success' ? 'bg-green-500' :
+ type === 'error' ? 'bg-red-500' :
+ 'bg-blue-500'
+ } text-white max-w-sm`;
+ notification.innerHTML = `
+ <div class="flex items-center">
+ <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'} mr-2"></i>
+ <span>${message}</span>
+ </div>
+ `;
+
+ document.body.appendChild(notification);
+
+ setTimeout(() => {
+ notification.remove();
+ }, 3000);
+ }
+ </script>
+ <script src="vevaha-ai-widget.js"></script>
+ <script src="mobile-bottom-nav.js"></script>
+ <script src="premium-member-actions.js"></script>
+<script src="global-search.js"></script>
+<script src="language.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en"><head><script src="auth-guard.js"></script><meta charset="UTF-8"><link rel="icon" type="image/png" href="/images/vevaha-logo.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Messages - VevahaMatrimony</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"><link href="style.css" rel="stylesheet"><!-- Supabase disabled for local run --><!--  --><style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .page-load-animation {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .thread-item:hover {
+            background-color: #fdf2f8;
+        }
+
+        .thread-item.active {
+            background-color: #fce7f3;
+            border-left: 4px solid #ec4899;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .unread-badge {
+            background: linear-gradient(45deg, #ec4899, #f97316);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .chat-container {
+            height: calc(100vh - 120px);
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .thread-list {
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            background-color: #e5ddd5;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+            background-repeat: repeat;
+        }
+
+        #messagesContainer {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            gap: 0.75rem;
+            scroll-behavior: smooth;
+        }
+
+        /* WhatsApp Bubble Styles */
+        .msg-bubble {
+            position: relative;
+            max-width: 75%;
+            padding: 8px 12px 18px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+            margin-bottom: 4px;
+        }
+        .msg-mine {
+            align-self: flex-end;
+            background-color: #dcf8c6;
+        }
+        .msg-other {
+            align-self: flex-start;
+            background-color: #ffffff;
+        }
+        /* Tails */
+        .msg-mine::after {
+            content: "";
+            position: absolute;
+            right: -8px; top: 0;
+            width: 0; height: 0;
+            border-left: 10px solid #dcf8c6;
+            border-bottom: 10px solid transparent;
+        }
+        .msg-other::after {
+            content: "";
+            position: absolute;
+            left: -8px; top: 0;
+            width: 0; height: 0;
+            border-right: 10px solid #ffffff;
+            border-bottom: 10px solid transparent;
+        }
+
+        .msg-time {
+            position: absolute;
+            bottom: 4px; right: 8px;
+            font-size: 10px;
+            color: rgba(0,0,0,0.45);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .msg-actions {
+            position: absolute;
+            top: 4px; right: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            background: rgba(255,255,255,0.9);
+            border-radius: 4px;
+            padding: 2px 4px;
+        }
+        .msg-bubble:hover .msg-actions {
+            opacity: 1;
+        }
+
+        .tick-icon { font-size: 14px; }
+        .tick-blue { color: #34b7f1; }
+        .tick-gray { color: #8696a0; }
+
+        .deleted-msg { color: #8696a0; font-style: italic; }
+
+        /* Upgrade Modal */
+        #upgradeModal { transition: opacity .3s; }
+        .modal-box { transition: transform .3s; }
+
+        @media (min-width: 768px) {
+    #appSidebar { transform: translateX(0) !important; top: 4rem; }
+    #sidebarToggle { display: none !important; }
+}
+</style>
+<style id="vm-sidebar-css">
+* { font-family: 'Poppins', sans-serif; }
+body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%); background-attachment: fixed; }
+.sidebar-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; border-radius: 0.75rem;
+    color: #475569; font-weight: 500; text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden;
+}
+.sidebar-link::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    height: 100%; width: 3px;
+    background: linear-gradient(180deg, #ec4899, #db2777);
+    transform: scaleY(0); transition: transform 0.3s;
+}
+.sidebar-link:hover::before, .sidebar-link.active::before { transform: scaleY(1); }
+.sidebar-link i { color: inherit; transition: transform 0.3s; }
+.sidebar-link:hover { background: linear-gradient(90deg, #fdf2f8 0%, transparent 100%); color: #db2777; transform: translateX(5px); }
+.sidebar-link:hover i { transform: scale(1.2); }
+.sidebar-link.active { background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%); color: #db2777; font-weight: 600; box-shadow: 0 4px 15px rgba(236,72,153,0.1); }
+</style>
+</head><body class="bg-gradient-to-br from-pink-50 to-white min-h-screen page-load-animation" data-active-nav="messages">
+
+
+<nav class="bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <button id="sidebarToggle" class="md:hidden text-gray-600 hover:text-pink-600 focus:outline-none" aria-label="Open navigation">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <a href="home.html" class="flex items-center text-xl font-semibold text-pink-600">
+                <img src="images/vevaha-logo.png" alt="Vevaha" class="w-10 h-10 mr-2">VevahaMatrimony
+            </a>
+        </div>
+        <div class="relative hidden md:block">
+            <input type="text" id="searchInput" placeholder="Search..."
+                class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-64 transition-all duration-300"
+                onfocus="if(window.showSearchSuggestions)showSearchSuggestions();"
+                onblur="if(window.hideSearchSuggestions)hideSearchSuggestions();"
+                onkeypress="if(window.handleSearchKeyPress)handleSearchKeyPress(event);">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <button onclick="if(window.performSearch)performSearch();" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200">
+                <span class="text-xs font-semibold" id="onlineStatusBadge">Online</span>
+                <button id="onlineToggleBtn" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    style="background-color: #22c55e;" onclick="if(window.handleOnlineToggleClick)handleOnlineToggleClick();">
+                    <span id="toggleSlider" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm" style="margin-left: 0.125rem;"></span>
+                </button>
+            </div>
+            <div class="relative">
+                <button id="userMenuButton" class="flex items-center space-x-3 px-3 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white flex items-center justify-center font-bold" id="userInitials">VM</div>
+                    <div class="text-left hidden sm:block">
+                        <p id="navUserName" class="text-sm font-semibold text-gray-900">Member</p>
+                        <p class="text-xs text-gray-500" id="navPlanLabel">Free plan</p>
+                    </div>
+                    <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                </button>
+                <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                    <a href="profile.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-id-badge mr-3 text-pink-500"></i> Profile
+                    </a>
+                    <a href="settings.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-sliders mr-3 text-pink-500"></i> Settings
+                    </a>
+                    <button onclick="if(window.handleLogout)handleLogout();" class="w-full text-left flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-arrow-right-from-bracket mr-3 text-pink-500"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="relative flex">
+<aside id="appSidebar" class="fixed top-0 md:top-16 left-0 bottom-0 w-60 bg-white border-r border-gray-100 z-40 shadow-lg md:shadow-none" style="transform: translateX(-100%); transition: transform 0.3s; --tw-md: 768px;">
+    <div class="flex items-center justify-between px-4 py-4 border-b border-gray-100 md:hidden">
+        <span class="text-sm font-semibold text-gray-700">Navigation</span>
+        <button id="sidebarClose" class="text-gray-500 hover:text-pink-600" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="px-4 py-6 space-y-1 overflow-y-auto h-full">
+        <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="active-members-dash.html" class="sidebar-link"><i class="fas fa-users"></i><span>Active Members</span></a>
+        <a href="messages.html" class="sidebar-link active"><i class="fas fa-comments"></i><span>Messages</span></a>
+        <a href="interested-profiles.html" class="sidebar-link"><i class="fas fa-star"></i><span>Interested</span></a>
+        <a href="requests.html" class="sidebar-link"><i class="fas fa-handshake"></i><span>Requests</span></a>
+        <a href="horoscopic-chatbot.html" class="sidebar-link"><i class="fas fa-moon"></i><span>Astro AI</span></a>
+        <a href="connections.html" class="sidebar-link"><i class="fas fa-user-friends"></i><span>My Connections</span></a>
+        <a href="account-settings.html" class="sidebar-link"><i class="fas fa-user-edit"></i><span>Edit Profile</span></a>
+        <a href="settings.html" class="sidebar-link"><i class="fas fa-user-cog"></i><span>Settings</span></a>
+        <a href="billing.html" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Billing</span></a>
+    </div>
+</aside>
+<div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden md:hidden"></div>
+
+<main class="flex-1 md:ml-60 px-4 sm:px-6 lg:px-8 py-8 pt-24 min-h-screen">
+    <div class="max-w-[1400px] mx-auto py-2 h-full"> 
+        <!-- Membership Plan Notice -->
+        <div id="membershipNotice" class="hidden mb-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+            <div class="flex items-center">
+                <i class="fas fa-info-circle text-yellow-600 mr-3"></i>
+                <div>
+                    <h3 class="text-yellow-800 font-semibold">Messaging Feature</h3>
+                    <p class="text-yellow-700 text-sm mt-1" id="membershipMessage"></p>
+                </div>
+                <a href="membership.html" class="ml-auto bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-sm font-semibold">
+                    Upgrade Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages Interface -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden chat-container">
+            <div class="grid grid-cols-1 lg:grid-cols-3 h-full">
+                <!-- Thread List -->
+                <div class="lg:border-r border-gray-200 bg-gray-50 flex flex-col">
+                    <div class="p-4 border-b border-gray-200 bg-white">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-comments text-pink-600 mr-3"></i>
+                            <span>Conversations</span>
+                            <span id="totalThreadsCount" class="ml-2 bg-pink-100 text-pink-600 px-2 py-1 rounded-full text-xs font-semibold">0</span>
+                        </h2>
+                    </div>
+                    <div id="threadsList" class="thread-list p-2 space-y-1">
+                        <!-- Thread items populated here -->
+                        <div id="noThreadsMessage" class="text-center py-8 text-gray-500">
+                            <i class="fas fa-comments text-4xl mb-4 text-gray-300"></i>
+                            <p class="text-lg font-semibold">No conversations yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Area -->
+                <div class="lg:col-span-2 chat-area flex flex-col">
+                    <!-- Chat Header -->
+                    <div id="chatHeader" class="hidden p-4 border-b border-gray-200 bg-white shadow-sm z-10">
+                        <div class="flex items-center justify-between gap-3">
+                            <!-- Left: Avatar + Name + Status -->
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <div class="relative w-11 h-11 flex-shrink-0">
+                                    <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 shadow-sm">
+                                        <img id="chatUserAvatar" src="/images/placeholder-profile.svg" alt="User" class="w-full h-full object-cover cursor-pointer">
+                                    </div>
+                                    <div id="chatUserLockBadge" class="hidden absolute bottom-0 right-0 w-4 h-4 bg-white rounded-full flex items-center justify-center border border-gray-300 shadow z-10">
+                                        <i class="fas fa-lock text-gray-600" style="font-size: 8px;"></i>
+                                    </div>
+                                </div>
+                                <div class="min-w-0">
+                                    <h3 id="chatUserName" class="font-semibold text-gray-800 truncate cursor-pointer hover:text-pink-600 transition-colors">Select a conversation</h3>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                                        <span id="chatUserPlan" class="px-2 py-0.5 rounded-full font-semibold bg-gray-100">Plan</span>
+                                        <span id="chatUserStatus"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Right: Call Buttons -->
+                            <div id="callButtons" class="hidden flex items-center gap-2 flex-shrink-0">
+                                <button onclick="startVoiceCall()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pink-600 transition shadow-sm border border-gray-100" title="Voice Call">
+                                    <i class="fas fa-phone-alt"></i>
+                                </button>
+                                <button onclick="startVideoCall()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pink-600 transition shadow-sm border border-gray-100" title="Video Call">
+                                    <i class="fas fa-video"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Messages Container -->
+                    <div id="messagesContainer" class="flex-1 p-4 space-y-4 overflow-y-auto">
+                        <div id="noConversationMessage" class="text-center py-12 text-gray-500">
+                            <i class="fas fa-comment-dots text-6xl mb-4 text-gray-300"></i>
+                            <h3 class="text-xl font-semibold mb-2">Welcome to Messages</h3>
+                            <p class="text-gray-600">Select a conversation from the left to start chatting</p>
+                        </div>
+                    </div>
+
+                    <!-- Message Input -->
+                    <div id="messageInputContainer" class="hidden border-t border-gray-200 bg-white p-3 pr-20 sm:pr-24 flex-shrink-0 relative z-20">
+                        <div class="flex items-end space-x-2">
+                            <div class="flex-1 relative">
+                                <textarea id="messageInput" placeholder="Type your message..."
+                                    class="w-full p-3 pr-10 border border-gray-300 rounded-2xl resize-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition"
+                                    rows="1" maxlength="1000"></textarea>
+
+                            </div>
+                            <button id="sendMessageBtn" onclick="sendMessageWithAI()"
+                                class="bg-pink-600 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-pink-700 transition shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-paper-plane px-1"></i>
+                            </button>
+                        </div>
+                        <div id="aiSuggestions" class="hidden mt-2 p-3 bg-pink-50 rounded-xl border border-pink-100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Upgrade Modal -->
+<div id="upgradeModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background:rgba(17,24,39,0.6); backdrop-filter:blur(4px); opacity:0;">
+    <div class="modal-box bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl relative overflow-hidden" style="transform:scale(.95);">
+        <div class="relative z-10 text-center">
+            <div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-5 -rotate-6" style="background:linear-gradient(135deg,#fce7f3,#f3e8ff);">
+                <i class="fas fa-crown text-4xl" style="color:#a855f7;"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Premium Feature</h3>
+            <p id="upgradeModalMessage" class="text-gray-500 text-sm mb-7 leading-relaxed">
+                This feature is reserved for premium members. Upgrade your plan to connect instantly!
+            </p>
+            <div class="flex flex-col gap-3">
+                <a href="membership.html" class="block w-full text-white font-semibold py-3.5 rounded-xl text-center transition-all hover:opacity-90" style="background:linear-gradient(135deg,#ec4899,#a855f7);">
+                    View Premium Plans
+                </a>
+                <button onclick="closeUpgradeModal()" class="w-full bg-gray-100 text-gray-600 font-medium py-3.5 rounded-xl hover:bg-gray-200 transition-colors">
+                    Maybe Later
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer scripts and global settings -->
+<script src="global-settings.js?v=2"></script>
+<script src="watermark-system.js"></script>
+<script src="script.js"></script>
+<script src="mobile-bottom-nav.js"></script>
+<script src="api-client.js?v=2"></script>
+<script src="vevaha-ai-widget.js"></script>
+<script src="premium-member-actions.js"></script>
+<script src="global-search.js"></script>
+<script src="chat-system.js?v=2"></script>
+<script src="language.js"></script>
+
+    <script src="navbar-init.js"></script>
+</body></html>

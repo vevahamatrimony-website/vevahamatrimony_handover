@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - VevahaMatrimony</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        .page-load-animation { animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.1), 0 8px 10px -6px rgba(236, 72, 153, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 page-load-animation flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center text-xl sm:text-2xl font-bold text-pink-600">
+                        <img src="images/vevaha-logo.png" alt="Vevaha Logo" class="w-10 h-10 mr-2 object-contain">
+                        vevahamatrimony
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-gray-700 hover:text-pink-600 font-medium">Home</a>
+                    <a href="register.html" class="text-gray-700 hover:text-pink-600 font-medium">Register</a>
+                    <a href="membership.html" class="text-gray-700 hover:text-pink-600 font-medium">Premium Plans</a>
+                    <a href="login.html" class="text-gray-700 hover:text-pink-600 font-medium">Active Members</a>
+                    <a href="horoscopic-chatbot.html" class="text-gray-700 hover:text-pink-600 font-medium">Astro AI</a>
+                    <a href="login.html" class="bg-pink-600 text-white px-5 py-2 rounded-xl hover:bg-pink-700 font-semibold shadow-md transition">Login</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-pink-600 focus:outline-none p-2" onclick="document.getElementById('mobile-nav-menu').classList.toggle('hidden')">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-nav-menu" class="hidden md:hidden bg-white border-t px-4 py-3 space-y-2 shadow-lg">
+            <a href="index.html" class="block text-gray-700 hover:text-pink-600 py-1 font-medium">Home</a>
+            <a href="register.html" class="block text-gray-700 hover:text-pink-600 py-1 font-medium">Register</a>
+            <a href="membership.html" class="block text-gray-700 hover:text-pink-600 py-1 font-medium">Premium Plans</a>
+            <a href="login.html" class="block text-gray-700 hover:text-pink-600 py-1 font-medium">Active Members</a>
+            <a href="horoscopic-chatbot.html" class="block text-gray-700 hover:text-pink-600 py-1 font-medium">Astro AI</a>
+            <a href="login.html" class="block bg-pink-600 text-white px-4 py-2 rounded-xl text-center font-semibold mt-2">Login</a>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <section class="relative bg-gradient-to-r from-pink-600 to-pink-700 py-16 md:py-20 text-white text-center shadow-inner overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md mb-4 shadow-lg">
+                <i class="fas fa-gavel text-3xl text-white"></i>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-bold tracking-tight mb-4">Terms & Conditions</h1>
+            <p class="text-base sm:text-lg text-pink-100 max-w-2xl mx-auto leading-relaxed">Please read our terms carefully before using Vevaha Matrimony matchmaking services.</p>
+            
+            <!-- Tab Toggle -->
+            <div class="flex justify-center gap-3 mt-8">
+                <a href="terms.html" class="px-5 py-2.5 rounded-full text-sm font-semibold transition bg-white text-pink-600 shadow-md">
+                    <i class="fas fa-file-contract mr-1.5"></i> Terms & Conditions
+                </a>
+                <a href="privacy-policy.html" class="px-5 py-2.5 rounded-full text-sm font-semibold transition bg-pink-800/40 text-white hover:bg-white/20">
+                    <i class="fas fa-user-shield mr-1.5"></i> Privacy Policy
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1">
+        
+        <div class="bg-gradient-to-r from-pink-600 to-pink-700 text-white rounded-2xl p-6 md:p-8 mb-8 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <div class="flex items-center gap-2 text-pink-200 text-sm font-semibold tracking-wider uppercase mb-1">
+                    <i class="fas fa-certificate"></i> Government Registered Entity
+                </div>
+                <h3 class="text-2xl font-bold">VevahaMatrimonial Services</h3>
+                <p class="text-pink-100 text-sm mt-1">
+                    <span class="font-semibold">Udyam Reg. No.:</span> UDYAM-TN-04-0012718 &nbsp;|&nbsp; 
+                    <span class="font-semibold">GSTIN:</span> 33AEUPT8839C2ZV
+                </p>
+            </div>
+            <div class="bg-white/15 backdrop-blur-md border border-white/20 rounded-xl px-5 py-3 text-center flex-shrink-0">
+                <span class="block text-xs uppercase tracking-wider text-pink-200 font-semibold">Effective Date</span>
+                <span class="text-lg font-bold text-white">19 October 2026</span>
+            </div>
+        </div>
+    
+
+        <div class="bg-white rounded-2xl p-6 md:p-8 mb-8 border border-pink-200 shadow-sm">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center flex-shrink-0 text-xl font-bold shadow-sm">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <div class="space-y-3 text-gray-700 leading-relaxed text-base">
+        
+                    <p>These Terms &amp; Conditions (&quot;Terms&quot;) form a legally binding agreement between you and VevahaMatrimonial Services (Udyam Registration No. UDYAM-TN-04-0012718; GSTIN 33AEUPT8839C2ZV), an online matrimonial services business based in Tamil Nadu, India (&quot;Vevaha Matrimony&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;), the operator of the website vevahamatrimony.com and any related mobile site or application (together, the &quot;Platform&quot;). This document is an electronic record under the Information Technology Act, 2000 and the rules made under it, and does not require physical or digital signatures.</p>
+                    <p>These Terms are governed by the laws of India. Parties will first try to resolve any dispute amicably by writing to our Grievance Officer. If not resolved within 30 days, the dispute will be referred to arbitration by a sole arbitrator appointed under the Arbitration and Conciliation Act, 1996, with the seat and venue in Tamil Nadu, India and proceedings in English. Subject to this, the courts in Tamil Nadu, India will have exclusive jurisdiction. Consumers may also approach the appropriate Consumer Commission under the Consumer Protection Act, 2019.</p>
+
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Section 1: Acceptance of Terms -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-check-circle"></i>
+                </span>
+                <span><span class="text-pink-600">1.</span> Acceptance of Terms</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>By registering, accessing or using the Platform, you confirm that you have read, understood and agree to these Terms, our Privacy Policy (Part B) and any other policy published on the Platform. If you do not agree, do not use the Platform.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 2: Nature of Our Service -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-handshake"></i>
+                </span>
+                <span><span class="text-pink-600">2.</span> Nature of Our Service</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>Vevaha Matrimony is an online matchmaking platform that helps adult individuals and their families find a prospective marriage partner. We are an intermediary under Section 2(1)(w) of the Information Technology Act, 2000. We provide a venue for members to connect and, on certain plans, personal matchmaking assistance; we are not a party to any relationship, engagement or marriage that results from the Platform.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 3: Eligibility -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-user-check"></i>
+                </span>
+                <span><span class="text-pink-600">3.</span> Eligibility</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>You may register only if you:</p>
+                <ul class="space-y-2.5 my-3 pl-2">
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>are at least 21 years old (male) or 18 years old (female), or the minimum legal marriageable age under Indian law at the time of registration;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>are legally free to marry under the personal law applicable to you (unmarried, divorced, widowed, or otherwise legally eligible);</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>are mentally competent and capable of entering into a binding contract under the Indian Contract Act, 1872;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>have not been previously suspended or removed from the Platform; and</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>are registering for the purpose of marriage only, and not for dating, commercial solicitation, research or any other purpose.</span></li>
+                </ul>
+                <p>Profiles may be created by a parent, guardian or sibling on behalf of an eligible person, but only with that person&#x27;s knowledge and consent. The person creating the profile is responsible for its accuracy.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 4: Registration and Account Security -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-shield-alt"></i>
+                </span>
+                <span><span class="text-pink-600">4.</span> Registration and Account Security</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>You must provide true, current and complete information, including name, age, marital status, religion, community, education, occupation, income, family details, location and contact details (including any alternate mobile number you choose to add), and keep it updated.</p>
+                <p>If you give an alternate mobile number (for example, a parent&#x27;s, guardian&#x27;s or family member&#x27;s number), you confirm that its owner has agreed to it being shared as described in these Terms.</p>
+                <p>You may hold only one profile. Duplicate or fake profiles will be deleted without refund.</p>
+                <p>You are responsible for all activity under your account. Keep your password and OTPs confidential and notify us immediately at vevahamatrimonydb@gmail.com of any unauthorised use.</p>
+                <p>You must not sell, transfer or share your account with anyone.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 5: Profile Verification -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-id-card"></i>
+                </span>
+                <span><span class="text-pink-600">5.</span> Profile Verification</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>To build trust, profiles are screened by our team and verified through government-issued ID verification (for example Aadhaar, PAN, passport, driving licence or voter ID) together with mobile number and email verification.</p>
+                <p>Some profiles may additionally be verified by our representatives through a personal visit. This applies only to profiles that are specifically marked as such.</p>
+                <p>By submitting an ID, you consent to us (or our verification partner) collecting, checking and storing it for verification, fraud prevention and legal compliance, as described in the Privacy Policy. Where Aadhaar is used, we collect only what is needed, will not display the full number to any member, and will follow the Aadhaar Act, 2016 and UIDAI guidelines.</p>
+                <p>A &quot;Verified&quot; badge means only that the ID document submitted appeared genuine and matched the profile details at the time of verification. It is not a guarantee of character, financial status, background, marital history or intentions. Members must do their own due diligence.</p>
+                <p>We may request re-verification at any time and may restrict or suspend profiles that are unverified, or whose verification fails.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 6: Code of Conduct -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-balance-scale"></i>
+                </span>
+                <span><span class="text-pink-600">6.</span> Code of Conduct</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>You agree that you will not:</p>
+                <ul class="space-y-2.5 my-3 pl-2">
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>provide false, misleading or outdated information, or use another person&#x27;s identity, photos, ID or horoscope;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>post content that is obscene, sexually explicit, defamatory, abusive, threatening, hateful or that promotes caste, religious or community hatred, or violates any law;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>harass, stalk, intimidate, blackmail or pressure any member, or contact a member who has declined or blocked you;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>ask for or accept money, gifts, loans, &quot;processing fees&quot;, investments or financial help from other members, or use the Platform for fraud, scams, romance scams or dowry demands (dowry is prohibited under the Dowry Prohibition Act, 1961);</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>use the Platform for commercial purposes, advertising, escort or dating services, or promoting any product or service;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>scrape, copy, harvest or resell profile data, or use bots, scripts or automated tools;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>use mobile numbers or other contact details obtained from the Platform for anything other than a genuine marriage proposal, including spam, telemarketing, promotions, or passing them on to others;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>upload viruses, attempt to hack, overload or disrupt the Platform, or bypass security or verification features;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>share another member&#x27;s personal details, photos or chats outside the Platform without their written consent;</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-check text-pink-500 mt-1 flex-shrink-0 text-xs"></i><span>create profiles for a person who is already married, or for a minor.</span></li>
+                </ul>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 7: User Content: Photos, Horoscopes and Profile Details -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-camera-retro"></i>
+                </span>
+                <span><span class="text-pink-600">7.</span> User Content: Photos, Horoscopes and Profile Details</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>You keep ownership of the photos, horoscope details, text and other content you upload (&quot;User Content&quot;). You grant us a non-exclusive, worldwide, royalty-free licence to host, store, display, reproduce and process it solely to operate, secure and improve the Platform and show your profile to other members according to your privacy settings.</p>
+                <p>You confirm that you own or have permission to use all User Content, that it is a genuine and recent photograph of you, and that it does not infringe anyone&#x27;s rights.</p>
+                <p>Horoscope, birth time and birth place details are sensitive. You are responsible for their accuracy. We do not provide astrological advice through our matchmaking service and do not guarantee any horoscope match or prediction.</p>
+                <p>You may control who sees your photos, horoscope and contact details through your privacy settings. We may remove content that breaks these Terms, is unlawful, or that we reasonably consider inappropriate. We may blur, watermark or reject photographs.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 8: Astro AI (Horoscope Assistant) -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-magic"></i>
+                </span>
+                <span><span class="text-pink-600">8.</span> Astro AI (Horoscope Assistant)</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>The Platform includes &quot;Astro AI&quot;, an automated horoscope chatbot. Its responses are generated by software, are provided for general information and guidance only, and may be incomplete or inaccurate. They are not astrological, medical, legal, financial or marriage-counselling advice. Do not rely on Astro AI alone for any decision about marriage. Do not enter ID numbers, passwords or payment details into it. Information you enter into Astro AI is handled as described in our Privacy Policy.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 9: Chat, Messaging, Voice and Video Calls -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-comments"></i>
+                </span>
+                <span><span class="text-pink-600">9.</span> Chat, Messaging, Voice and Video Calls</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>Chat, messaging and, on eligible plans, voice calls, video calls and WhatsApp chat features are provided only so that members can communicate about marriage proposals. Message limits and features depend on your plan.</p>
+                <p>Messages are private between the sender and recipient, but we may monitor, scan, retain and review messages only to the extent needed to detect fraud, abuse, spam, illegal activity and policy violations, to respond to complaints, and to comply with law.</p>
+                <p>You must not record, screenshot, share or publish another member&#x27;s calls, messages or photos without their consent.</p>
+                <p>Do not share sensitive details (bank, card or UPI details, OTPs, passwords, ID numbers, home address) in chat or on calls. We will never ask you for these.</p>
+                <p>You may block or report any member at any time. We may suspend messaging for anyone who breaches these Terms.</p>
+                <p>Mobile numbers: Members&#x27; primary and alternate mobile numbers are shown only to paid members, and only through the contact-view allowance of the paid member&#x27;s plan. Free members cannot see them. By adding a number to your profile, you agree that it may be shown to paid members in this way. Other contact details are shared only according to the member&#x27;s settings or consent.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 10: Paid Memberships and Payments -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-crown"></i>
+                </span>
+                <span><span class="text-pink-600">10.</span> Paid Memberships and Payments</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>Creating a profile is free. Paid plans unlock additional features such as contact views, higher message limits, voice and video calls, and personal matchmaking support. The plans currently offered are shown below; features and prices may change and the price displayed at checkout applies.</p>
+                <p>Plan</p>
+                <p>Price (excl. GST)</p>
+                <p>Total incl. 18% GST</p>
+                <p>Duration</p>
+                <p>Key features</p>
+                <p>Silver</p>
+                <p>Rs. 999</p>
+                <p>Rs. 1,179</p>
+                <p>1 month (auto-renewal)</p>
+                <p>15 contact views, 15 messages/day</p>
+                <p>Gold</p>
+                <p>Rs. 1,999</p>
+                <p>Rs. 2,359</p>
+                <p>3 months</p>
+                <p>30 contact views, 10 messages/day</p>
+                <p>Diamond</p>
+                <p>Rs. 3,999</p>
+                <p>Rs. 4,719</p>
+                <p>6 months</p>
+                <p>50 contact views, unlimited messages, voice/video calls, WhatsApp chat</p>
+                <p>VIP</p>
+                <p>Rs. 49,999</p>
+                <p>Rs. 58,999</p>
+                <p>12 months</p>
+                <p>Relationship manager, unlimited contacts, personal matchmaking, meeting arrangements, wedding planning support</p>
+                <p>All prices are in Indian Rupees (INR). GST is charged as applicable and shown at checkout.</p>
+                <p>Payments are processed through our third-party payment gateway, Razorpay, using cards, UPI and net banking. We do not store your full card number, CVV, UPI PIN or net banking credentials. The gateway&#x27;s own terms apply to the transaction.</p>
+                <p>Memberships are valid only for the stated period from the date of activation and cannot be transferred, shared or extended except at our discretion.</p>
+                <p>Auto-renewal: Plans marked &quot;auto-renewal&quot; (currently the Silver plan) renew automatically at the then-current price at the end of each period until you cancel. You can cancel auto-renewal at any time before the next billing date from your account or by writing to us, and your plan will then run until the end of the paid period. Auto-debit is subject to your bank and RBI rules for recurring payments.</p>
+                <p>We may change prices or plans at any time. Changes do not affect memberships already paid for.</p>
+                <p>Contact views and message allowances are limited as stated in your plan and are not carried over after the plan period ends.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 11: Refunds and Cancellation -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-undo"></i>
+                </span>
+                <span><span class="text-pink-600">11.</span> Refunds and Cancellation</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>Membership fees are generally non-refundable, because services are delivered digitally and immediately on activation, including where you find a match elsewhere, change your mind, or stop using the Platform.</p>
+                <p>Refunds will be considered only if: (a) you were charged twice or an incorrect amount due to a technical error; (b) you paid but the plan was not activated within 48 hours and we cannot fix it; (c) an auto-renewal was charged after you had validly cancelled it; or (d) we terminate your membership without a breach of these Terms.</p>
+                <p>Refund requests must be sent to vevahamatrimonydb@gmail.com within 7 days of payment with the transaction ID. Approved refunds are credited to the original payment method within 7 to 10 working days.</p>
+                <p>If we suspend or delete your account because you broke these Terms (including fake profiles, fraud or harassment), no refund will be given.</p>
+                <p>You may delete your profile at any time, but this does not entitle you to a refund for the unused period.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 12: No Guarantee of Match; Safety Disclaimer -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-heart-broken"></i>
+                </span>
+                <span><span class="text-pink-600">12.</span> No Guarantee of Match; Safety Disclaimer</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>We do not promise that you will find a match, receive responses, or get married within any period. This applies to all plans, including the VIP plan and its personal matchmaking and meeting arrangement services.</p>
+                <p>Information on profiles is provided by members. Even with manual screening and ID verification, we cannot confirm every detail (income, education, marital history, family background, health, character or intentions) and do not endorse any member.</p>
+                <p>You are solely responsible for your interactions. Before sharing personal details, meeting or committing, please independently check the other person and their family, and meet only in public places, preferably with family or friends.</p>
+                <p>Do not send money to anyone you meet on the Platform. Report suspicious behaviour immediately to vevahamatrimonydb@gmail.com and, if needed, to the police or the National Cyber Crime Reporting Portal (cybercrime.gov.in, helpline 1930).</p>
+                <p>Vevaha Matrimony is not responsible for any offline meeting, engagement, marriage, dispute or loss arising between members.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 13: Intellectual Property -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-copyright"></i>
+                </span>
+                <span><span class="text-pink-600">13.</span> Intellectual Property</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>The Platform, including its name, logo, design, software, text, graphics and database, belongs to Vevaha Matrimony or its licensors and is protected by Indian intellectual property laws. You receive a limited, personal, non-exclusive, non-transferable, revocable right to use the Platform for its intended purpose. You may not copy, modify, distribute, reverse-engineer or commercially exploit any part of it.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 14: Suspension and Termination -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-user-slash"></i>
+                </span>
+                <span><span class="text-pink-600">14.</span> Suspension and Termination</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>We may, with or without notice, suspend, restrict or permanently delete your account or content if you breach these Terms, provide false information, fail verification, are reported for misconduct, or if required by law or a court or authority. You may close your account at any time from your settings or by writing to us. Clauses on intellectual property, disclaimers, liability, indemnity and governing law survive termination.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 15: Disclaimer of Warranties -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </span>
+                <span><span class="text-pink-600">15.</span> Disclaimer of Warranties</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>The Platform is provided on an &quot;as is&quot; and &quot;as available&quot; basis. To the fullest extent permitted by law, we do not warrant that the Platform will be uninterrupted, error-free or secure, or that the information on it is accurate, complete or reliable.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 16: Limitation of Liability -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-gavel"></i>
+                </span>
+                <span><span class="text-pink-600">16.</span> Limitation of Liability</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>To the maximum extent permitted by law, Vevaha Matrimony and its owners, employees and partners are not liable for any indirect, incidental, special or consequential loss, or for loss of data, profit, reputation or emotional distress, arising from your use of the Platform or your dealings with other members. Our total liability for any claim relating to the Platform will not exceed the membership fee you paid in the three (3) months before the claim arose. Nothing in these Terms limits liability that cannot be excluded under law.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 17: Indemnity -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-user-shield"></i>
+                </span>
+                <span><span class="text-pink-600">17.</span> Indemnity</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>You agree to indemnify and hold harmless Vevaha Matrimony, its owners and employees against any claim, loss, damage or expense (including reasonable legal fees) arising from your breach of these Terms, your User Content, your misuse of the Platform, or your violation of any law or third-party right.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 18: Third-Party Links and Services -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-external-link-alt"></i>
+                </span>
+                <span><span class="text-pink-600">18.</span> Third-Party Links and Services</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>The Platform may link to or use third-party services (such as Razorpay, ID verification providers, SMS, email and WhatsApp providers, and social media pages on Instagram and YouTube). We are not responsible for their content, availability or practices.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 19: Intermediary Compliance and Takedown -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-bullhorn"></i>
+                </span>
+                <span><span class="text-pink-600">19.</span> Intermediary Compliance and Takedown</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>We follow the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021. If you believe any content on the Platform is unlawful, infringing or violates your privacy (including any image of you posted without consent), you may report it to our Grievance Officer. We will acknowledge complaints within 24 hours and resolve them within the time prescribed by law. Content that exposes private areas or is a morphed or impersonating image of a person will be removed within 24 hours of a complaint.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 20: Governing Law and Dispute Resolution -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-landmark"></i>
+                </span>
+                <span><span class="text-pink-600">20.</span> Governing Law and Dispute Resolution</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+
+            </div>
+        </div>
+        
+
+        <!-- Section 21: Changes to the Terms -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-sync-alt"></i>
+                </span>
+                <span><span class="text-pink-600">21.</span> Changes to the Terms</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+        
+                <p>We may update these Terms from time to time. Material changes will be notified on the Platform, by email or by SMS. Continued use after the effective date of the change means you accept the updated Terms.</p>
+
+            </div>
+        </div>
+        
+
+        <!-- Section 22: Grievance Officer and Contact -->
+        <div class="section-card bg-white rounded-2xl shadow-sm hover:shadow-md p-6 sm:p-8 mb-8 border border-pink-100 transition-all duration-300">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg flex-shrink-0">
+                    <i class="fas fa-envelope-open-text"></i>
+                </span>
+                <span><span class="text-pink-600">22.</span> Grievance Officer and Contact</span>
+            </h2>
+            <div class="space-y-4 text-gray-700 leading-relaxed text-base">
+                <p>In accordance with the Information Technology Act, 2000 and the Consumer Protection (E-Commerce) Rules, 2020:</p>
+
+                <div class="overflow-x-auto my-6">
+                    <table class="w-full text-left border-collapse rounded-xl overflow-hidden shadow-sm border border-pink-200">
+                        <tbody>
+                            <tr class="bg-pink-50/40 border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Business name</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium">VevahaMatrimonial Services</td>
+                            </tr>
+                            <tr class="bg-white border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Grievance Officer</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium">VevahaMatrimonial Services</td>
+                            </tr>
+                            <tr class="bg-pink-50/40 border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Email (grievances, support, privacy)</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium"><a href="mailto:vevahamatrimonydb@gmail.com" class="text-pink-600 hover:underline">vevahamatrimonydb@gmail.com</a></td>
+                            </tr>
+                            <tr class="bg-white border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Email (business enquiries)</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium"><a href="mailto:vpsamyenterprises@gmail.com" class="text-pink-600 hover:underline">vpsamyenterprises@gmail.com</a></td>
+                            </tr>
+                            <tr class="bg-pink-50/40 border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Customer / technical support</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium"><a href="tel:+919487161672" class="text-pink-600 hover:underline">+91 94871 61672</a></td>
+                            </tr>
+                            <tr class="bg-white border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Business enquiries</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium"><a href="tel:+919003811739" class="text-pink-600 hover:underline">+91 90038 11739</a></td>
+                            </tr>
+                            <tr class="bg-pink-50/40 border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Support hours</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium">Monday to Saturday, 10:00 AM to 6:00 PM IST</td>
+                            </tr>
+                            <tr class="bg-white border-b border-pink-100">
+                                <td class="py-3.5 px-5 font-semibold text-gray-800 w-2/5 border-r border-pink-100">Location</td>
+                                <td class="py-3.5 px-5 text-gray-700 font-medium">Tamil Nadu, India</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-gray-700 mt-4">We will acknowledge your complaint within 48 hours and aim to resolve it within one month.</p>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <span class="text-2xl font-bold text-pink-500">vevahamatrimony</span>
+                    <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+                        Operated by VevahaMatrimonial Services.<br>
+                        UDYAM-TN-04-0012718 | GSTIN 33AEUPT8839C2ZV<br>
+                        Connecting hearts, creating families with trust and transparency.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold mb-3 text-pink-400">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="membership.html" class="hover:text-white transition">Premium Plans</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="terms.html" class="hover:text-white transition">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold mb-3 text-pink-400">Legal & Support</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="privacy-policy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="faq.html" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="help-center.html" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="safety-tips.html" class="hover:text-white transition">Safety Tips</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold mb-3 text-pink-400">Contact & Support</h3>
+                    <div class="space-y-2.5 text-sm text-gray-400">
+                        <p><i class="fas fa-phone text-pink-400 mr-2"></i>+91 94871 61672</p>
+                        <p><i class="fas fa-briefcase text-pink-400 mr-2"></i>+91 90038 11739</p>
+                        <p class="break-all"><i class="fas fa-envelope text-pink-400 mr-2"></i>vevahamatrimonydb@gmail.com</p>
+                        <p><i class="fas fa-map-marker-alt text-pink-400 mr-2"></i>Tamil Nadu, India</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-xs text-gray-500">
+                <p>&copy; 2026 VevahaMatrimonial Services. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="global-settings.js"></script>
+    <script src="global-search.js"></script>
+    <script src="language.js"></script>
+</body>
+</html>

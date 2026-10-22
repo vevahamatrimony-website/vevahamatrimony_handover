@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar e-Sign Service</title>
+    <style>
+        :root {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --primary: #db2777;
+            --primary-hover: #be185d;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --success: #10b981;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            color: #1e3a8a;
+        }
+
+        .doc-preview {
+            background-color: #f8fafc;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #334155;
+        }
+
+        .doc-preview h3 {
+            margin-top: 0;
+            color: #0f172a;
+        }
+
+        .esign-form {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .consent-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text-muted);
+            align-items: flex-start;
+        }
+
+        .consent-box input[type="checkbox"] {
+            margin-top: 3px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #475569;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #1e3a8a;
+        }
+
+        button {
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #172554;
+        }
+
+        button.btn-accent {
+            background-color: var(--primary);
+        }
+
+        button.btn-accent:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>Aadhaar Electronic Signature Service</h1>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/DigiLocker_logo.svg" alt="Aadhaar" style="height: 30px;">
+            </div>
+
+            <!-- Document preview -->
+            <div class="doc-preview">
+                <h3>VevahaMatrimony Registration Agreement</h3>
+                <p>This document constitutes a binding agreement between the user ("Signer") and VevahaMatrimony. By signing this document via Aadhaar electronic signature, the user confirms:</p>
+                <ol>
+                    <li>All details provided during registration (including Name, DOB, and ID details) are accurate and match government records.</li>
+                    <li>The user accepts the Privacy Policy, Terms of Service, and Community Guidelines of VevahaMatrimony.</li>
+                    <li>The user consents to having their profile displayed to other registered members of VevahaMatrimony.</li>
+                </ol>
+                <p>Document Signer ID: <span id="signerEmail">signer@example.com</span></p>
+                <p>Date: <span id="currentDate">--/--/----</span></p>
+            </div>
+
+            <!-- eSign Form -->
+            <div class="esign-form">
+                <div class="consent-box">
+                    <input type="checkbox" id="consentCheckbox">
+                    <label for="consentCheckbox" style="font-weight: normal; cursor: pointer;">
+                        I hereby authorize CDAC / NSDL e-Sign Gateway to verify my Aadhaar number and OTP with UIDAI database to digitally sign the terms document for VevahaMatrimony.
+                    </label>
+                </div>
+
+                <!-- Aadhaar Input -->
+                <div id="aadhaarBlock">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="aadhaarNo">Enter Aadhaar Card Number (12 digits)</label>
+                            <input type="text" id="aadhaarNo" placeholder="1234 5678 9012" maxlength="14">
+                        </div>
+                        <button type="button" style="align-self: flex-end;" onclick="requestOtp()">Send OTP</button>
+                    </div>
+                </div>
+
+                <!-- OTP Input -->
+                <div id="otpBlock" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="otpVal">Enter 6-digit OTP sent to registered mobile</label>
+                            <input type="text" id="otpVal" placeholder="123456" maxlength="6" value="123456">
+                        </div>
+                        <button type="button" class="btn-accent" style="align-self: flex-end;" onclick="verifySignature()">Sign Document</button>
+                    </div>
+                </div>
+
+                <!-- Loading Block -->
+                <div id="loadingBlock" class="hidden" style="text-align: center; padding: 15px;">
+                    <div class="spinner"></div>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">Applying digital signature to document...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestId = urlParams.get('request_id');
+        const email = urlParams.get('email') || 'user@example.com';
+        const name = urlParams.get('name') || 'Registered Member';
+
+        document.getElementById('signerEmail').innerText = `${name} (${email})`;
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-IN');
+
+        // Formats Aadhaar input automatically
+        const aadhaarNo = document.getElementById('aadhaarNo');
+        aadhaarNo.addEventListener('input', function (e) {
+            let target = e.target;
+            let position = target.selectionEnd;
+            let length = target.value.length;
+            
+            target.value = target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+            
+            if (length !== target.value.length && (target.value.charAt(position - 1) === ' ')) {
+                target.selectionEnd = position + 1;
+            }
+        });
+
+        function requestOtp() {
+            const consent = document.getElementById('consentCheckbox').checked;
+            if (!consent) {
+                alert('Please check the consent box to authorize Aadhaar e-Sign.');
+                return;
+            }
+            const rawVal = aadhaarNo.value.replace(/\s/g, '');
+            if (rawVal.length !== 12) {
+                alert('Please enter a valid 12-digit Aadhaar number.');
+                return;
+            }
+            document.getElementById('aadhaarBlock').classList.add('hidden');
+            document.getElementById('otpBlock').classList.remove('hidden');
+        }
+
+        function verifySignature() {
+            const otp = document.getElementById('otpVal').value.trim();
+            if (otp.length !== 6) {
+                alert('Please enter a valid 6-digit OTP.');
+                return;
+            }
+
+            document.getElementById('otpBlock').classList.add('hidden');
+            document.getElementById('loadingBlock').classList.remove('hidden');
+
+            setTimeout(() => {
+                window.location.href = `/api/verification/esign/callback?request_id=${requestId}`;
+            }, 1500);
+        }
+    </script>
+<script src="language.js"></script>
+</body>
+</html>

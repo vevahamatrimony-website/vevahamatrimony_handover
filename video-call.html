@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="auth-guard.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Call — VevahaMatrimony</title>
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Remote video fills screen */
+        #remoteVideo {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #111;
+            z-index: 1;
+        }
+
+        /* Waiting overlay when no remote video */
+        #waitingOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        #waitingOverlay.hidden-overlay { opacity: 0; pointer-events: none; }
+
+        /* Animated background blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: blobPulse 8s ease-in-out infinite;
+        }
+        .blob1 { width: 500px; height: 500px; background: #ec4899; top: -100px; left: -100px; }
+        .blob2 { width: 400px; height: 400px; background: #8b5cf6; bottom: -80px; right: -80px; animation-delay: 3s; }
+
+        @keyframes blobPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+        /* Ripple rings */
+        @keyframes ripple { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.5); opacity: 0; } }
+        .ripple-ring {
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            border: 2px solid rgba(236, 72, 153, 0.5);
+            animation: ripple 2s ease-out infinite;
+        }
+        .ripple-ring:nth-child(2) { animation-delay: 0.6s; }
+        .ripple-ring:nth-child(3) { animation-delay: 1.2s; }
+
+        /* Local video (PiP) */
+        #localVideoWrap {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 120px;
+            height: 160px;
+            z-index: 20;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            background: #222;
+            cursor: grab;
+            transition: box-shadow 0.2s;
+        }
+        #localVideoWrap:hover { box-shadow: 0 12px 40px rgba(236,72,153,0.4); }
+        #localVideo { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+
+        /* Top bar */
+        #topBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 30;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+        }
+
+        /* Bottom controls */
+        #bottomBar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 30;
+            padding: 24px 20px 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Control buttons */
+        .ctrl-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            outline: none;
+            color: white;
+        }
+        .ctrl-btn:hover { transform: scale(1.1); }
+        .ctrl-btn:active { transform: scale(0.95); }
+        .btn-normal { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-normal.active { background: rgba(239,68,68,0.3); border-color: rgba(239,68,68,0.6); }
+        .btn-end {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            font-size: 26px;
+            box-shadow: 0 8px 30px rgba(239,68,68,0.5);
+        }
+
+        /* Waiting avatar */
+        @keyframes avatarGlow { 0%, 100% { box-shadow: 0 0 30px rgba(236,72,153,0.4); } 50% { box-shadow: 0 0 60px rgba(236,72,153,0.7); } }
+        .avatar-glow { animation: avatarGlow 2s ease-in-out infinite; }
+
+
+
+        /* Status dot */
+        @keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .status-dot { animation: statusPulse 1.5s ease-in-out infinite; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-up { animation: slideUp 0.4s ease-out forwards; }
+    
+
+
+</style>
+</head>
+<body>
+
+
+    <!-- Remote video (full screen) -->
+    <video id="remoteVideo" autoplay playsinline></video>
+
+    <!-- Waiting overlay (shown before call connects) -->
+    <div id="waitingOverlay">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+
+        <div class="relative mb-6">
+            <div class="relative w-32 h-32 mx-auto">
+                <div class="ripple-ring" id="ring1"></div>
+                <div class="ripple-ring" id="ring2"></div>
+                <div class="ripple-ring" id="ring3"></div>
+                <img id="remoteAvatarWait" src="/images/placeholder-profile.svg"
+                     class="w-32 h-32 rounded-full object-cover border-4 border-white border-opacity-20 avatar-glow relative z-10">
+            </div>
+        </div>
+
+        <h1 id="waitName" class="text-white text-2xl font-bold mb-2">Connecting...</h1>
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-pink-400 status-dot"></span>
+            <p id="waitStatus" class="text-white text-opacity-60 text-sm">Initializing video call...</p>
+        </div>
+        <p id="waitTimer" class="text-pink-300 font-mono text-2xl mt-4 hidden">00:00</p>
+    </div>
+
+    <!-- Local video (Picture-in-Picture) -->
+    <div id="localVideoWrap">
+        <video id="localVideo" autoplay muted playsinline></video>
+    </div>
+
+    <!-- Top bar -->
+    <div id="topBar">
+        <a href="connections.html" class="text-white text-opacity-70 hover:text-opacity-100 transition">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </a>
+        <div class="text-center">
+            <p id="topName" class="text-white font-semibold text-sm">Video Call</p>
+            <p id="topTimer" class="text-pink-300 font-mono text-xs hidden">00:00</p>
+        </div>
+        <div class="w-6"></div>
+    </div>
+
+    <!-- Bottom control bar -->
+    <div id="bottomBar">
+        <div class="flex items-center gap-4">
+            <button class="ctrl-btn btn-normal" id="muteBtn" onclick="toggleMute()" title="Mute">
+                <i class="fas fa-microphone" id="muteIcon"></i>
+            </button>
+
+            <button class="ctrl-btn btn-end" onclick="handleEndCall()" title="End Call">
+                <i class="fas fa-phone-slash"></i>
+            </button>
+
+            <button class="ctrl-btn btn-normal" id="cameraBtn" onclick="toggleCamera()" title="Camera">
+                <i class="fas fa-video" id="cameraIcon"></i>
+            </button>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="ctrl-btn btn-normal" style="width:48px;height:48px;font-size:16px;" onclick="flipCamera()" title="Flip camera">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="ctrl-btn btn-normal" style="width:48px;height:48px;font-size:16px;" id="encIcon" title="Encrypted">
+                <i class="fas fa-shield-alt" style="color:#a78bfa;"></i>
+            </button>
+            <button class="ctrl-btn btn-normal" style="width:48px;height:48px;font-size:16px;" onclick="toggleFullscreen()" title="Fullscreen">
+                <i class="fas fa-expand" id="fsIcon"></i>
+            </button>
+        </div>
+    </div>
+
+
+
+    <script src="global-settings.js"></script>
+    <script src="api-client.js"></script>
+    <script src="vevaha-ai-widget.js"></script>
+    <script src="webrtc-call.js"></script>
+    <script>
+    // ─── Page Init ────────────────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const receiverMemberId = params.get('receiver');
+    const incomingCallerId = params.get('caller');
+    const incomingCallId = params.get('callId');
+    const isCallee = !!incomingCallerId;
+
+    let isMuted = false;
+    let isCameraOff = false;
+    let usingFrontCamera = true;
+
+    function setWaitStatus(msg) {
+        const el = document.getElementById('waitStatus');
+        if (el) el.textContent = msg;
+    }
+
+    function showConnectedUI() {
+        // Hide waiting overlay
+        document.getElementById('waitingOverlay').classList.add('hidden-overlay');
+        // Show timers on both bars
+        document.getElementById('topTimer').classList.remove('hidden');
+        document.getElementById('waitTimer').classList.remove('hidden');
+        // Stop ripple rings
+        ['ring1','ring2','ring3'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.animation = 'none';
+        });
+    }
+
+    async function loadRemoteProfile(memberId) {
+        try {
+            const profile = await VM.profile.get(memberId);
+            if (profile && profile.profile) {
+                const p = profile.profile;
+                const name = p.full_name || 'Member';
+                document.getElementById('waitName').textContent = name;
+                document.getElementById('topName').textContent = name;
+                if (p.profile_picture_url) {
+                    document.getElementById('remoteAvatarWait').src = p.profile_picture_url;
+                }
+            }
+        } catch (e) {
+            console.warn('Could not load remote profile:', e);
+        }
+    }
+
+    async function initCall() {
+        if (!VMAuth.isLoggedIn()) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const me = VMAuth.user();
+        const myMemberId = me.member_id; // use member_id not UUID
+
+        VevahaWebRTC.onStatusChange(setWaitStatus);
+        VevahaWebRTC.onCallAnswered(() => {
+            showConnectedUI();
+            setWaitStatus('Call connected');
+        });
+        VevahaWebRTC.onRemoteStream((stream) => {
+            const video = document.getElementById('remoteVideo');
+            video.srcObject = stream;
+            showConnectedUI();
+        });
+        VevahaWebRTC.onCallEnded((reason) => {
+            setWaitStatus;
+            setTimeout(() => window.location.href = 'connections.html', 2000);
+        });
+
+        if (!isCallee) {
+            if (!receiverMemberId) { setWaitStatus('Invalid call link'); return; }
+            await loadRemoteProfile(receiverMemberId);
+            setWaitStatus('Starting call...');
+            try {
+                const { localStream } = await VevahaWebRTC.initiateCaller(receiverMemberId, 'video', myMemberId, me.full_name || 'Member', me.profile_picture_url || '');
+                // Show local video
+                document.getElementById('localVideo').srcObject = localStream;
+                setWaitStatus('Ringing...');
+            } catch (err) {
+                setWaitStatus('Failed: ' + err.message);
+                console.error(err);
+            }
+        } else {
+            await loadRemoteProfile(incomingCallerId);
+            setWaitStatus('Connecting to call...');
+            const { localStream } = await VevahaWebRTC.initiateCallee(incomingCallerId, incomingCallId, 'video', myMemberId);
+            document.getElementById('localVideo').srcObject = localStream;
+        }
+    }
+
+    function toggleMute() {
+        isMuted = VevahaWebRTC.toggleMute();
+        const icon = document.getElementById('muteIcon');
+        const btn = document.getElementById('muteBtn');
+        icon.className = isMuted ? 'fas fa-microphone-slash' : 'fas fa-microphone';
+        btn.classList.toggle('active', isMuted);
+    }
+
+    function toggleCamera() {
+        isCameraOff = VevahaWebRTC.toggleCamera();
+        const icon = document.getElementById('cameraIcon');
+        const btn = document.getElementById('cameraBtn');
+        icon.className = isCameraOff ? 'fas fa-video-slash' : 'fas fa-video';
+        btn.classList.toggle('active', isCameraOff);
+    }
+
+    async function flipCamera() {
+        // Re-get local stream with toggled facingMode
+        usingFrontCamera = !usingFrontCamera;
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia;
+            document.getElementById('localVideo').srcObject = stream;
+        } catch (e) {
+            console.warn('Flip camera error:', e);
+        }
+    }
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            document.getElementById('fsIcon').className = 'fas fa-compress';
+        } else {
+            document.exitFullscreen();
+            document.getElementById('fsIcon').className = 'fas fa-expand';
+        }
+    }
+
+    async function handleEndCall() {
+        setWaitStatus('Ending call...');
+        await VevahaWebRTC.endCall();
+        setTimeout(() => window.location.href = 'connections.html', 1000);
+    }
+
+    // Make local video draggable (PiP)
+    (function makeDraggable() {
+        const el = document.getElementById('localVideoWrap');
+        let isDragging = false, startX, startY, initRight, initTop;
+        el.addEventListener('mousedown', e => {
+            isDragging = true;
+            startX = e.clientX; startY = e.clientY;
+            const rect = el.getBoundingClientRect();
+            initRight = window.innerWidth - rect.right;
+            initTop = rect.top;
+            el.style.cursor = 'grabbing';
+        });
+        document.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            const dx = startX - e.clientX;
+            const dy = e.clientY - startY;
+            el.style.right = Math.max(8, initRight + dx) + 'px';
+            el.style.top = Math.max(8, initTop + dy) + 'px';
+        });
+        document.addEventListener('mouseup', () => { isDragging = false; el.style.cursor = 'grab'; });
+    })();
+
+    window.addEventListener('DOMContentLoaded', initCall);
+    </script>
+<script src="language.js"></script>
+</body>
+</html>

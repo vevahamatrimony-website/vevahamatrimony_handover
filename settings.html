@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Settings - VevahaMatrimony</title>
+ <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <link href="style.css" rel="stylesheet">
+ <script src="auth-guard.js"></script>
+ <style>
+ * { font-family: 'Poppins', sans-serif; }
+ body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%); background-attachment: fixed; }
+ 
+ @media (min-width: 768px) {
+ #appSidebar { transform: translateX(0) !important; top: 4rem; }
+ #sidebarToggle { display: none !important; }
+ }
+
+.sidebar-link {
+ display: flex; align-items: center; gap: 0.75rem;
+ padding: 0.75rem 1rem; border-radius: 0.75rem;
+ color: #475569; font-weight: 500; text-decoration: none;
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+ position: relative; overflow: hidden;
+ }
+
+.sidebar-link::before {
+ content: ''; position: absolute; left: 0; top: 0;
+ height: 100%; width: 3px;
+ background: linear-gradient(180deg, #ec4899, #db2777);
+ transform: scaleY(0); transition: transform 0.3s;
+ }
+
+.sidebar-link:hover::before,.sidebar-link.active::before { transform: scaleY(1); }
+.sidebar-link i { color: inherit; transition: transform 0.3s; }
+.sidebar-link:hover { background: linear-gradient(90deg, #fdf2f8 0%, transparent 100%); color: #db2777; transform: translateX(5px); }
+.sidebar-link:hover i { transform: scale(1.2); }
+.sidebar-link.active { background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%); color: #db2777; font-weight: 600; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.1); }
+
+.glass-card {
+ backdrop-filter: blur(20px) saturate(180%);
+ background: rgba(255, 255, 255, 0.9);
+ border: 1px solid rgba(255, 255, 255, 0.6);
+ box-shadow: 0 8px 32px rgba(236, 72, 153, 0.08);
+ }
+
+.settings-card {
+ transition: all 0.3s ease;
+ border: 1px solid #f1f5f9;
+ }
+
+.settings-card:hover {
+ transform: translateY(-2px);
+ box-shadow: 0 10px 30px rgba(236, 72, 153, 0.1);
+ }
+
+ /* Language content visibility */
+.lang-ta { display: none; }
+.lang-en { display: block; }
+ [data-lang="ta"].lang-ta { display: block; }
+ [data-lang="ta"].lang-en { display: none; }
+ </style>
+</head>
+<body class="min-h-screen">
+
+ <!-- Navbar -->
+ <nav class="bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50 shadow-sm">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+ <div class="flex items-center gap-3">
+ <button id="sidebarToggle" class="md:hidden text-gray-600 hover:text-pink-600 focus:outline-none" aria-label="Open navigation">
+ <i class="fas fa-bars text-xl"></i>
+ </button>
+ <a href="home.html" class="flex items-center text-xl font-semibold text-pink-600">
+ <img src="images/vevaha-logo.png" alt="Vevaha" class="w-10 h-10 mr-2">VevahaMatrimony
+ </a>
+ </div>
+ <!-- Search Bar -->
+ <div class="relative hidden md:block">
+ <input type="text" id="searchInput" placeholder="Search..." class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-64 transition-all duration-300" onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()" onkeypress="handleSearchKeyPress(event)">
+ <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+ <button onclick="performSearch()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600">
+ <i class="fas fa-arrow-right"></i>
+ </button>
+ </div>
+ <div class="flex items-center gap-4">
+ <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200">
+ <span class="text-xs font-semibold" id="onlineStatusBadge">Online</span>
+ <button id="onlineToggleBtn" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+ style="background-color: #22c55e;" onclick="handleOnlineToggleClick()">
+ 
+ </button>
+ </div>
+ <div class="relative">
+ <button id="userMenuButton" class="flex items-center space-x-3 px-3 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
+ <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white flex items-center justify-center font-bold" id="userInitials">VM</div>
+ <div class="text-left hidden sm:block">
+ <p id="navUserName" class="text-sm font-semibold text-gray-900">Member</p>
+ <p class="text-xs text-gray-500" id="navPlanLabel">Free plan</p>
+ </div>
+ <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+ </button>
+ <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+ <a href="profile.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+ <i class="fas fa-id-badge mr-3 text-pink-500"></i> Profile
+ </a>
+ <a href="settings.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+ <i class="fas fa-sliders mr-3 text-pink-500"></i> Settings
+ </a>
+ <button onclick="handleLogout()" class="w-full text-left flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+ <i class="fas fa-arrow-right-from-bracket mr-3 text-pink-500"></i> Logout
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </nav>
+
+ <div class="relative flex">
+ <!-- Sidebar -->
+ <aside id="appSidebar" class="fixed top-0 md:top-16 left-0 bottom-0 w-60 bg-white border-r border-gray-100 z-40 transform -translate-x-full md:translate-x-0 md:transform-none transition-transform duration-300 shadow-lg md:shadow-none">
+ <div class="flex items-center justify-between px-4 py-4 border-b border-gray-100 md:hidden">
+ <span class="text-sm font-semibold text-gray-700">Navigation</span>
+ <button id="sidebarClose" class="text-gray-500 hover:text-pink-600" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+ </div>
+ <div class="px-4 py-6 space-y-1 overflow-y-auto h-full">
+ <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i><span>Home</span></a>
+ <a href="active-members-dash.html" class="sidebar-link"><i class="fas fa-users"></i><span>Active Members</span></a>
+ <a href="messages.html" class="sidebar-link"><i class="fas fa-comments"></i><span>Messages</span></a>
+ <a href="interested-profiles.html" class="sidebar-link"><i class="fas fa-star"></i><span>Interested</span></a>
+ <a href="requests.html" class="sidebar-link"><i class="fas fa-handshake"></i><span>Requests</span></a>
+ <a href="horoscopic-chatbot.html" class="sidebar-link"><i class="fas fa-moon"></i><span>Astro AI</span></a>
+ <a href="connections.html" class="sidebar-link"><i class="fas fa-user-friends"></i><span>My Connections</span></a>
+ <a href="account-settings.html" class="sidebar-link"><i class="fas fa-user-edit"></i><span>Edit Profile</span></a>
+ <a href="settings.html" class="sidebar-link active"><i class="fas fa-user-cog"></i><span>Settings</span></a>
+ <a href="billing.html" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Billing</span></a>
+ </div>
+ </aside>
+
+ <!-- Sidebar Backdrop -->
+ <div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden md:hidden"></div>
+
+ <!-- Main Content -->
+ <main class="flex-1 md:ml-60 px-4 sm:px-6 lg:px-10 py-8 pt-24">
+ <div class="max-w-4xl mx-auto space-y-8">
+ <!-- Header Section -->
+ <div class="text-center mb-10">
+ <h1 class="text-3xl font-bold text-gray-900 mb-2">
+ Settings
+ 
+ </h1>
+ <p class="text-gray-600">
+ Customize your experience on VevahaMatrimony
+ 
+ </p>
+ </div>
+
+
+
+
+ <!-- Security & Password -->
+ <section class="glass-card rounded-3xl shadow-xl overflow-hidden p-8 animate-in" style="animation-delay: 0.1s">
+ <div class="flex items-center gap-4 mb-8">
+ <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl">
+ <i class="fas fa-lock"></i>
+ </div>
+ <div>
+ <h3 class="text-xl font-bold text-gray-900">
+ Security & Password
+ 
+ </h3>
+ <p class="text-sm text-gray-500">
+ Manage your account security and password.
+ 
+ </p>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <a href="forgot-password.html" class="flex items-center p-4 bg-white rounded-2xl border border-gray-100 hover:border-blue-300 hover:shadow-lg transition-all group">
+ <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mr-4 group-hover:scale-110 transition-transform">
+ <i class="fas fa-key"></i>
+ </div>
+ <div>
+ <span class="font-semibold text-gray-700 block">
+ Forgot Password
+ 
+ </span>
+ <span class="text-xs text-gray-400">
+ Reset via email link
+ 
+ </span>
+ </div>
+ </a>
+
+ <a href="reset-password.html" class="flex items-center p-4 bg-white rounded-2xl border border-gray-100 hover:border-blue-300 hover:shadow-lg transition-all group">
+ <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mr-4 group-hover:scale-110 transition-transform">
+ <i class="fas fa-shield-alt"></i>
+ </div>
+ <div>
+ <span class="font-semibold text-gray-700 block">
+ Change Password
+ 
+ </span>
+ <span class="text-xs text-gray-400">
+ Set a new password
+ 
+ </span>
+ </div>
+ </a>
+ </div>
+ </section>
+
+ <!-- Privacy & Legal Links -->
+ <section class="glass-card rounded-3xl shadow-xl overflow-hidden p-8 animate-in" style="animation-delay: 0.2s">
+ <div class="flex items-center gap-4 mb-8">
+ <div class="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center text-red-600 text-2xl">
+ <i class="fas fa-shield-alt"></i>
+ </div>
+ <div>
+ <h3 class="text-xl font-bold text-gray-900">
+ Privacy & Legal
+ 
+ </h3>
+ <p class="text-sm text-gray-500">
+ Our terms, policies, and support links.
+ 
+ </p>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <a href="privacy-policy.html" class="flex items-center p-4 bg-white rounded-2xl border border-gray-100 hover:border-pink-300 hover:shadow-lg transition-all group">
+ <div class="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-600 mr-4 group-hover:scale-110 transition-transform">
+ <i class="fas fa-user-shield"></i>
+ </div>
+ <span class="font-semibold text-gray-700">
+ Privacy Policy
+ 
+ </span>
+ </a>
+
+ <a href="terms.html" class="flex items-center p-4 bg-white rounded-2xl border border-gray-100 hover:border-pink-300 hover:shadow-lg transition-all group">
+ <div class="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-600 mr-4 group-hover:scale-110 transition-transform">
+ <i class="fas fa-file-contract"></i>
+ </div>
+ <span class="font-semibold text-gray-700">
+ Terms of Use
+ 
+ </span>
+ </a>
+
+ <a href="contact.html" class="flex items-center p-4 bg-white rounded-2xl border border-gray-100 hover:border-pink-300 hover:shadow-lg transition-all group">
+ <div class="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-600 mr-4 group-hover:scale-110 transition-transform">
+ <i class="fas fa-flag"></i>
+ </div>
+ <span class="font-semibold text-gray-700">
+ Report Issue
+ 
+ </span>
+ </a>
+ </div>
+ </section>
+ </div>
+ </main>
+ </div>
+
+ <!-- Scripts -->
+ <script src="global-settings.js"></script>
+ <script src="api-client.js"></script>
+ <script src="global-search.js"></script>
+ <script src="navbar-init.js"></script>
+ <script src="mobile-bottom-nav.js"></script>
+ <script src="vevaha-ai-widget.js"></script>
+ <script src="language.js"></script>
+ <script>
+ // Online status logic (copied from home.html/billing.html)
+ window.handleOnlineToggleClick = function() {
+ const btn = document.getElementById('onlineToggleBtn');
+ const slider = document.getElementById('toggleSlider');
+ const badge = document.getElementById('onlineStatusBadge');
+ 
+ if (btn.style.backgroundColor === 'rgb(34, 197, 94)') {
+ btn.style.backgroundColor = '#94a3b8';
+ slider.style.marginLeft = '1.375rem';
+ badge.textContent = 'Offline';
+ } else {
+ btn.style.backgroundColor = '#22c55e';
+ slider.style.marginLeft = '0.125rem';
+ badge.textContent = 'Online';
+ }
+ };
+
+ window.handleLogout = async function() {
+ if (window.VM && VM.auth) {
+ await VM.auth.logout();
+ } else {
+ localStorage.clear();
+ window.location.href = 'login.html';
+ }
+ };
+ </script>
+</body>
+</html>

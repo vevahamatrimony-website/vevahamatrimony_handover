@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surepass Sandbox Testing Center - VevahaMatrimony</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top right, #3b0764 0%, #0f051d 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glow-pink {
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.2);
+        }
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #ec4899;
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="text-slate-100 flex flex-col min-h-screen">
+
+    <!-- Top bar -->
+    <header class="border-b border-white/5 py-4 px-6 sm:px-12 flex justify-between items-center bg-black/20 backdrop-blur-md sticky top-0 z-50">
+        <a href="index.html" class="flex items-center text-xl font-bold text-pink-500 tracking-wide">
+            <img src="images/vevaha-logo.png" alt="Logo" class="w-8 h-8 mr-2">
+            VevahaMatrimony <span class="text-xs text-white/40 ml-2 border border-white/10 px-2 py-0.5 rounded-full uppercase tracking-widest font-mono">KYC & Name Checker</span>
+        </a>
+        <a href="register.html" class="text-sm font-semibold text-slate-400 hover:text-white transition">
+            Back to Registration
+        </a>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10 flex flex-col justify-center">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-400 to-indigo-400 mb-2 tracking-tight">
+                KYC & Name Match Simulation Hub
+            </h1>
+            <p class="text-slate-400 text-sm max-w-xl mx-auto">
+                Test how the name validation logic acts when matching entered profile names against governmental API payloads.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Form Card -->
+            <div class="lg:col-span-6 glass-card rounded-3xl p-6 sm:p-8 glow-pink">
+                <h2 class="text-xl font-bold mb-5 flex items-center gap-3 text-pink-400">
+                    <i class="fas fa-shield-halved"></i> 1. Verification Inputs
+                </h2>
+                
+                <form id="kycTestForm" class="space-y-4">
+                    <!-- Session Email -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Test Session Email Address</label>
+                        <div class="flex gap-2">
+                            <input type="email" id="testEmail" required class="flex-1 form-input rounded-xl px-4 py-2.5 text-sm" placeholder="e.g. test@example.com">
+                            <button type="button" onclick="generateTempEmail()" class="bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 px-3 py-2.5 rounded-xl text-xs transition font-semibold">
+                                Temp Email
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Entered Name (Step 1 Name) -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Step 1: Entered Full Name</label>
+                        <input type="text" id="enteredNameInput" required class="w-full form-input rounded-xl px-4 py-2.5 text-sm" placeholder="e.g. SACHIN S B">
+                        <p class="text-[11px] text-slate-500 mt-1">This simulates the name the user types during step 1 of signup.</p>
+                    </div>
+
+                    <!-- Document Type Dropdown -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Select Verification Mode</label>
+                        <select id="docTypeSelect" onchange="handleDocTypeChange()" class="w-full form-input rounded-xl px-4 py-2.5 text-sm cursor-pointer">
+                            <option value="digilocker" selected>DigiLocker (Aadhaar KYC / Popup Flow)</option>
+                            <option value="pan_card">PAN Card (Standard Call)</option>
+                            <option value="voter_id">Voter ID (EPIC Card)</option>
+                            <option value="driving_license">Driving License</option>
+                            <option value="passport">Passport</option>
+                        </select>
+                    </div>
+
+                    <!-- Document Number (Standard Only) -->
+                    <div id="docNumberContainer" class="hidden">
+                        <label id="docNumberLabel" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">PAN Number</label>
+                        <input type="text" id="docNumberInput" class="w-full form-input rounded-xl px-4 py-2.5 text-sm uppercase">
+                        <p id="docNumberHint" class="text-[11px] text-slate-500 mt-1"></p>
+                    </div>
+
+                    <!-- Date of Birth (Conditional) -->
+                    <div id="dobContainer" class="hidden">
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Date of Birth</label>
+                        <input type="date" id="dobInput" class="w-full form-input rounded-xl px-4 py-2.5 text-sm">
+                        <p class="text-[11px] text-slate-500 mt-1">Required for Driving License & Passport validation.</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="pt-2">
+                        <!-- Standard Submit Button -->
+                        <button type="submit" id="btnSubmit" class="hidden w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 transform active:scale-[0.99] flex items-center justify-center gap-2">
+                            <span id="btnText">Verify via Surepass API</span>
+                            <div id="btnSpinner" class="hidden animate-spin rounded-full h-4 w-4 border-2 border-white/80 border-t-transparent"></div>
+                        </button>
+
+                        <!-- DigiLocker Initialize Button -->
+                        <button type="button" id="btnDigilocker" onclick="initializeDigilocker()" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 transform active:scale-[0.99] flex items-center justify-center gap-2">
+                            <span><i class="fas fa-external-link-alt"></i> Connect DigiLocker (Aadhaar KYC)</span>
+                            <div id="dlSpinner" class="hidden animate-spin rounded-full h-4 w-4 border-2 border-white/80 border-t-transparent"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Results Panel -->
+            <div class="lg:col-span-6 glass-card rounded-3xl p-6 sm:p-8 flex flex-col min-h-[460px]">
+                <h2 class="text-xl font-bold mb-5 flex items-center gap-3 text-purple-400">
+                    <i class="fas fa-terminal"></i> 2. Validation Terminal
+                </h2>
+                
+                <div class="flex-1 flex flex-col justify-center items-center text-center p-6 border-2 border-dashed border-white/5 rounded-2xl bg-black/10" id="emptyResultState">
+                    <div class="w-14 h-14 bg-purple-500/10 text-purple-400 rounded-2xl flex items-center justify-center text-xl mb-3">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3 class="text-md font-semibold text-slate-300 mb-1">Waiting for Test Verification</h3>
+                    <p class="text-xs text-slate-500 max-w-xs">
+                        Select a mode, fill in target fields, and perform verification to analyze name matching behavior.
+                    </p>
+                </div>
+
+                <!-- Live Results -->
+                <div id="resultContent" class="hidden space-y-5">
+                    
+                    <!-- Document Verification Status -->
+                    <div id="resultStatusBadge" class="p-3.5 rounded-xl flex items-center gap-3">
+                        <div id="statusIcon" class="text-xl"></div>
+                        <div class="text-left">
+                            <h3 id="statusTitle" class="font-bold text-xs uppercase tracking-wider"></h3>
+                            <p id="statusMsg" class="text-[11px] opacity-80"></p>
+                        </div>
+                    </div>
+
+                    <!-- Name Matching Check Badge -->
+                    <div id="nameMatchBadge" class="p-3.5 rounded-xl flex flex-col gap-2 bg-white/5 border border-white/10">
+                        <div class="flex items-center gap-3">
+                            <div id="nameMatchIcon" class="text-xl"></div>
+                            <div class="text-left">
+                                <h3 id="nameMatchTitle" class="font-bold text-xs uppercase tracking-wider">Name Comparison</h3>
+                                <p id="nameMatchMsg" class="text-[11px] text-slate-400"></p>
+                            </div>
+                        </div>
+                        <div class="mt-2 text-xs border-t border-white/5 pt-2 grid grid-cols-2 gap-2 font-mono">
+                            <div>
+                                <span class="text-slate-500 block text-[10px] uppercase">Normalized Entered:</span>
+                                <span id="normEntered" class="text-slate-300"></span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[10px] uppercase">Normalized Document:</span>
+                                <span id="normDoc" class="text-slate-300"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verified Details -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-3.5 space-y-2">
+                        <div class="flex justify-between border-b border-white/5 pb-2 text-xs">
+                            <span class="text-slate-400">Government Doc Name:</span>
+                            <span id="resName" class="font-semibold text-slate-200"></span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Government Doc Type:</span>
+                            <span id="resDocType" class="font-mono text-purple-300"></span>
+                        </div>
+                    </div>
+
+                    <!-- Raw Response Payload -->
+                    <div class="text-left">
+                        <h4 class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">JSON Payload</h4>
+                        <pre id="rawResponse" class="bg-black/40 border border-white/5 p-3 rounded-xl font-mono text-[10px] text-green-400 overflow-x-auto max-h-40 scrollbar-thin"></pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-4 text-center text-xs text-slate-500">
+        &copy; 2026 VevahaMatrimony. Built on Surepass Identity SDK Integration.
+    </footer>
+
+    <script>
+        let checkInterval = null;
+
+        // Auto prefill temp email
+        function generateTempEmail() {
+            const randomId = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('testEmail').value = `surepass-test-${randomId}@vevaha.com`;
+        }
+        
+        generateTempEmail();
+
+        function handleDocTypeChange() {
+            const select = document.getElementById('docTypeSelect');
+            const dob = document.getElementById('dobContainer');
+            const docNumContainer = document.getElementById('docNumberContainer');
+            const label = document.getElementById('docNumberLabel');
+            const hint = document.getElementById('docNumberHint');
+            const numberInput = document.getElementById('docNumberInput');
+            const btnSubmit = document.getElementById('btnSubmit');
+            const btnDigilocker = document.getElementById('btnDigilocker');
+
+            numberInput.value = '';
+            
+            if (select.value === 'digilocker') {
+                docNumContainer.classList.add('hidden');
+                dob.classList.add('hidden');
+                btnSubmit.classList.add('hidden');
+                btnDigilocker.classList.remove('hidden');
+                numberInput.removeAttribute('required');
+            } else {
+                docNumContainer.classList.remove('hidden');
+                btnSubmit.classList.remove('hidden');
+                btnDigilocker.classList.add('hidden');
+                numberInput.setAttribute('required', 'required');
+
+                if (select.value === 'pan_card') {
+                    dob.classList.add('hidden');
+                    label.textContent = 'PAN Number';
+                    hint.textContent = 'Expected format: 10 alphanumeric characters (e.g. ABCDE1234F)';
+                    numberInput.placeholder = 'Enter PAN Card number';
+                    numberInput.maxLength = 10;
+                } else if (select.value === 'voter_id') {
+                    dob.classList.add('hidden');
+                    label.textContent = 'Voter ID Number (EPIC Card)';
+                    hint.textContent = 'Expected format: EPIC alphanumeric string';
+                    numberInput.placeholder = 'Enter Voter ID number';
+                    numberInput.removeAttribute('maxlength');
+                } else if (select.value === 'driving_license') {
+                    dob.classList.remove('hidden');
+                    label.textContent = 'Driving License Number';
+                    hint.textContent = 'Expected format: DL string';
+                    numberInput.placeholder = 'Enter Driving License number';
+                    numberInput.removeAttribute('maxlength');
+                } else if (select.value === 'passport') {
+                    dob.classList.remove('hidden');
+                    label.textContent = 'Passport File Number';
+                    hint.textContent = 'Expected format: 15-character file number (e.g. ABCDP1234512345)';
+                    numberInput.placeholder = 'Enter Passport File Number';
+                    numberInput.maxLength = 20;
+                }
+            }
+        }
+
+        handleDocTypeChange(); // Initialize
+
+        // Core Name Normalization & Match check matching registration logic
+        function checkKycNameMatch(enteredName, verifiedName) {
+            let vName = (verifiedName || '').trim();
+            
+            // Strip parenthesis e.g. "(DigiLocker)"
+            vName = vName.replace(/\s*\(.*?\)\s*/g, '').trim();
+
+            const fallbacks = [
+                'verified member',
+                'digilocker aadhaar user',
+                'verified via digilocker',
+                'digilocker holder',
+                'verified user'
+            ];
+
+            const normalizedVName = vName.toLowerCase().trim();
+            const isFallback = fallbacks.includes(normalizedVName);
+
+            const normalizeName = (name) => {
+                return name
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]/g, '')
+                    .trim();
+            };
+
+            const normEntered = normalizeName(enteredName);
+            const normDoc = isFallback ? 'BYPASSED_FALLBACK' : normalizeName(vName);
+            const isMatch = isFallback || (normEntered === normDoc);
+
+            return {
+                isMatch,
+                isFallback,
+                vName,
+                normEntered,
+                normDoc
+            };
+        }
+
+        // Render matching result
+        function displayComparisonResults(enteredName, verifiedName, apiOk, apiMsg) {
+            const emptyState = document.getElementById('emptyResultState');
+            const resultContent = document.getElementById('resultContent');
+            const badge = document.getElementById('resultStatusBadge');
+            const icon = document.getElementById('statusIcon');
+            const title = document.getElementById('statusTitle');
+            const msg = document.getElementById('statusMsg');
+            const resName = document.getElementById('resName');
+            const matchBadge = document.getElementById('nameMatchBadge');
+            const matchIcon = document.getElementById('nameMatchIcon');
+            const matchTitle = document.getElementById('nameMatchTitle');
+            const matchMsg = document.getElementById('nameMatchMsg');
+            const normEnteredSpan = document.getElementById('normEntered');
+            const normDocSpan = document.getElementById('normDoc');
+
+            emptyState.classList.add('hidden');
+            resultContent.classList.remove('hidden');
+            resName.textContent = verifiedName || 'N/A';
+
+            // 1. API Status Badge
+            if (apiOk) {
+                badge.className = "p-3.5 rounded-xl flex items-center gap-3 bg-green-500/10 border border-green-500/20 text-green-300";
+                icon.innerHTML = "<i class='fas fa-check-circle'></i>";
+                title.textContent = "Identity Match Success";
+                msg.textContent = apiMsg || "Surepass API matches record successfully.";
+            } else {
+                badge.className = "p-3.5 rounded-xl flex items-center gap-3 bg-red-500/10 border border-red-500/20 text-red-300";
+                icon.innerHTML = "<i class='fas fa-exclamation-triangle'></i>";
+                title.textContent = "Verification Rejected";
+                msg.textContent = apiMsg || "Verification failed";
+            }
+
+            // 2. Name Matching Badge
+            if (!apiOk) {
+                matchBadge.className = "p-3.5 rounded-xl flex flex-col gap-2 bg-yellow-500/5 border border-yellow-500/10 text-yellow-500 opacity-60";
+                matchIcon.innerHTML = "<i class='fas fa-minus-circle'></i>";
+                matchTitle.textContent = "Comparison Skipped";
+                matchMsg.textContent = "Document API validation failed.";
+                normEnteredSpan.textContent = "-";
+                normDocSpan.textContent = "-";
+                return;
+            }
+
+            const comp = checkKycNameMatch(enteredName, verifiedName);
+            normEnteredSpan.textContent = comp.normEntered || 'empty';
+            normDocSpan.textContent = comp.normDoc;
+
+            if (comp.isMatch) {
+                matchBadge.className = "p-3.5 rounded-xl flex flex-col gap-2 bg-green-500/10 border border-green-500/20 text-green-300";
+                matchIcon.innerHTML = "<i class='fas fa-id-card-alt'></i>";
+                matchTitle.textContent = "Names Matched Successfully";
+                matchMsg.textContent = comp.isFallback 
+                    ? "Bypassed validation due to API fallback name check." 
+                    : `Entered name matches document name ("${comp.vName}").`;
+            } else {
+                matchBadge.className = "p-3.5 rounded-xl flex flex-col gap-2 bg-red-500/10 border border-red-500/20 text-red-300";
+                matchIcon.innerHTML = "<i class='fas fa-times-circle'></i>";
+                matchTitle.textContent = "Name Mismatch Block";
+                matchMsg.textContent = `Name on document ("${comp.vName}") does NOT match entered name ("${enteredName}"). Registration would be blocked.`;
+            }
+        }
+
+        // Standard Document Verification Submit
+        document.getElementById('kycTestForm').onsubmit = async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('testEmail').value.trim();
+            const docType = document.getElementById('docTypeSelect').value;
+            const docNumber = document.getElementById('docNumberInput').value.trim();
+            const dob = document.getElementById('dobInput').value;
+            const enteredName = document.getElementById('enteredNameInput').value.trim();
+
+            const btn = document.getElementById('btnSubmit');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('btnSpinner');
+            const resDocType = document.getElementById('resDocType');
+            const rawPre = document.getElementById('rawResponse');
+
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            btnText.textContent = 'Calling API...';
+            resDocType.textContent = docType.toUpperCase();
+
+            try {
+                const response = await fetch('/api/verification/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, docType, docNumber, dob })
+                });
+
+                const data = await response.json();
+                rawPre.textContent = JSON.stringify(data, null, 2);
+
+                if (response.ok) {
+                    displayComparisonResults(enteredName, data.verifiedName, true, 'Verification successful.');
+                } else {
+                    displayComparisonResults(enteredName, null, false, data.error || 'Verification failed.');
+                }
+
+            } catch (err) {
+                rawPre.textContent = err.stack || err.message || err;
+                displayComparisonResults(enteredName, null, false, 'Could not contact verification server.');
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+                btnText.textContent = 'Verify via Surepass API';
+            }
+        };
+
+        // DigiLocker Verification Connect
+        async function initializeDigilocker() {
+            const email = document.getElementById('testEmail').value.trim();
+            const enteredName = document.getElementById('enteredNameInput').value.trim();
+            if (!email || !enteredName) {
+                alert('Please generate a test email and input an Entered Full Name first.');
+                return;
+            }
+
+            const btn = document.getElementById('btnDigilocker');
+            const spinner = document.getElementById('dlSpinner');
+            const rawPre = document.getElementById('rawResponse');
+            const resDocType = document.getElementById('resDocType');
+
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            resDocType.textContent = 'AADHAAR (DIGILOCKER)';
+
+            if (checkInterval) clearInterval(checkInterval);
+
+            try {
+                const response = await fetch('/api/verification/digilocker/initialize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+                rawPre.textContent = JSON.stringify(data, null, 2);
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to initialize DigiLocker');
+                }
+
+                // Open DigiLocker Popup
+                const popupWidth = 600;
+                const popupHeight = 650;
+                const left = (window.screen.width - popupWidth) / 2;
+                const top = (window.screen.height - popupHeight) / 2;
+                const popup = window.open(data.redirect_url, 'DigiLocker Verification', `width=${popupWidth},height=${popupHeight},top=${top},left=${left},scrollbars=yes`);
+
+                // Start polling backup
+                checkInterval = setInterval(async () => {
+                    try {
+                        const statusResponse = await fetch('/api/verification/digilocker/status', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email })
+                        });
+                        const statusData = await statusResponse.json();
+                        rawPre.textContent = JSON.stringify(statusData, null, 2);
+
+                        if (statusData.verified) {
+                            clearInterval(checkInterval);
+                            displayComparisonResults(enteredName, statusData.verifiedName, true, 'Verified successfully via DigiLocker polling.');
+                            if (popup && !popup.closed) popup.close();
+                        }
+                    } catch (pollErr) {
+                        console.warn('DigiLocker status polling error:', pollErr);
+                    }
+                }, 3000);
+
+                // Stop polling after 5 minutes
+                setTimeout(() => {
+                    if (checkInterval) {
+                        clearInterval(checkInterval);
+                        console.log('DigiLocker polling timeout.');
+                    }
+                }, 300000);
+
+            } catch (err) {
+                rawPre.textContent = err.stack || err.message || err;
+                displayComparisonResults(enteredName, null, false, `DigiLocker error: ${err.message}`);
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        }
+
+        // Window Message event listener for DigiLocker callbacks
+        window.addEventListener('message', function (event) {
+            console.log('Received popup message callback:', event.data);
+            if (event.data && event.data.type === 'DIGILOCKER_SUCCESS') {
+                if (checkInterval) clearInterval(checkInterval);
+                const enteredName = document.getElementById('enteredNameInput').value.trim();
+                displayComparisonResults(enteredName, event.data.verifiedName, true, 'Verified successfully via postMessage callback.');
+            }
+        });
+    </script>
+<script src="language.js"></script>
+</body>
+</html>

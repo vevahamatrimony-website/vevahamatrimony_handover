@@ -1,0 +1,2405 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <link rel="icon" type="image/png" href="/images/vevaha-logo.png"><title>Register - vevahamatrimony</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+ rel="stylesheet"><link href="style.css" rel="stylesheet"><!-- Nhost JS SDK (UMD browser build - sets window.NhostClient) --><script src="load-public-navbar.js"></script><!-- Load API config first for custom domain support --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script><script src="https://checkout.razorpay.com/v1/checkout.js"></script></head><body class="bg-gradient-to-br from-pink-50 to-white page-load-animation min-h-screen flex flex-col">
+<!-- Navigation --><nav class="bg-white shadow-lg"><div class="w-full"><div class="flex justify-between items-center h-16"><div class="flex items-center flex-shrink-0"><a href="index.html"
+ class="navbar-brand flex items-center text-xl sm:text-2xl font-bold text-pink-600"><img src="images/vevaha-logo.png" alt="VPS Logo" class="w-10 h-10 mr-2">
+ vevahamatrimony
+ </a></div><!-- Desktop Navigation --><div class="hidden md:flex items-center space-x-4" id="navbarContent"><a href="index.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Home</span></a><a href="register.html"
+ class="text-pink-600 font-semibold px-3 py-2 rounded-md border-b-2 border-pink-600"><span>Register</span></a><a href="membership.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Premium Plans</span></a><a href="login.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Active Members</span></a><a href="horoscopic-chatbot.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Astro AI</span></a><!-- Search Bar --><div class="relative hidden md:block"><input type="text" id="searchInput" placeholder="Search..."
+ class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-48 transition-all duration-300"
+ onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()"
+ onkeypress="handleSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performSearch()"
+ class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button><!-- Search Suggestions Dropdown --><div id="searchSuggestions"
+ class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 search-suggestions hidden"
+ style="min-width: 300px;"><div class="p-2"><div onmousedown="navigateToPage('advanced-search.html'); return false;"
+ class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-heart text-pink-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Search your match</span></div><div class="text-sm text-gray-500"><span>Find your perfect life partner</span></div></div></div><div onmousedown="navigateToPage('login.html'); return false;"
+ class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-users text-blue-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Browse profiles</span></div><div class="text-sm text-gray-500"><span>View active members</span></div></div></div><div onmousedown="navigateToPage('membership.html'); return false;"
+ class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-crown text-purple-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Premium members</span></div><div class="text-sm text-gray-500"><span>View premium profiles</span></div></div></div><div onmousedown="navigateToPage('settings.html'); return false;"
+ class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-cog text-gray-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>⚙️ Settings</span></div><div class="text-sm text-gray-500"><span>Customize your experience</span></div></div></div><div onmousedown="navigateToPage('about.html'); return false;"
+ class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-info-circle text-orange-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>About us</span></div><div class="text-sm text-gray-500"><span>Learn more about vevahamatrimony</span></div></div></div><div onmousedown="navigateToPage('contact.html'); return false;"
+ class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-envelope text-green-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Contact us</span></div><div class="text-sm text-gray-500"><span>Get in touch with vevahamatrimony</span></div></div></div></div></div></div><a href="login.html" class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700"><span>Login</span></a></div><!-- Mobile menu button --><div class="md:hidden"><button id="mobile-menu-button" class="text-gray-700 hover:text-pink-600 focus:outline-none"
+ onclick="toggleMobileMenu()"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+ d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div></div></div></nav><!-- Mobile Navigation Menu --><div id="mobile-nav-menu" class="hidden md:hidden bg-white shadow-lg border-t"><div class="px-4 py-2 space-y-2"><a href="index.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+>Home</span></a><a href="register.html" class="block text-pink-600 font-semibold px-3 py-2 rounded-md"><span
+>Register</span></a><a href="membership.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+>Premium Plans</span></a><a href="login.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+>Active Members</span></a><a href="horoscopic-chatbot.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+>Astro AI</span></a><!-- Search Bar (Mobile) --><div class="relative"><input type="text" id="mobileSearchInput" placeholder="Search..."
+ class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-full transition-all duration-300"
+ onkeypress="handleMobileSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performMobileSearch()"
+ class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button></div><a href="login.html"
+ class="block bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 text-center"><span
+>Login</span></a></div></div><!-- Main Content --><main class="page-load-animation flex-1"><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><!-- Progress Steps --><div class="mb-10"><div class="relative"><!-- Progress line background --><div
+ class="absolute top-6 left-1/2 transform -translate-x-1/2 w-3/4 h-1 bg-gray-200 rounded-full z-0"></div><!-- Active progress line --><div class="absolute top-6 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full z-10 transition-all duration-500"
+ id="progressLine" style="width:0"></div><!-- Steps container --><div class="relative flex items-center justify-between max-w-2xl mx-auto z-20"><!-- Step 1 --><div class="flex flex-col items-center group"><div
+ class="w-12 h-12 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full flex items-center justify-center font-bold text-lg step-indicator active shadow-lg border-4 border-white transition-all duration-300 hover:scale-110"><i class="fas fa-user"></i></div><div class="mt-3 text-center"><div class="text-pink-600 font-bold text-sm">Step 1</div><div class="text-pink-600 font-semibold text-xs">Personal Info</div></div></div><!-- Step 2 --><div class="flex flex-col items-center group"><div
+ class="w-12 h-12 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold text-lg step-indicator shadow-lg border-4 border-white transition-all duration-300 hover:scale-110"><i class="fas fa-upload"></i></div><div class="mt-3 text-center"><div class="text-gray-600 font-bold text-sm">Step 2</div><div class="text-gray-600 font-semibold text-xs">Upload & Verify</div></div></div><!-- Step 3 --><div class="flex flex-col items-center group"><div
+ class="w-12 h-12 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold text-lg step-indicator shadow-lg border-4 border-white transition-all duration-300 hover:scale-110"><i class="fas fa-cog"></i></div><div class="mt-3 text-center"><div class="text-gray-600 font-bold text-sm">Step 3</div><div class="text-gray-600 font-semibold text-xs">Account Setup</div></div></div></div></div></div><!-- Registration Form --><div class="bg-white rounded-2xl shadow-2xl overflow-hidden"><div class="bg-gradient-to-r from-pink-500 to-pink-600 text-white p-8 text-center"><h1 class="text-4xl font-bold mb-2"><span>Create Your Profile</span></h1><p class="text-pink-100 text-lg"><span>Join thousands of happy couples. It's free to start!</span></p></div><form id="registrationForm" class="p-8" novalidate><!-- Step 1: Personal Information --><div id="step1" class="step-content"><!-- Basic Info Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-user text-pink-600 mr-3"></i>
+ Basic Information
+ </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Registering On Behalf Of
+ *</label><select name="onBehalfOf" required class="w-full form-input h-12"><option value="">Select Relationship</option><option value="myself">Myself</option><option value="son">Son</option><option value="daughter">Daughter</option><option value="brother">Brother</option><option value="sister">Sister</option><option value="friend">Friend</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Full Name *</label><input type="text" name="fullName" required class="w-full form-input h-12"
+ placeholder="Enter your full name"><p class="text-xs text-pink-600 mt-2 font-medium"><i class="fas fa-exclamation-circle mr-1"></i>Enter your name exactly as per your document to avoid KYC verification failure.</p></div><div><label class="block text-gray-700 font-semibold mb-3">Gender *</label><select name="gender" required class="w-full form-input h-12"><option value="">Select Gender</option><option value="male">Male</option><option value="female">Female</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Date of Birth *</label><input type="date" name="dob" required class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Time of Birth *</label><input type="time" name="timeOfBirth" required class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Place of Birth *</label><input type="text" name="placeOfBirth" required class="w-full form-input h-12"
+ placeholder="Enter your place of birth"></div></div></div><div class="mb-10"><!-- Contact Information --><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-phone text-pink-600 mr-3"></i>
+ Contact Information
+ </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Mobile Number *</label><div class="flex gap-2"><span class="inline-flex items-center px-4 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 font-semibold">+91</span><input type="tel" id="phoneInput" name="mobile" required class="flex-1 form-input rounded-l-none h-12" placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[6-9][0-9]{9}" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"><button type="button" id="send-mobile-otp-btn" onclick="sendMobileOTP()" class="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors text-sm font-semibold whitespace-nowrap"><span id="send-mobile-otp-text">Send OTP</span><div id="mobile-otp-spinner" class="hidden inline-block ml-1"><div class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div></div></button></div><div id="mobileOtpStatus" class="mt-2 text-sm"></div><!-- Mobile OTP input section --><div id="mobile-otp-section" class="mt-3 hidden"><label class="block text-gray-700 font-medium mb-2">Enter 6-Digit Mobile OTP</label><div class="flex gap-2"><input type="text" id="mobileOtp" maxlength="6" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-center text-lg font-mono tracking-widest" placeholder="000000" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6)"><button type="button" id="verify-mobile-otp-btn" onclick="verifyMobileOTP()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold"><span id="verify-mobile-otp-text">Verify</span><div id="mobile-otp-verify-spinner" class="hidden inline-block ml-1"><div class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div></div></button></div><div class="flex items-center justify-between mt-2"><div class="text-xs text-gray-500"><i class="fas fa-clock mr-1"></i><span id="mobileOtpTimer">OTP valid for 10 minutes</span></div><button type="button" id="resend-mobile-otp-btn" onclick="sendMobileOTP(true)" class="text-xs text-pink-600 underline hidden">Resend OTP</button></div><div id="mobileOtpVerifyStatus" class="mt-2 text-sm"></div></div><!-- Mobile Verified Status --><div id="mobile-verified" class="mt-3 hidden"><div class="bg-green-50 border border-green-200 rounded-lg p-3"><div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i><span class="text-green-800 font-medium">Mobile verified successfully!</span></div></div></div></div><div><label class="block text-gray-700 font-medium mb-2">Email Address *</label><div class="flex gap-2"><input type="email" id="email" name="email" required
+ class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+ placeholder="yourmail@gmail.com"><button type="button" id="send-otp-btn" onclick="sendOTP()"
+ class="px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors"><span id="send-otp-text">Send OTP</span><div id="otp-spinner" class="hidden inline-block ml-2"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div></div></button></div><div id="emailStatus" class="mt-2 text-sm"></div><div id="emailOtpStatus" class="mt-2 text-sm"></div><!-- OTP Verification Section --><div id="otp-section" class="mt-4 hidden"><label class="block text-gray-700 font-medium mb-2">Enter 6-Digit Verification
+ Code</label><div class="flex gap-2"><input type="text" id="otp" name="otp" maxlength="6"
+ class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-center text-lg font-mono tracking-widest"
+ placeholder="000000"
+ oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6)"><button type="button" id="verify-otp-btn" onclick="verifyOTP()"
+ class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"><span id="verify-otp-text">Verify</span><div id="otp-verify-spinner" class="hidden inline-block ml-2"><div
+ class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div></div></button></div><div id="otpStatus" class="mt-2 text-sm"></div><div class="mt-2 text-xs text-gray-500"><i class="fas fa-clock mr-1"></i>
+ Code expires in 15 minutes. Check your email inbox or spam folder.
+ </div></div><!-- Email Verified Status --><div id="email-verified" class="mt-3 hidden"><div class="bg-green-50 border border-green-200 rounded-lg p-3"><div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i><span class="text-green-800 font-medium">Email verified
+ successfully!</span></div></div></div></div></div></div><!-- OTP Verification Required Notice --><div id="otp-lock-notice"
+ class="mb-6 p-6 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300 rounded-xl shadow-md"><div class="flex items-center"><div class="flex-shrink-0"><div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center"><i class="fas fa-lock text-3xl text-yellow-600"></i></div></div><div class="ml-4 flex-1"><h3 class="text-lg font-bold text-yellow-800">Complete Email Verification to
+ Continue</h3><p class="text-yellow-700 mt-1">Please verify your email address with OTP to unlock
+ the remaining registration sections.</p><div class="mt-3 flex items-center text-sm text-yellow-600"><i class="fas fa-info-circle mr-2"></i><span>Enter your email above and click "Send OTP" to receive verification
+ code</span></div></div></div></div><!-- Locked Sections Container - Hidden until OTP verified --><div id="locked-sections" class="hidden"><!-- Personal Information Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-user-circle text-pink-600 mr-3"></i>
+ Personal Information
+ </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Height(Inches/cm)*</label><div class="grid grid-cols-1 lg:grid-cols-2 gap-3"><div><select name="heightDropdown" class="w-full form-input h-12"
+ id="heightDropdown"><option value="">Select Standard Height</option><option value="4'6"">4'6" </option><option value="4'7"">4'7" </option><option value="4'8"">4'8" </option><option value="4'9"">4'9" </option><option value="4'10"">4'10" </option><option value="4'11"">4'11" </option><option value="5'0"">5'0" </option><option value="5'1"">5'1" </option><option value="5'2"">5'2" </option><option value="5'3"">5'3" </option><option value="5'4"">5'4" </option><option value="5'5"">5'5" </option><option value="5'6"">5'6" </option><option value="5'7"">5'7" </option><option value="5'8"">5'8" </option><option value="5'9"">5'9" </option><option value="5'10"">5'10" </option><option value="5'11"">5'11" </option><option value="6'0"">6'0" </option><option value="6'1"">6'1" </option><option value="6'2"">6'2" </option><option value="6'3"">6'3" </option><option value="6'4"">6'4" </option><option value="6'5"">6'5" </option></select></div><div><input type="text" name="heightCustom" id="heightCustom"
+ class="w-full form-input h-12"
+ placeholder="Or enter custom height (e.g., 5.3, 5 ft 9 in)"></div></div><input type="hidden" name="height" id="heightFinal" required></div><div><label class="block text-gray-700 font-semibold mb-3">Weight (kg) *</label><input type="number" name="weight" required class="w-full form-input h-12"
+ placeholder="Enter weight in kg" min="30" max="200"></div><div><label class="block text-gray-700 font-semibold mb-3">Body Type *</label><select name="bodyType" required class="w-full form-input h-12"><option value="">Select Body Type</option><option value="slim">Slim</option><option value="average">Average</option><option value="fit">Fit</option><option value="athletic">Athletic</option><option value="heavy">Heavy</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Skin Colour *</label><select name="skinColour" required class="w-full form-input h-12"><option value="">Select Skin Colour</option><option value="fair">Fair</option><option value="wheatish">Wheatish</option><option value="dark">Dark</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Disability *</label><select name="disability" required class="w-full form-input h-12"
+ id="disabilitySelect" onchange="handleDisabilityChange()"><option value="">Select Disability</option><option value="none">None</option><option value="physical">Physical</option><option value="visual">Visual</option><option value="hearing">Hearing</option><option value="other">Other</option></select><div id="disabilityOtherField" class="mt-3 hidden"><label class="block text-gray-700 font-semibold mb-3">Please specify your
+ condition
+ *</label><input type="text" name="disabilityOther" id="disabilityOtherInput"
+ class="w-full form-input h-12"
+ placeholder="Please describe your condition"></div></div><div><label class="block text-gray-700 font-semibold mb-3">Marital Status *</label><select name="maritalStatus" required class="w-full form-input h-12"
+ id="maritalStatusSelect" onchange="handleMaritalStatusChange()"><option value="">Select Marital Status</option><option value="never-married">Never Married</option><option value="divorce">Divorce</option><option value="awaiting-divorce">Awaiting Divorce</option><option value="widow-widower">Widow/Widower</option></select></div><div id="maritalProofSection" class="hidden mt-4"><label class="block text-gray-700 font-semibold mb-3">Marital Status Proof
+ (Required)</label><div class="grid grid-cols-1 gap-3"><select name="document_type" id="documentTypeSelect"
+ class="w-full form-input h-12"><option value="">Select Document Type</option><option value="divorce-decree">Divorce Decree</option><option value="court-order">Court Order</option><option value="death-certificate">Death Certificate</option></select><div><input type="file" id="maritalProofFileInput" name="maritalProofFile" accept="application/pdf,image/jpeg,image/jpg,image/png" class="w-full" onchange="handleMaritalProofFileSelect(event)" /><p id="maritalProofHelper" class="text-sm text-gray-500 mt-2">Upload
+ official proof related to your marital status</p><p id="maritalProofFileName" class="text-sm text-gray-700 mt-2"></p><p id="maritalProofError" class="text-sm text-red-600 mt-2 hidden"></p></div></div></div><div id="numberOfChildrenField" class="hidden"><label class="block text-gray-700 font-semibold mb-3">Number of Children
+ *</label><select name="numberOfChildren" class="w-full form-input h-12" onchange="updateChildrenGenderVisibility()"><option value="">Select Number</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5+">5+</option></select></div><div id="childrenLivingStatusField" class="hidden"><label class="block text-gray-700 font-semibold mb-3">Children Living Status
+ *</label><select name="childrenLivingStatus" class="w-full form-input h-12"><option value="">Select Status</option><option value="living-together">Living Together</option><option value="not-living-together">Not Living Together</option></select></div><div id="awaitingDivorceSection" class="hidden mt-4 p-4 bg-orange-50 border border-orange-200 rounded-xl"><h4 class="text-base font-bold text-orange-700 mb-3 flex items-center"><i class="fas fa-gavel mr-2"></i>Awaiting Divorce Details</h4><div class="grid grid-cols-1 gap-4"><div><label class="block text-gray-700 font-semibold mb-2">Court Case Number *</label><input type="text" name="divorceCaseNumber" id="divorceCaseNumberInput" class="w-full form-input h-12" placeholder="e.g. CS/123/2024 or HMA/456/2023"></div></div></div><div id="childrenGenderSection" class="hidden mt-4"><label class="block text-gray-700 font-semibold mb-3">Children's Gender</label><select name="childrenGender" id="childrenGenderSelect" class="w-full form-input h-12"><option value="">Select Children's Gender</option><option value="Boys only">Boys Only</option><option value="Girls only">Girls Only</option><option value="Boys and Girls">Both Boys and Girls</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Spoken Language</label><input type="text" name="spokenLanguage" class="w-full form-input h-12"
+ placeholder="Enter spoken language(s)"></div></div><!-- Lifestyle Habits Section --><div class="mt-6"><h3 class="text-xl font-bold text-pink-600 mb-4">Lifestyle Habits</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Eating Habits
+ *</label><select name="eatingHabits" required class="w-full form-input h-12"><option value="">Select Eating Habits</option><option value="Vegetarian only">Vegetarian only</option><option value="Semi-Vegetarian">Semi-Vegetarian</option><option value="Non-Vegetarian only">Non-Vegetarian only</option><option value="Eggetarian">Eggetarian</option><option value="Vegan">Vegan</option><option value="Jain Vegetarian">Jain Vegetarian</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Smoking Habits
+ *</label><select name="smokingHabits" required class="w-full form-input h-12"><option value="">Select Smoking Habits</option><option value="often">often</option><option value="never">Never</option><option value="rarely">rarely</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Drinking Habits
+ *</label><select name="drinkingHabits" required class="w-full form-input h-12"><option value="">Select Drinking Habits</option><option value="often">often</option><option value="never">Never</option><option value="rarely">rarely</option></select></div></div></div><!-- Education Field (full width) --><div class="mt-6"><label class="block text-gray-700 font-semibold mb-3">Education *</label><input type="text" name="education" id="educationInput" required class="w-full form-input h-12" placeholder="Enter education qualification (e.g. B.Tech, B.Ed, MBA, B.Sc, MCA)" list="educationSuggestions"><datalist id="educationSuggestions"><option value="B.Tech"><option value="B.E"><option value="B.Ed"><option value="B.Sc"><option value="B.Com"><option value="B.A"><option value="BBA"><option value="BCA"><option value="M.Tech"><option value="M.E"><option value="M.Ed"><option value="MBA"><option value="MCA"><option value="M.Sc"><option value="M.Com"><option value="M.A"><option value="MBBS"><option value="MD"><option value="MS"><option value="BDS"><option value="MDS"><option value="B.Pharm"><option value="M.Pharm"><option value="LLB"><option value="LLM"><option value="CA"><option value="ICWA"><option value="CS"><option value="Diploma"><option value="Intermediate/12th"><option value="High School"><option value="PhD / Doctorate"><option value="Other"></datalist></div><!-- Education & Career Details Section --><div class="mt-6"><h3 class="text-xl font-bold text-pink-600 mb-4">Education & Career Details</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Studied At *</label><input type="text" name="studiedAt" id="studiedAt" required class="w-full form-input h-12" placeholder="University / College / Institution name"></div><div><label class="block text-gray-700 font-semibold mb-3">Employment Status
+ *</label><select name="employment" required class="w-full form-input h-12"><option value="">Select Employment Status</option><option value="working">Working</option><option value="not-working">Not Working</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Annual Income
+ *</label><select name="annualIncome" required class="w-full form-input h-12"><option value="">Select Annual Income</option><option value="below-1-lakh">< ₹1 Lakh</option><option value="1-5-lakhs">₹1–5 Lakhs</option><option value="5-10-lakhs">₹5–10 Lakhs</option><option value="10-25-lakhs">₹10–25 Lakhs</option><option value="25-plus-lakhs">₹25+ Lakhs</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Job Roles *</label><select name="occupation" required class="w-full form-input h-12"
+ id="occupationSelect" onchange="toggleOccupationOther()"><option value="">Select Job Role</option><option value="Software Engineer">Software Engineer</option><option value="Doctor">Doctor</option><option value="Lawyer">Lawyer</option><option value="Teacher">Teacher</option><option value="Civil Engineer">Civil Engineer</option><option value="Mechanical Engineer">Mechanical Engineer</option><option value="Manager">Manager</option><option value="Accountant">Accountant</option><option value="Business Owner">Business Owner</option><option value="Consultant">Consultant</option><option value="Nurse">Nurse</option><option value="Architect">Architect</option><option value="Chef">Chef</option><option value="Electrician">Electrician</option><option value="Plumber">Plumber</option><option value="Mechanic">Mechanic</option><option value="Driver">Driver</option><option value="Farmer">Farmer</option><option value="Shopkeeper">Shopkeeper</option><option value="Artist">Artist</option><option value="Writer">Writer</option><option value="Musician">Musician</option><option value="Photographer">Photographer</option><option value="Dancer">Dancer</option><option value="Actor/Actress">Actor/Actress</option><option value="Designer">Designer</option><option value="Pharmacist">Pharmacist</option><option value="Dentist">Dentist</option><option value="Banker">Banker</option><option value="Insurance Agent">Insurance Agent</option><option value="Real Estate Agent">Real Estate Agent</option><option value="Sales Representative">Sales Representative</option><option value="Marketing Professional">Marketing Professional</option><option value="HR Professional">HR Professional</option><option value="Graphic Designer">Graphic Designer</option><option value="Web Developer">Web Developer</option><option value="Data Analyst">Data Analyst</option><option value="Project Manager">Project Manager</option><option value="Scientist">Scientist</option><option value="Pilot">Pilot</option><option value="Flight Attendant">Flight Attendant</option><option value="Police Officer">Police Officer</option><option value="Armed Forces">Armed Forces</option><option value="Journalist">Journalist</option><option value="Freelancer">Freelancer</option><option value="Entrepreneur">Entrepreneur</option><option value="Not Working">Not Working</option><option value="Other">Other</option></select><div id="occupationOtherContainer" class="hidden mt-3"><input type="text" id="occupationOther" name="occupationOther"
+ class="w-full form-input h-12"
+ placeholder="Please specify your job role" maxlength="50"><div class="text-xs text-gray-500 mt-1">Max 50 characters</div></div></div><div><label class="block text-gray-700 font-semibold mb-3">Works At *</label><input type="text" name="worksAt" id="worksAt" required class="w-full form-input h-12" placeholder="Company / Organization name"></div></div></div></div><!-- Full Address Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-map-marker-alt text-pink-600 mr-3"></i>
+ Full Address
+ </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">House/Building Number &
+ Street
+ Name *</label><input type="text" name="houseStreet" required class="w-full form-input h-12"
+ placeholder="Enter house number and street name"></div><div><label class="block text-gray-700 font-semibold mb-3">Locality or Area *</label><input type="text" name="locality" required class="w-full form-input h-12"
+ placeholder="Enter locality or area"></div><div><label class="block text-gray-700 font-semibold mb-3">City*</label><input type="text" name="city" required class="w-full form-input h-12"
+ placeholder="Enter your city"></div><div><label class="block text-gray-700 font-semibold mb-3">State*</label><select name="state" required class="w-full form-input h-12"><option value="">Select State</option><option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option><option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands
+ </option><option value="Chandigarh">Chandigarh</option><option value="Dadra and Nagar Haveli and Daman and Diu">Dadra andNagar
+ Haveli and Daman and Diu</option><option value="Delhi">Delhi</option><option value="Jammu and Kashmir">Jammu and Kashmir</option><option value="Ladakh">Ladakh</option><option value="Lakshadweep">Lakshadweep</option><option value="Puducherry">Puducherry</option></select></div></div><!-- PIN Code Field (full width) --><div class="mt-6"><label class="block text-gray-700 font-semibold mb-3">PIN Code*</label><input type="text" name="pinCode" required class="w-full lg:w-1/2 form-input h-12"
+ placeholder="Enter 6-digit PIN code" maxlength="6" pattern="[0-9]{6}"
+ oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div></div><!-- Family Details Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-home text-pink-600 mr-3"></i>
+ Family Details
+ </h2><!-- Father's Details Card --><div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-6 mb-8"><h3 class="text-xl font-bold text-gray-800 mb-5 flex items-center"><i class="fas fa-male text-gray-600 mr-3"></i>
+ Father's Details
+ </h3><div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Father's Name
+ *</label><input type="text" name="fatherName" required class="w-full form-input h-12"
+ placeholder="Enter father's name"></div><div><label class="block text-gray-700 font-semibold mb-3">Father Status
+ *</label><div class="flex gap-6 mt-2"><label class="flex items-center"><input type="radio" name="fatherStatus" value="live" required
+ class="mr-2"><span class="text-gray-700">Live</span></label><label class="flex items-center"><input type="radio" name="fatherStatus" value="pass-away" required
+ class="mr-2"><span class="text-gray-700">Pass Away</span></label></div></div><div><label class="block text-gray-700 font-semibold mb-3">Father's Occupation
+ *</label><select name="fatherOccupation" required class="w-full form-input h-12"
+ id="fatherOccupationSelect" onchange="toggleFatherOccupationOther()"><option value="">Select Occupation</option><option value="businessman">Businessman</option><option value="government-employee">Government Employee</option><option value="private-employee">Private Employee</option><option value="doctor">Doctor</option><option value="engineer">Engineer</option><option value="teacher">Teacher</option><option value="farmer">Farmer</option><option value="retired">Retired</option><option value="other">Other</option></select><div id="fatherOccupationOtherContainer" class="mt-3 hidden"><input type="text" id="fatherOccupationOther"
+ name="fatherOccupationOther" class="w-full form-input h-12"
+ placeholder="Please specify occupation"></div></div></div></div><!-- Mother's Details Card --><div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-6 mb-8"><h3 class="text-xl font-bold text-gray-800 mb-5 flex items-center"><i class="fas fa-female text-gray-600 mr-3"></i>
+ Mother's Details
+ </h3><div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Mother's Name
+ *</label><input type="text" name="motherName" required class="w-full form-input h-12"
+ placeholder="Enter mother's name"></div><div><label class="block text-gray-700 font-semibold mb-3">Mother Status
+ *</label><div class="flex gap-6 mt-2"><label class="flex items-center"><input type="radio" name="motherStatus" value="live" required
+ class="mr-2"><span class="text-gray-700">Live</span></label><label class="flex items-center"><input type="radio" name="motherStatus" value="pass-away" required
+ class="mr-2"><span class="text-gray-700">Pass Away</span></label></div></div><div><label class="block text-gray-700 font-semibold mb-3">Mother's Occupation
+ *</label><select name="motherOccupation" required class="w-full form-input h-12"
+ id="motherOccupationSelect" onchange="toggleMotherOccupationOther()"><option value="">Select Occupation</option><option value="housewife">Housewife</option><option value="businesswoman">Businesswoman</option><option value="government-employee">Government Employee</option><option value="private-employee">Private Employee</option><option value="doctor">Doctor</option><option value="engineer">Engineer</option><option value="teacher">Teacher</option><option value="nurse">Nurse</option><option value="retired">Retired</option><option value="other">Other</option></select><div id="motherOccupationOtherContainer" class="mt-3 hidden"><input type="text" id="motherOccupationOther"
+ name="motherOccupationOther" class="w-full form-input h-12"
+ placeholder="Please specify occupation"></div></div></div></div><!-- Other Family Details --><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Number of Siblings
+ *</label><select name="numberOfSiblings" required class="w-full form-input h-12"><option value="">Select Number of Siblings</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="5+">5+</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Family Type *</label><select name="familyType" required class="w-full form-input h-12"><option value="">Select Family Type</option><option value="joint">Joint Family</option><option value="nuclear">Nuclear Family</option><option value="extended">Extended Family</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Family Status *</label><select name="familyStatus" required class="w-full form-input h-12"><option value="">Select Family Status</option><option value="middle-class">Middle Class</option><option value="upper-middle">Upper Middle</option><option value="high">High</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Family's Lifestyle
+ *</label><select name="familyLifestyle" required class="w-full form-input h-12"><option value="">Select Family's Lifestyle</option><option value="liberal">Liberal</option><option value="moderate">Moderate</option><option value="orthodox">Orthodox</option><option value="traditional">Traditional</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Family Values *</label><select name="familyValues" id="familyValuesSelect" required
+ class="w-full form-input h-12" onchange="handleFamilyValuesChange()"><option value="">Select Family Values</option><option value="own-house">Own House</option><option value="rental-house">Rental House</option><option value="other">Other</option></select></div><div id="otherHousingTypeDiv" style="display: none;"><label class="block text-gray-700 font-semibold mb-3">Please Specify</label><input type="text" name="housingTypeOther" id="housingTypeOther"
+ class="w-full form-input h-12" placeholder="Please specify housing type"></div></div><!-- Family Income Field (full width) --><div class="mt-6"><label class="block text-gray-700 font-semibold mb-3">Income (Annual) *</label><select name="familyIncome" required class="w-full form-input h-12"><option value="">Select Income Range</option><option value="below-1-lakh">< ₹1 Lakh</option><option value="1-5-lakhs">₹1–5 Lakhs</option><option value="5-10-lakhs">₹5–10 Lakhs</option><option value="10-25-lakhs">₹10–25 Lakhs</option><option value="25-plus-lakhs">₹25+ Lakhs</option></select></div><!-- About Myself Field --><div class="mt-6"><label class="block text-gray-700 font-semibold mb-3">About Myself</label><textarea name="aboutMyself" id="aboutMyselfTextarea" rows="4" maxlength="100"
+ class="w-full form-input"
+ placeholder="Write a brief description about yourself (max 100 characters)"
+ oninput="updateAboutMyselfCounter()"></textarea><div class="text-xs text-gray-500 mt-1 flex justify-between"><span>Max 100 characters</span><span id="aboutMyselfCounter">0 / 100</span></div></div><!-- Sibling Details Subsection --><div class="mt-8 pt-6 border-t-2 border-pink-200"><h3 class="text-xl font-bold text-pink-600 mb-6 flex items-center"><i class="fas fa-users text-pink-600 mr-2"></i>
+ Sibling Details
+ </h3><!-- Brother Details --><div class="mb-6"><h4 class="text-lg font-semibold text-gray-700 mb-4">Brother Information</h4><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Number of Brothers
+ *</label><select name="numberOfBrothers" required class="w-full form-input h-12"
+ id="numberOfBrothers" onchange="handleBrothersChange()"><option value="">Select Number of Brothers</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="5+">5+</option></select></div><div id="brotherAgeRelation" class="hidden"><label class="block text-gray-700 font-semibold mb-3">Elder or Younger
+ Brothers
+ *</label><select name="brotherAgeRelation" class="w-full form-input h-12"><option value="">Select Age Relation</option><option value="elder">Elder</option><option value="younger">Younger</option><option value="both">Both</option></select></div><div id="brotherMaritalStatus" class="hidden"><label class="block text-gray-700 font-semibold mb-3">Brothers' Marital
+ Status
+ *</label><select name="brotherMaritalStatus" class="w-full form-input h-12"><option value="">Select Marital Status</option><option value="all-married">All Married</option><option value="some-married">Some Married</option><option value="none-married">None Married</option></select></div></div><div id="brotherOccupationNotes" class="mt-4 hidden"><label class="block text-gray-700 font-semibold mb-3">Brothers' Occupation /
+ Notes</label><textarea name="brotherOccupationNotes" rows="3" class="w-full form-input"
+ placeholder="Enter details about your brothers' occupations or any additional notes..."></textarea></div></div><!-- Sister Details --><div class="mb-6"><h4 class="text-lg font-semibold text-gray-700 mb-4">Sister Information</h4><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Number of Sisters
+ *</label><select name="numberOfSisters" required class="w-full form-input h-12"
+ id="numberOfSisters" onchange="handleSistersChange()"><option value="">Select Number of Sisters</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="5+">5+</option></select></div><div id="sisterAgeRelation" class="hidden"><label class="block text-gray-700 font-semibold mb-3">Elder or Younger
+ Sisters
+ *</label><select name="sisterAgeRelation" class="w-full form-input h-12"><option value="">Select Age Relation</option><option value="elder">Elder</option><option value="younger">Younger</option><option value="both">Both</option></select></div><div id="sisterMaritalStatus" class="hidden"><label class="block text-gray-700 font-semibold mb-3">Sisters' Marital
+ Status
+ *</label><select name="sisterMaritalStatus" class="w-full form-input h-12"><option value="">Select Marital Status</option><option value="all-married">All Married</option><option value="some-married">Some Married</option><option value="none-married">None Married</option></select></div></div><div id="sisterOccupationNotes" class="mt-4 hidden"><label class="block text-gray-700 font-semibold mb-3">Sisters' Occupation /
+ Notes</label> <textarea name="sisterOccupationNotes" rows="3"
+ class="w-full form-input"
+ placeholder="Enter details about your sisters' occupations or any additional notes..."></textarea></div></div></div></div><!-- Cultural Info Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+ Cultural Information
+
+ </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Religion *</label><div
+ class="w-full form-input h-12 bg-gray-100 rounded-md border border-gray-300 flex items-center px-4 text-gray-700 font-medium"><i class="fas fa-check-circle text-pink-600 mr-2"></i>
+ Hindu
+ </div><input type="hidden" name="religion" value="Hindu"></div><div><label class="block text-gray-700 font-semibold mb-3">Rasi () *</label><select name="rasi" required class="w-full form-input h-12">
+ <option value="">Select Rasi</option>
+ <option value="aries">Aries ()</option>
+ <option value="taurus">Taurus ()</option>
+ <option value="gemini">Gemini ()</option>
+ <option value="cancer">Cancer ()</option>
+ <option value="leo">Leo ()</option>
+ <option value="virgo">Virgo ()</option>
+ <option value="libra">Libra ()</option>
+ <option value="scorpio">Scorpio ()</option>
+ <option value="sagittarius">Sagittarius ()</option>
+ <option value="capricorn">Capricorn ()</option>
+ <option value="aquarius">Aquarius ()</option>
+ <option value="pisces">Pisces ()</option>
+ </select></div><div><label class="block text-gray-700 font-semibold mb-3">Star () *</label><select name="star" required class="w-full form-input h-12">
+ <option value="">Select Star</option>
+ <option value="ashwini">Ashwini ()</option>
+ <option value="bharani">Bharani ()</option>
+ <option value="krittika">Krittika ()</option>
+ <option value="rohini">Rohini ()</option>
+ <option value="mrigashira">Mrigashira ()</option>
+ <option value="ardra">Ardra ()</option>
+ <option value="punarvasu">Punarvasu ()</option>
+ <option value="pushya">Pushya ()</option>
+ <option value="ashlesha">Ashlesha ()</option>
+ <option value="magha">Magha ()</option>
+ <option value="purva-phalguni">Purva Phalguni ()</option>
+ <option value="uttara-phalguni">Uttara Phalguni ()</option>
+ <option value="hasta">Hasta ()</option>
+ <option value="chitra">Chitra ()</option>
+ <option value="swati">Swati ()</option>
+ <option value="vishakha">Vishakha ()</option>
+ <option value="anuradha">Anuradha ()</option>
+ <option value="jyeshtha">Jyeshtha ()</option>
+ <option value="moola">Moola ()</option>
+ <option value="purvashadha">Purvashadha ()</option>
+ <option value="uttarashadha">Uttarashadha ()</option>
+ <option value="shravana">Shravana ()</option>
+ <option value="dhanishta">Dhanishta ()</option>
+ <option value="shatabhisha">Shatabhisha ()</option>
+ <option value="purvabhadrapada">Purvabhadrapada ()</option>
+ <option value="uttara-bhadrapada">Uttara Bhadrapada ()</option>
+ <option value="revati">Revati ()</option>
+ </select></div><div><label class="block text-gray-700 font-semibold mb-3">Lagnam () *</label><select name="lagnam" required class="w-full form-input h-12">
+ <option value="">Select Lagnam</option>
+ <option value="aries">Aries ()</option>
+ <option value="taurus">Taurus ()</option>
+ <option value="gemini">Gemini ()</option>
+ <option value="cancer">Cancer ()</option>
+ <option value="leo">Leo ()</option>
+ <option value="virgo">Virgo ()</option>
+ <option value="libra">Libra ()</option>
+ <option value="scorpio">Scorpio ()</option>
+ <option value="sagittarius">Sagittarius ()</option>
+ <option value="capricorn">Capricorn ()</option>
+ <option value="aquarius">Aquarius ()</option>
+ <option value="pisces">Pisces ()</option>
+ </select></div><div><label class="block text-gray-700 font-semibold mb-3">Gotra () *</label><select name="gotra" required class="w-full form-input h-12">
+ <option value="">Select Gotra ()</option>
+ <option value="Agasthi">Agasthi ()</option>
+ <option value="Viswamitra">Viswamitra ()</option>
+ <option value="Kashyapa">Kashyapa ()</option>
+ <option value="Bharadwaj">Bharadwaj ()</option>
+ <option value="Vasishtha">Vasishtha ()</option>
+ <option value="Gowthama">Gowthama ()</option>
+ <option value="Atri">Atri ()</option>
+ <option value="Angirasa">Angirasa ()</option>
+ <option value="Kaushika">Kaushika ()</option>
+ <option value="Harita">Harita ()</option>
+ <option value="Shandilya">Shandilya ()</option>
+ <option value="Jamadagni">Jamadagni ()</option>
+ <option value="Mudgala">Mudgala ()</option>
+ <option value="Parashara">Parashara ()</option>
+ <option value="Vishnu">Vishnu ()</option>
+ <option value="Srivatsa">Srivatsa ()</option>
+ <option value="Madhvacharya">Madhvacharya ()</option>
+ <option value="Lakshmana">Lakshmana ()</option>
+ <option value="Shiva">Shiva ()</option>
+ <option value="Marichi">Marichi ()</option>
+ <option value="Bhrigu">Bhrigu ()</option>
+ <option value="Pulastya">Pulastya ()</option>
+ <option value="Pulaha">Pulaha ()</option>
+ <option value="Kratu">Kratu ()</option>
+ <option value="Agni">Agni ()</option>
+ <option value="Dhananjaya">Dhananjaya ()</option>
+ <option value="Koundinya">Koundinya ()</option>
+ <option value="Nandi">Nandi ()</option>
+ <option value="Sankrithi">Sankrithi ()</option>
+ <option value="Saraswat">Saraswat ()</option>
+ <option value="Vishwamitra">Vishwamitra ()</option>
+ <option value="Yajnavalkya">Yajnavalkya ()</option>
+ <option value="Darbha">Darbha ()</option>
+ <option value="Upamanyu">Upamanyu ()</option>
+ <option value="Karthikeya">Karthikeya ()</option>
+ <option value="Vyaghrapada">Vyaghrapada ()</option>
+ <option value="Parasara">Parasara ()</option>
+ <option value="Shringi">Shringi ()</option>
+ </select></div><div><label class="block text-gray-700 font-semibold mb-3">Dosham</label><input type="text" name="dosham" class="w-full form-input h-12"
+ placeholder="Enter dosham (if any)"></div><div><label class="block text-gray-700 font-semibold mb-3">Native Place *</label><input type="text" name="nativePlace" required class="w-full form-input h-12"
+ placeholder="Enter your native place"></div><div><label class="block text-gray-700 font-semibold mb-3">Mother Tongue*</label><select name="motherTongue" required class="w-full form-input h-12"
+ id="motherTongueSelect" onchange="toggleMotherTongueOther()"><option value="">Select Mother Tongue</option><option value="Tamil">Tamil</option><option value="Telugu">Telugu</option><option value="Malayalam">Malayalam</option><option value="Kannada">Kannada</option><option value="Hindi">Hindi</option><option value="English">English</option><option value="Marathi">Marathi</option><option value="Gujarati">Gujarati</option><option value="Bengali">Bengali</option><option value="Punjabi">Punjabi</option><option value="Urdu">Urdu</option><option value="Other">Other</option></select><div id="motherTongueOtherContainer" class="mt-3 hidden"><input type="text" id="motherTongueOther" name="motherTongueOther"
+ class="w-full form-input h-12"
+ placeholder="Please specify your mother tongue"></div></div></div><!-- Caste Field --><div class="mt-6"><label class="block text-gray-700 font-semibold mb-3">Caste () *</label><select name="caste" required class="w-full form-input h-12" id="casteSelect">
+ <option value="">Select Caste</option>
+ <option value="No Caste">No Caste ()</option>
+ <option value="Vishwakarma">Vishwakarma ()</option>
+ <option value="Brahmin">Brahmin ()</option>
+ <option value="Gramani">Gramani ()</option>
+ <option value="Gounder">Gounder ()</option>
+ <option value="Mudaliar">Mudaliar ()</option>
+ <option value="Thevar">Thevar ()</option>
+ <option value="Chettiar">Chettiar ()</option>
+ <option value="Naidu">Naidu ()</option>
+ <option value="Nadar">Nadar ()</option>
+ <option value="Vanniyar">Vanniyar ()</option>
+ <option value="Iyer">Iyer ()</option>
+ <option value="Iyengar">Iyengar ()</option>
+ <option value="Aggarwal">Aggarwal ()</option>
+ <option value="Agrawal">Agrawal ()</option>
+ <option value="Arya Vysya">Arya Vysya ( )</option>
+ <option value="Baniya">Baniya ()</option>
+ <option value="Bunt">Bunt ()</option>
+ <option value="Chaturvedi">Chaturvedi ()</option>
+ <option value="Dubey">Dubey ()</option>
+ <option value="Gaud">Gaud ()</option>
+ <option value="Gowda">Gowda ()</option>
+ <option value="Gupta">Gupta ()</option>
+ <option value="Jain">Jain ()</option>
+ <option value="Jat">Jat ()</option>
+ <option value="Kamma">Kamma ()</option>
+ <option value="Kapoor">Kapoor ()</option>
+ <option value="Kapu">Kapu ()</option>
+ <option value="Kayastha">Kayastha ()</option>
+ <option value="Khatri">Khatri ()</option>
+ <option value="Kshatriya">Kshatriya ()</option>
+ <option value="Kurmi">Kurmi ()</option>
+ <option value="Lingayat">Lingayat ()</option>
+ <option value="Maheshwari">Maheshwari ()</option>
+ <option value="Maratha">Maratha ()</option>
+ <option value="Marwari">Marwari ()</option>
+ <option value="Nair">Nair ()</option>
+ <option value="Nayak">Nayak ()</option>
+ <option value="Patel">Patel ()</option>
+ <option value="Pillai">Pillai ()</option>
+ <option value="Rajput">Rajput ()</option>
+ <option value="Reddy">Reddy ()</option>
+ <option value="Rohit">Rohit ()</option>
+ <option value="Saini">Saini ()</option>
+ <option value="Sharma">Sharma ()</option>
+ <option value="Shudra">Shudra ()</option>
+ <option value="Sindhi">Sindhi ()</option>
+ <option value="Soni">Soni ()</option>
+ <option value="Thakur">Thakur ()</option>
+ <option value="Tiwari">Tiwari ()</option>
+ <option value="Trivedi">Trivedi ()</option>
+ <option value="Vaishnav">Vaishnav ()</option>
+ <option value="Vaishya">Vaishya ()</option>
+ <option value="Varma">Varma ()</option>
+ <option value="Vellalar">Vellalar ()</option>
+ <option value="Yadav">Yadav ()</option>
+ </select><div class="mt-3"><label class="block text-gray-600 font-medium mb-2">Other Caste</label><input type="text" name="casteOther" class="w-full form-input h-12"
+ placeholder="Type your caste if not listed above" id="casteOther"></div></div><!-- Subcaste Field --><div class="mt-6"><label class="block text-gray-700 font-semibold mb-3">Subcaste</label><input type="text" name="subcaste" class="w-full form-input h-12"
+ placeholder="Eg: Vadakalai, Thuluva Vellalar"></div><!-- Horoscope Upload Field --><div class="mt-6"><label class="block text-gray-700 font-semibold mb-3">Horoscope Upload *</label><input type="file" name="horoscope" accept="image/*,.pdf"
+ class="w-full form-input h-12 py-2" required><div class="mt-3 flex items-center"><input type="checkbox" name="horoscopeLock" id="horoscopeLock" class="mr-2"><label for="horoscopeLock" class="text-gray-700 font-medium">Lock horoscope
+ (make private)</label></div><p class="text-sm text-gray-500 mt-2"><i class="fas fa-info-circle mr-1"></i>
+ Upload your horoscope as image or PDF
+ </p></div></div><!-- Partner Preference Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-heart text-pink-600 mr-3"></i>
+ Partner Preferences
+ <span class="text-sm font-normal text-gray-500 ml-2">(Help us find your perfect
+ match)</span></h2><!-- Basic Physical Preferences --><div class="mb-8"><h3 class="text-xl font-bold text-pink-600 mb-6 flex items-center"><i class="fas fa-user text-pink-600 mr-2"></i>
+ Physical Preferences
+ </h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Preferred Age
+ Range</label><div class="grid grid-cols-2 gap-3"><div><label class="block text-gray-600 font-medium mb-2">From Age</label><select name="preferredAgeFrom" class="w-full form-input h-12"><option value="">Select Min Age</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="32">32</option><option value="35">35</option><option value="40">40</option><option value="45">45</option></select></div><div><label class="block text-gray-600 font-medium mb-2">To Age</label><select name="preferredAgeTo" class="w-full form-input h-12"><option value="">Select Max Age</option><option value="22">22</option><option value="25">25</option><option value="28">28</option><option value="30">30</option><option value="32">32</option><option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option><option value="55">55</option><option value="60">60</option></select></div></div></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Height
+ Range</label><div class="grid grid-cols-2 gap-3"><div><label class="block text-gray-600 font-medium mb-2">From
+ Height</label><select name="preferredHeightFrom" class="w-full form-input h-12"><option value="">Select Min Height</option><option value="4'6">4'6"</option><option value="4'8">4'8"</option><option value="4'10">4'10"</option><option value="5'0">5'0"</option><option value="5'2">5'2"</option><option value="5'4">5'4"</option><option value="5'6">5'6"</option><option value="5'8">5'8"</option><option value="5'10">5'10"</option><option value="6'0">6'0"</option><option value="6'2">6'2"</option></select></div><div><label class="block text-gray-600 font-medium mb-2">To
+ Height</label><select name="preferredHeightTo" class="w-full form-input h-12"><option value="">Select Max Height</option><option value="5'0">5'0"</option><option value="5'2">5'2"</option><option value="5'4">5'4"</option><option value="5'6">5'6"</option><option value="5'8">5'8"</option><option value="5'10">5'10"</option><option value="6'0">6'0"</option><option value="6'2">6'2"</option><option value="6'4">6'4"</option><option value="6'6">6'6"</option></select></div></div></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Body
+ Type</label><select name="preferredBodyType" class="w-full form-input h-12"><option value="">Any Body Type</option><option value="slim">Slim</option><option value="average">Average</option><option value="fit">Fit</option><option value="athletic">Athletic</option><option value="heavy">Heavy</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Skin
+ Colour</label><select name="preferredSkinColour" class="w-full form-input h-12"><option value="">Any Skin Colour</option><option value="fair">Fair</option><option value="wheatish">Wheatish</option><option value="dark">Dark</option></select></div></div></div><!-- Educational & Professional Preferences --><div class="mb-8"><h3 class="text-xl font-bold text-pink-600 mb-6 flex items-center"><i class="fas fa-graduation-cap text-pink-600 mr-2"></i>
+ Educational & Professional Preferences
+ </h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Minimum Education
+ Level</label><select name="preferredEducation" class="w-full form-input h-12"><option value="">Any Education Level</option><option value="high-school">High School</option><option value="intermediate">Intermediate/12th</option><option value="diploma">Diploma</option><option value="bachelors">Bachelor's Degree</option><option value="masters">Master's Degree</option><option value="phd">PhD</option><option value="professional">Professional Degree</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred
+ Profession</label><select name="preferredProfession" class="w-full form-input h-12"
+ id="preferredProfessionSelect"
+ onchange="togglePreferredProfessionOther()"><option value="">Any Profession</option><option value="doctor">Doctor</option><option value="engineer">Engineer</option><option value="teacher">Teacher</option><option value="businessman">Businessman</option><option value="government-employee">Government Employee</option><option value="private-employee">Private Employee</option><option value="lawyer">Lawyer</option><option value="ca">Chartered Accountant</option><option value="it-professional">IT Professional</option><option value="nurse">Nurse</option><option value="student">Student</option><option value="other">Other</option></select><div id="preferredProfessionOtherContainer" class="mt-3 hidden"><input type="text" id="preferredProfessionOther"
+ name="preferredProfessionOther" class="w-full form-input h-12"
+ placeholder="Please specify preferred profession"></div></div><div><label class="block text-gray-700 font-semibold mb-3">Employment Status
+ Preference</label><select name="preferredEmploymentStatus" class="w-full form-input h-12"><option value="">Any Employment Status</option><option value="employed">Must be Employed</option><option value="business">Business Owner</option><option value="student">Student</option><option value="homemaker">Homemaker</option><option value="flexible">Flexible</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Income Range
+ (Annual)</label><select name="preferredIncome" class="w-full form-input h-12"><option value="">Any Income Range</option><option value="below-1-lakh">< ₹1 Lakh</option><option value="1-5-lakhs">₹1–5 Lakhs</option><option value="5-10-lakhs">₹5–10 Lakhs</option><option value="10-25-lakhs">₹10–25 Lakhs</option><option value="25-plus-lakhs">₹25+ Lakhs</option></select></div></div></div><!-- Cultural & Religious Preferences --><div class="mb-8"><h3 class="text-xl font-bold text-pink-600 mb-6 flex items-center"><i class="fas fa-om text-pink-600 mr-2"></i>
+ Cultural & Religious Preferences
+ </h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Preferred
+ Caste</label><select name="preferredCaste" class="w-full form-input h-12" id="preferredCasteSelect">
+ <option value="any-caste">Any Caste ( )</option>
+ <option value="same-caste">Same Caste Only ( </option>
+ <option value="specific">Specific Caste ( )</option>
+ <option value="No Caste">No Caste ()</option>
+ <option value="Vishwakarma">Vishwakarma ()</option>
+ <option value="Brahmin">Brahmin ()</option>
+ <option value="Gramani">Gramani ()</option>
+ <option value="Gounder">Gounder ()</option>
+ <option value="Mudaliar">Mudaliar ()</option>
+ <option value="Thevar">Thevar ()</option>
+ <option value="Chettiar">Chettiar ()</option>
+ <option value="Naidu">Naidu ()</option>
+ <option value="Nadar">Nadar ()</option>
+ <option value="Vanniyar">Vanniyar ()</option>
+ <option value="Iyer">Iyer ()</option>
+ <option value="Iyengar">Iyengar ()</option>
+ <option value="Aggarwal">Aggarwal ()</option>
+ <option value="Agrawal">Agrawal ()</option>
+ <option value="Arya Vysya">Arya Vysya ( )</option>
+ <option value="Baniya">Baniya ()</option>
+ <option value="Bunt">Bunt ()</option>
+ <option value="Chaturvedi">Chaturvedi ()</option>
+ <option value="Dubey">Dubey ()</option>
+ <option value="Gaud">Gaud ()</option>
+ <option value="Gowda">Gowda ()</option>
+ <option value="Gupta">Gupta ()</option>
+ <option value="Jain">Jain ()</option>
+ <option value="Jat">Jat ()</option>
+ <option value="Kamma">Kamma ()</option>
+ <option value="Kapoor">Kapoor ()</option>
+ <option value="Kapu">Kapu ()</option>
+ <option value="Kayastha">Kayastha ()</option>
+ <option value="Khatri">Khatri ()</option>
+ <option value="Kshatriya">Kshatriya ()</option>
+ <option value="Kurmi">Kurmi ()</option>
+ <option value="Lingayat">Lingayat ()</option>
+ <option value="Maheshwari">Maheshwari ()</option>
+ <option value="Maratha">Maratha ()</option>
+ <option value="Marwari">Marwari ()</option>
+ <option value="Nair">Nair ()</option>
+ <option value="Nayak">Nayak ()</option>
+ <option value="Patel">Patel ()</option>
+ <option value="Pillai">Pillai ()</option>
+ <option value="Rajput">Rajput ()</option>
+ <option value="Reddy">Reddy ()</option>
+ <option value="Rohit">Rohit ()</option>
+ <option value="Saini">Saini ()</option>
+ <option value="Sharma">Sharma ()</option>
+ <option value="Shudra">Shudra ()</option>
+ <option value="Sindhi">Sindhi ()</option>
+ <option value="Soni">Soni ()</option>
+ <option value="Thakur">Thakur ()</option>
+ <option value="Tiwari">Tiwari ()</option>
+ <option value="Trivedi">Trivedi ()</option>
+ <option value="Vaishnav">Vaishnav ()</option>
+ <option value="Vaishya">Vaishya ()</option>
+ <option value="Varma">Varma ()</option>
+ <option value="Vellalar">Vellalar ()</option>
+ <option value="Yadav">Yadav ()</option>
+ </select><div id="preferredCasteCustomField" class="mt-3 hidden"><label class="block text-gray-600 font-medium mb-2">Please specify
+ preferred caste *</label><input type="text" name="preferredCasteCustom"
+ class="w-full form-input h-12"
+ placeholder="Enter specific caste preference"></div></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Mother
+ Tongue</label><select name="preferredMotherTongue" class="w-full form-input h-12"><option value="">Any Mother Tongue</option><option value="same-language">Same as Mine</option><option value="tamil">Tamil</option><option value="telugu">Telugu</option><option value="malayalam">Malayalam</option><option value="kannada">Kannada</option><option value="hindi">Hindi</option><option value="english">English</option><option value="marathi">Marathi</option><option value="gujarati">Gujarati</option><option value="bengali">Bengali</option><option value="punjabi">Punjabi</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Rasi</label><select name="preferredRasi" class="w-full form-input h-12">
+ <option value="any rasi">Any Rasi ( )</option>
+ <option value="compatible">Astrologically Compatible ( )</option>
+ <option value="aries">Aries ()</option>
+ <option value="taurus">Taurus ()</option>
+ <option value="gemini">Gemini ()</option>
+ <option value="cancer">Cancer ()</option>
+ <option value="leo">Leo ()</option>
+ <option value="virgo">Virgo ()</option>
+ <option value="libra">Libra ()</option>
+ <option value="scorpio">Scorpio ()</option>
+ <option value="sagittarius">Sagittarius ()</option>
+ <option value="capricorn">Capricorn ()</option>
+ <option value="aquarius">Aquarius ()</option>
+ <option value="pisces">Pisces ()</option>
+ </select></div><div><label class="block text-gray-700 font-semibold mb-3">Horoscope
+ Matching</label><select name="horoscopeMatching" class="w-full form-input h-12"><option value="">Any Preference</option><option value="mandatory">Horoscope Matching Mandatory</option><option value="preferred">Horoscope Matching Preferred</option><option value="not-important">Horoscope Matching Not Important</option></select></div></div></div><!-- Location & Family Preferences --><div class="mb-8"><h3 class="text-xl font-bold text-pink-600 mb-6 flex items-center"><i class="fas fa-map-marker-alt text-pink-600 mr-2"></i>
+ Location & Family Preferences
+ </h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Preferred
+ Location</label><select name="preferredLocation" class="w-full form-input h-12"><option value="">Any Location</option><option value="same-city">Same City</option><option value="same-state">Same State</option><option value="south-india">South India</option><option value="north-india">North India</option><option value="metro-cities">Metro Cities Only</option><option value="abroad">Abroad</option><option value="willing-to-relocate">Willing to Relocate</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Family
+ Type</label><select name="preferredFamilyType" class="w-full form-input h-12"><option value="">Any Family Type</option><option value="joint">Joint Family</option><option value="nuclear">Nuclear Family</option><option value="extended">Extended Family</option><option value="flexible">Flexible</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Preferred Family
+ Values</label><select name="preferredFamilyValues" class="w-full form-input h-12"><option value="">Any Family Values</option><option value="traditional">Traditional Values</option><option value="modern">Modern Values</option><option value="moderate">Moderate Values</option><option value="liberal">Liberal Values</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Marital Status
+ Preference</label><select name="preferredMaritalStatus" class="w-full form-input h-12"><option value="">Any Marital Status</option><option value="never-married">Never Married Only</option><option value="divorced">Divorced Acceptable</option><option value="widowed">Widowed Acceptable</option><option value="any-status">Any Marital Status</option></select></div></div></div><!-- Lifestyle Preferences --><div class="mb-8"><h3 class="text-xl font-bold text-pink-600 mb-6 flex items-center"><i class="fas fa-leaf text-pink-600 mr-2"></i>
+ Lifestyle Preferences
+ </h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Dietary
+ Preference</label><select name="preferredDiet" class="w-full form-input h-12"><option value="">Any Diet</option><option value="vegetarian">Vegetarian Only</option><option value="non-vegetarian">Non-Vegetarian Acceptable</option><option value="eggetarian">Eggetarian</option><option value="vegan">Vegan</option><option value="jain-vegetarian">Jain Vegetarian</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Smoking
+ Preference</label><select name="preferredSmoking" class="w-full form-input h-12"><option value="">Any Preference</option><option value="non-smoker">Non-Smoker Only</option><option value="occasional">Occasional Smoker Acceptable</option><option value="any">Any Smoking Habit</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Drinking
+ Preference</label><select name="preferredDrinking" class="w-full form-input h-12"><option value="">Any Preference</option><option value="non-drinker">Non-Drinker Only</option><option value="social">Social Drinker Acceptable</option><option value="occasional">Occasional Drinker Acceptable</option><option value="any">Any Drinking Habit</option></select></div><div><label
+ class="block text-gray-700 font-semibold mb-3">Exercise/Fitness</label><select name="preferredFitness" class="w-full form-input h-12"><option value="">Any Fitness Level</option><option value="fitness-conscious">Fitness Conscious</option><option value="regular-exercise">Regular Exercise</option><option value="sports-enthusiast">Sports Enthusiast</option><option value="moderate">Moderate Activity</option></select></div></div></div><!-- Horoscope Matching Preferences --><div class="mb-8"><h3 class="text-xl font-bold text-pink-600 mb-6 flex items-center"><i class="fas fa-moon text-pink-600 mr-2"></i>
+ Horoscope Matching Preferences
+ </h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-4"><div class="flex items-center"><input type="checkbox" name="matchWithHoroscope" id="matchWithHoroscope"
+ class="mr-3 h-5 w-5 text-pink-600"><label for="matchWithHoroscope" class="text-gray-700 font-semibold">Match
+ with Horoscope</label></div><div class="flex items-center"><input type="checkbox" name="starMatch" id="starMatch"
+ class="mr-3 h-5 w-5 text-pink-600"><label for="starMatch" class="text-gray-700 font-semibold">Star
+ Match</label></div></div></div><!-- Quick Selection Tags --><div
+ class="bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-xl p-6"><h4 class="text-lg font-bold text-gray-800 mb-4">Quick Selection Tags</h4><p class="text-sm text-gray-600 mb-4">Select the most important qualities you're
+ looking for (optional):</p><div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="family-oriented"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Family Oriented</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="well-educated"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Well Educated</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="good-values"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Good Values</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="religious"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Religious</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="traditional"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Traditional</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="modern"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Modern</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="financially-stable"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Financially Stable</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="caring"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Caring Nature</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="honest"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Honest</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="respectful"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Respectful</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="sense-of-humor"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Sense of Humor</span></label><label
+ class="flex items-center space-x-2 bg-white p-3 rounded-lg border border-gray-200 hover:border-pink-300 cursor-pointer transition-all duration-200 hover:shadow-md"><input type="checkbox" name="quickPreferences" value="ambitious"
+ class="form-checkbox h-4 w-4 text-pink-600"><span class="text-sm font-medium">Ambitious</span></label></div></div></div></div><!-- End of locked-sections --><!-- STEP 1 VALIDATION WARNING --><div id="step1ValidationWarning"
+ class="hidden mb-6 p-4 bg-red-100 border-2 border-red-400 rounded-lg"><div class="flex items-center text-red-800"><i class="fas fa-exclamation-triangle text-2xl mr-3"></i><div><h4 class="font-bold text-lg">Missing Required Fields!</h4><p id="step1ValidationMessage" class="text-sm mt-1"></p></div></div></div><!-- STEP 1 CONTINUE BUTTON --><div class="text-center"><button type="button" id="nextStep1" onclick="validateAndGoToStep2()"
+ class="bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white px-12 py-4 rounded-xl font-bold text-lg transition duration-300 shadow-lg">
+ Continue to Upload Documents
+ <i class="fas fa-arrow-right ml-2"></i></button><p class="text-sm text-gray-500 mt-2" id="nextStepMessage">
+ Fill all mandatory fields and verify your email
+ </p></div></div><!-- End of Step 1 --><!-- Step 2: Upload & Verification --><div id="step2" class="step-content hidden"><!-- Profile Picture Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-camera text-pink-600 mr-3"></i>
+ Profile Picture *
+ </h2><div class="bg-pink-50 border-2 border-dashed border-pink-300 rounded-xl p-8 text-center"><input type="file" id="profilePicture" name="profilePicture"
+ accept="image/jpeg,image/jpg,image/png,image/webp" class="hidden"
+ onchange="handleProfilePictureUpload(event)"><div id="uploadArea" class="cursor-pointer"
+ onclick="document.getElementById('profilePicture').click()"><i class="fas fa-cloud-upload-alt text-6xl text-pink-400 mb-4"></i><p class="text-gray-700 text-lg font-semibold mb-2">Click to upload profile picture
+ </p><p class="text-gray-500">JPG, PNG, WebP up to 10MB</p><p class="text-xs text-gray-400 mt-2">Supported formats: JPEG, PNG, WebP</p></div><div id="imagePreview" class="hidden"><div class="relative mb-4"><img id="previewImg" src="" alt="Preview"
+ class="w-48 h-48 object-cover rounded-xl shadow-lg mx-auto border-4 border-white"
+ style="display: none;"></div><div class="flex justify-center space-x-3 mb-4"><button type="button"
+ onclick="document.getElementById('profilePicture').click()"
+ class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"><i class="fas fa-edit mr-2"></i>Change Picture
+ </button><button type="button" onclick="removeProfilePicture()"
+ class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"><i class="fas fa-trash mr-2"></i>Remove Picture
+ </button></div><div class="mt-6"><label
+ class="flex items-center justify-center space-x-3 bg-white p-4 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 transition-colors"><input type="checkbox" id="hidePhoto" name="hidePhoto"
+ class="form-checkbox h-5 w-5 text-pink-600"><span class="text-gray-700 font-medium">Hide my photo from other
+ members</span><i class="fas fa-eye-slash text-gray-400"></i></label><p class="text-xs text-gray-500 mt-2 text-center">Your photo will be blurred for
+ privacy</p></div></div><div id="profilePictureError"
+ class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg"><i class="fas fa-exclamation-triangle mr-2"></i></div></div><!-- Removed the old profilePictureError div --><div class="mt-3 text-xs text-gray-500"><i class="fas fa-info-circle mr-1"></i>
+ Your profile picture helps others recognize you. Choose a clear, recent photo where your
+ face is visible.
+ </div></div><!-- Document Upload Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-file-upload text-pink-600 mr-3"></i>
+ Document Verification
+ </h2><!-- Document Type Selection --><div class="bg-pink-50 p-6 rounded-xl border border-pink-200 mb-6"><label class="block text-gray-700 font-semibold mb-3">Select Document Type <span
+ class="text-red-600">*</span></label><select id="documentType" name="documentType" class="w-full form-input h-12"
+ onchange="handleDocumentTypeChange()"><option value="">-- Select Document --</option><option value="digilocker">DigiLocker (Aadhaar / KYC)</option><option value="pan_card">PAN Card</option><option value="voter_id">Voter ID</option><option value="driving_license">Driving License</option><option value="passport">Passport</option></select></div><!-- Dynamic Document Number Input --><div id="documentNumberContainer"
+ class="bg-pink-50 p-6 rounded-xl border border-pink-200 mb-6 hidden"><label id="documentNumberLabel" class="block text-gray-700 font-semibold mb-3">Document
+ Number <span class="text-red-600">*</span></label><input type="text" id="documentNumber" name="documentNumber"
+ class="w-full form-input h-12" placeholder="Enter document number" maxlength="20"
+ oninput="validateDocumentNumber(); validateStep2();"><div id="documentNumberError" class="mt-2 text-sm text-red-600 hidden"></div><p id="documentNumberHint" class="text-sm text-gray-600 mt-2"></p></div><!-- Dynamic Date of Birth for Verification --><div id="verifyDobContainer"
+ class="bg-pink-50 p-6 rounded-xl border border-pink-200 mb-6 hidden"><label class="block text-gray-700 font-semibold mb-3">Date of Birth for Verification <span class="text-red-600">*</span></label><input type="date" id="verifyDob" class="w-full form-input h-12"><p class="text-sm text-gray-600 mt-2">Required for DL/Passport verification</p></div><!-- Verification Action Buttons --><div id="verificationActionContainer" class="mb-6 hidden"><button type="button" id="btnVerifyDocument" onclick="performAutomatedVerification()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 shadow-md flex items-center justify-center gap-2"><span id="verifyBtnText">Verify Document</span><div id="verifySpinner" class="hidden inline-block"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div></div></button><button type="button" id="btnDigilockerConnect" onclick="initializeDigilocker()" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-xl transition duration-300 shadow-lg flex items-center justify-center gap-3 hidden"><img src="images/vevaha-logo.png" alt="DigiLocker" class="w-6 h-6 object-contain" style="filter: brightness(0) invert(1);"><span>Connect DigiLocker (Aadhaar Instant Verification)</span></button></div><!-- Verification Result Status --><div id="verificationStatusContainer" class="mb-6 hidden"><div id="verificationSuccessBadge" class="bg-green-50 border border-green-200 text-green-800 rounded-xl p-6 flex items-center gap-4 shadow-sm"><i class="fas fa-check-circle text-green-500 text-4xl animate-bounce"></i><div><h4 class="font-bold text-lg text-green-900">Identity Successfully Verified</h4><p class="text-sm text-green-700 mt-1">Verified Holder: <span id="verifiedNameSpan" class="font-semibold text-green-900">John Doe</span></p><p class="text-xs text-gray-500 mt-1">Status: Verified via Surepass Secure Integration</p></div></div><div id="verificationErrorBadge" class="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 flex items-center gap-3 hidden"><i class="fas fa-exclamation-circle text-red-500 text-2xl"></i><div><h4 class="font-bold text-red-900">Verification Failed</h4><p id="verificationErrorMsg" class="text-sm text-red-700"></p></div></div></div><!-- Document File Upload (Legacy Hidden Fallback) --><div id="documentFileContainer" class="hidden"><input type="file" id="documentFile" class="hidden"></div></div><div class="flex justify-center space-x-6"><button type="button" id="prevStep2"
+ class="bg-gray-300 text-gray-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-400 transition duration-300"
+ onclick="goToStep(1)"><i class="fas fa-arrow-left mr-2"></i>
+ Back
+ </button><button type="button" id="nextStep2"
+ class="bg-gradient-to-r from-pink-600 to-pink-700 text-white px-12 py-4 rounded-xl font-bold text-lg hover:from-pink-700 hover:to-pink-800 transition duration-300 shadow-lg opacity-50 cursor-not-allowed"
+ disabled
+ onclick="validateAndGoToStep3()">
+ Continue to Verification
+ <i class="fas fa-arrow-right ml-2"></i></button></div></div><!-- Step 3: Final Verification --><div id="step3" class="step-content hidden"><div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800 mb-4">Almost Done!</h2><p class="text-gray-600 text-lg">Please review and confirm your registration</p></div><div
+ class="bg-gradient-to-r from-pink-50 to-pink-100 border border-pink-200 rounded-xl p-8 mb-8"><h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-shield-check text-pink-600 mr-3"></i>
+ Verification Process
+ </h3><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="flex items-center space-x-3"><div
+ class="w-8 h-8 bg-pink-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+ 1</div><span class="text-gray-700">Document verification (within 12 hours)</span></div><div class="flex items-center space-x-3"><div
+ class="w-8 h-8 bg-pink-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+ 2</div><span class="text-gray-700">Profile approval and activation</span></div><div class="flex items-center space-x-3"><div
+ class="w-8 h-8 bg-pink-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+ 3</div><span class="text-gray-700">Admin verified badge added</span></div><div class="flex items-center space-x-3"><div
+ class="w-8 h-8 bg-pink-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+ 4</div><span class="text-gray-700">Email confirmation sent</span></div></div></div><!-- Password Fields --><div class="mb-6"><label for="password" class="block text-gray-700 font-semibold mb-3">Create Password
+ *</label><div class="relative"><input type="password" id="password" name="password"
+ placeholder="Enter a secure password" class="w-full form-input h-12 pr-10"
+ oninput="validatePassword()"><span id="togglePassword"
+ class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer z-20 hover:text-pink-600"
+ onclick="togglePasswordVisibility('password', 'passwordToggleIcon')"><i id="passwordToggleIcon" class="fas fa-eye text-gray-400"></i></span></div><div id="passwordRequirements" class="mt-3 space-y-2 text-sm"><div id="length-check" class="flex items-center"><span class="mr-2 requirement-icon">○</span><span class="text-gray-600">Minimum 6 characters</span></div><div id="uppercase-check" class="flex items-center"><span class="mr-2 requirement-icon">○</span><span class="text-gray-600">At least one uppercase letter</span></div><div id="lowercase-check" class="flex items-center"><span class="mr-2 requirement-icon">○</span><span class="text-gray-600">At least one lowercase letter</span></div><div id="number-check" class="flex items-center"><span class="mr-2 requirement-icon">○</span><span class="text-gray-600">At least one number</span></div></div><div class="mt-3"><div class="flex items-center"><span class="text-gray-700 font-semibold mr-2">Strength:</span><div class="flex-1 bg-gray-200 rounded-full h-2 mr-2"><div id="strengthBar"
+ class="bg-red-500 h-2 rounded-full transition-all duration-300"
+ style="width: 0%"></div></div><span id="strengthText" class="text-sm font-semibold text-red-600">Weak</span></div></div></div><div class="mb-6"><label for="confirmPassword" class="block text-gray-700 font-semibold mb-3">Confirm Password
+ *</label><div class="relative"><input type="password" id="confirmPassword" name="confirmPassword"
+ placeholder="Re-enter your password" class="w-full form-input h-12 pr-10"
+ oninput="validatePasswordMatch()"><span id="toggleConfirmPassword"
+ class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer z-20 hover:text-pink-600"
+ onclick="togglePasswordVisibility('confirmPassword', 'confirmPasswordToggleIcon')"><i id="confirmPasswordToggleIcon" class="fas fa-eye text-gray-400"></i></span></div><div id="passwordMatchMessage" class="mt-2 hidden"><div class="flex items-center"></div></div></div><div class="space-y-6 mb-10"><label class="flex items-start space-x-4 bg-white p-4 rounded-lg shadow-md"><input type="checkbox" id="termsCheckbox"
+ class="form-checkbox h-6 w-6 text-pink-600 mt-1"><span class="text-gray-700 text-lg">I agree to the <a href="terms.html" target="_blank"
+ class="text-pink-600 hover:underline font-semibold">Terms & Conditions</a> and
+ <a href="privacy.html" target="_blank" class="text-pink-600 hover:underline font-semibold">Privacy
+ Policy</a></span></label><label class="flex items-start space-x-4 bg-white p-4 rounded-lg shadow-md"><input type="checkbox" id="accuracyCheckbox"
+ class="form-checkbox h-6 w-6 text-pink-600 mt-1"><span class="text-gray-700 text-lg">I confirm that all information provided is accurate
+ and
+ authentic</span></label><label class="flex items-start space-x-4 bg-white p-4 rounded-lg shadow-md"><input type="checkbox" id="updatesCheckbox"
+ class="form-checkbox h-6 w-6 text-pink-600 mt-1"><span class="text-gray-700 text-lg">I want to receive updates and match notifications
+ via
+ email/SMS</span></label></div><div class="flex justify-center space-x-6"><button type="button" id="prevStep3"
+ class="bg-gray-300 text-gray-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-400 transition duration-300"
+ onclick="goToStep(2)"><i class="fas fa-arrow-left mr-2"></i>
+ Back
+ </button><button type="button" id="submitForm" onclick="vmBackendRegister()"
+ class="bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white px-12 py-4 rounded-xl font-bold text-lg transition duration-300 shadow-lg"><span id="submitText">Complete Registration</span><div id="submitSpinner" class="hidden inline-block ml-2"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div></div><i class="fas fa-check ml-2" id="submitIcon"></i></button><p id="submitMessage" class="text-sm text-gray-500 mt-2 text-center">Please complete all
+ required fields</p></div></div>
+ 
+</form></div></div><script>
+ // Function to set the language
+ function setLanguage(lang) {
+ localStorage.setItem('selectedLanguage', lang);
+ applyLanguage(lang);
+ }
+
+ // Function to apply the selected language
+ function applyLanguage(lang) {
+ document.querySelectorAll('[class*="lang-"]').forEach(element => {
+ element.style.display = 'none';
+ });
+ document.querySelectorAll(`.lang-${lang}`).forEach(element => {
+ element.style.display = 'inline';
+ });
+ }
+
+ // Toggle "Other" job role text input field
+ function toggleOccupationOther() {
+ const occupationSelect = document.getElementById('occupationSelect');
+ const occupationOtherContainer = document.getElementById('occupationOtherContainer');
+ const occupationOtherInput = document.getElementById('occupationOther');
+
+ if (occupationSelect && occupationOtherContainer && occupationOtherInput) {
+ if (occupationSelect.value === 'Other') {
+ occupationOtherContainer.classList.remove('hidden');
+ occupationOtherInput.focus();
+ } else {
+ occupationOtherContainer.classList.add('hidden');
+ occupationOtherInput.value = '';
+ }
+ }
+ }
+
+ // Toggle Father's Occupation "Other" fill-in
+ function toggleFatherOccupationOther() {
+ const select = document.getElementById('fatherOccupationSelect');
+ const container = document.getElementById('fatherOccupationOtherContainer');
+ const input = document.getElementById('fatherOccupationOther');
+
+ if (select && container && input) {
+ if (select.value === 'other') {
+ container.classList.remove('hidden');
+ input.focus();
+ } else {
+ container.classList.add('hidden');
+ input.value = '';
+ }
+ }
+ }
+
+ // Toggle Mother's Occupation "Other" fill-in
+ function toggleMotherOccupationOther() {
+ const select = document.getElementById('motherOccupationSelect');
+ const container = document.getElementById('motherOccupationOtherContainer');
+ const input = document.getElementById('motherOccupationOther');
+
+ if (select && container && input) {
+ if (select.value === 'other') {
+ container.classList.remove('hidden');
+ input.focus();
+ } else {
+ container.classList.add('hidden');
+ input.value = '';
+ }
+ }
+ }
+
+ // Toggle Mother Tongue "Other" fill-in
+ function toggleMotherTongueOther() {
+ const select = document.getElementById('motherTongueSelect');
+ const container = document.getElementById('motherTongueOtherContainer');
+ const input = document.getElementById('motherTongueOther');
+
+ if (select && container && input) {
+ if (select.value === 'Other') {
+ container.classList.remove('hidden');
+ input.focus();
+ } else {
+ container.classList.add('hidden');
+ input.value = '';
+ }
+ }
+ }
+
+ // Toggle Preferred Profession "Other" fill-in
+ function togglePreferredProfessionOther() {
+ const select = document.getElementById('preferredProfessionSelect');
+ const container = document.getElementById('preferredProfessionOtherContainer');
+ const input = document.getElementById('preferredProfessionOther');
+
+ if (select && container && input) {
+ if (select.value === 'other') {
+ container.classList.remove('hidden');
+ input.focus();
+ } else {
+ container.classList.add('hidden');
+ input.value = '';
+ }
+ }
+ }
+
+ // On page load, check local storage for language setting
+ document.addEventListener('DOMContentLoaded', function () {
+ let selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+ applyLanguage(selectedLanguage);
+
+ // Mobile menu functionality
+ const mobileMenuButton = document.getElementById('mobile-menu-button');
+ const mobileNavMenu = document.getElementById('mobile-nav-menu');
+
+ if (mobileMenuButton && mobileNavMenu) {
+ mobileMenuButton.addEventListener('click', function () {
+ mobileNavMenu.classList.toggle('hidden');
+ });
+
+ // Close mobile menu when clicking outside
+ document.addEventListener('click', function (event) {
+ if (!mobileMenuButton.contains(event.target) && !mobileNavMenu.contains(event.target)) {
+ mobileNavMenu.classList.add('hidden');
+ }
+ });
+ }
+
+ // Marital Status conditional fields
+ window._maritalProofFile = null;
+
+ window.handleMaritalProofFileSelect = function (e) {
+ const maritalProofError = document.getElementById('maritalProofError');
+ const maritalProofFileName = document.getElementById('maritalProofFileName');
+ const maritalProofFileInput = document.getElementById('maritalProofFileInput');
+ 
+ if (maritalProofError) maritalProofError.classList.add('hidden');
+ const file = e.target.files[0];
+ if (!file) {
+ window._maritalProofFile = null;
+ if (maritalProofFileName) maritalProofFileName.textContent = '';
+ return;
+ }
+ const allowed = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+ if (!allowed.includes(file.type)) {
+ if (maritalProofError) {
+ maritalProofError.textContent = 'Invalid file type. Allowed: PDF, JPG, JPEG, PNG';
+ maritalProofError.classList.remove('hidden');
+ }
+ if (maritalProofFileInput) maritalProofFileInput.value = '';
+ window._maritalProofFile = null;
+ if (maritalProofFileName) maritalProofFileName.textContent = '';
+ return;
+ }
+ window._maritalProofFile = file;
+ if (maritalProofFileName) maritalProofFileName.textContent = file.name;
+ };
+
+ window.updateChildrenGenderVisibility = function () {
+ const maritalStatusSelect = document.getElementById('maritalStatusSelect');
+ const numberOfChildrenField = document.getElementById('numberOfChildrenField');
+ const childrenGenderSec = document.getElementById('childrenGenderSection');
+
+ if (!maritalStatusSelect || !numberOfChildrenField) return;
+
+ const childrenCountSelect = numberOfChildrenField.querySelector('select');
+ const maritalVal = maritalStatusSelect.value;
+ const childrenVal = childrenCountSelect ? childrenCountSelect.value : '';
+ const hasChildren = ['1', '2', '3', '4', '5+'].includes(childrenVal);
+
+ if (childrenGenderSec) {
+ if ((maritalVal === 'awaiting-divorce' || maritalVal === 'divorce' || maritalVal === 'widow-widower') && hasChildren) {
+ childrenGenderSec.classList.remove('hidden');
+ } else {
+ childrenGenderSec.classList.add('hidden');
+ const genderSelect = childrenGenderSec.querySelector('select');
+ if (genderSelect) genderSelect.value = '';
+ }
+ }
+ };
+
+ window.handleMaritalStatusChange = function () {
+ const maritalStatusSelect = document.getElementById('maritalStatusSelect');
+ if (!maritalStatusSelect) return;
+ 
+ const value = maritalStatusSelect.value;
+ const numberOfChildrenField = document.getElementById('numberOfChildrenField');
+ const childrenLivingStatusField = document.getElementById('childrenLivingStatusField');
+ const maritalProofSection = document.getElementById('maritalProofSection');
+ const documentTypeSelect = document.getElementById('documentTypeSelect');
+ const awaitingDivorceSec = document.getElementById('awaitingDivorceSection');
+ const childrenGenderSec = document.getElementById('childrenGenderSection');
+
+ if (value === 'never-married' || value === '') {
+ if (numberOfChildrenField) {
+ numberOfChildrenField.classList.add('hidden');
+ const sel = numberOfChildrenField.querySelector('select');
+ if (sel) sel.value = '';
+ }
+ if (childrenLivingStatusField) {
+ childrenLivingStatusField.classList.add('hidden');
+ const sel = childrenLivingStatusField.querySelector('select');
+ if (sel) sel.value = '';
+ }
+ if (awaitingDivorceSec) awaitingDivorceSec.classList.add('hidden');
+ if (childrenGenderSec) childrenGenderSec.classList.add('hidden');
+
+ if (maritalProofSection) maritalProofSection.classList.add('hidden');
+ if (documentTypeSelect) documentTypeSelect.value = '';
+ 
+ const maritalProofFileInput = document.getElementById('maritalProofFileInput');
+ const maritalProofFileName = document.getElementById('maritalProofFileName');
+ const maritalProofError = document.getElementById('maritalProofError');
+ if (maritalProofFileInput) {
+ maritalProofFileInput.value = '';
+ window._maritalProofFile = null;
+ if (maritalProofFileName) maritalProofFileName.textContent = '';
+ }
+ if (maritalProofError) maritalProofError.classList.add('hidden');
+ } else {
+ if (numberOfChildrenField) numberOfChildrenField.classList.remove('hidden');
+
+ if (value === 'awaiting-divorce') {
+ if (childrenLivingStatusField) childrenLivingStatusField.classList.add('hidden');
+ if (maritalProofSection) maritalProofSection.classList.add('hidden');
+ if (awaitingDivorceSec) awaitingDivorceSec.classList.remove('hidden');
+ } else {
+ if (childrenLivingStatusField) childrenLivingStatusField.classList.remove('hidden');
+ if (awaitingDivorceSec) awaitingDivorceSec.classList.add('hidden');
+ 
+ const proofStatuses = ['divorce', 'widow-widower'];
+ if (proofStatuses.includes(value)) {
+ if (maritalProofSection) maritalProofSection.classList.remove('hidden');
+ if (documentTypeSelect) {
+ if (value === 'divorce') documentTypeSelect.value = 'divorce-decree';
+ else if (value === 'widow-widower') documentTypeSelect.value = 'death-certificate';
+ }
+ } else {
+ if (maritalProofSection) maritalProofSection.classList.add('hidden');
+ }
+ }
+ updateChildrenGenderVisibility();
+ }
+ };
+ });
+
+ // About Myself character counter function
+ function updateAboutMyselfCounter() {
+ const textarea = document.getElementById('aboutMyselfTextarea');
+ const counter = document.getElementById('aboutMyselfCounter');
+ if (textarea && counter) {
+ const currentLength = textarea.value.length;
+ counter.textContent = `${currentLength} / 100`;
+ }
+ }
+
+ // Search suggestions functionality
+ function showSearchSuggestions() {
+ const suggestions = document.getElementById('searchSuggestions');
+ if (suggestions) {
+ suggestions.classList.remove('hidden');
+ }
+ }
+
+ function hideSearchSuggestions() {
+ setTimeout(() => {
+ const suggestions = document.getElementById('searchSuggestions');
+ if (suggestions) {
+ suggestions.classList.add('hidden');
+ }
+ }, 150);
+ }
+
+ function navigateToPage(url) {
+ window.location.href = url;
+ }
+
+ // Mobile search functionality
+ function handleMobileSearchKeyPress(event) {
+ if (event.key === 'Enter') {
+ performMobileSearch();
+ }
+ }
+
+ function performMobileSearch() {
+ const mobileSearchInput = document.getElementById('mobileSearchInput');
+ if (mobileSearchInput) {
+ const query = mobileSearchInput.value.trim();
+ if (query) {
+ const mainSearchInput = document.getElementById('searchInput');
+ if (mainSearchInput) {
+ mainSearchInput.value = query;
+ performSearch();
+ }
+ } else {
+ showMessage('Please enter a search term', 'error');
+ }
+ }
+ }
+
+ // Handle search key press for desktop search
+ function handleSearchKeyPress(event) {
+ if (event.key === 'Enter') {
+ performSearch();
+ }
+ }
+
+ // Step navigation functions
+ // -- Profile Picture Upload Handler ------------------------------------
+ window.profilePictureFile = null;
+
+ let cropperInstance = null;
+ let originalFile = null;
+
+ function handleProfilePictureUpload(event) {
+ const file = event.target.files[0];
+ if (!file) return;
+
+ // Validate type
+ const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+ if (!allowedTypes.includes(file.type)) {
+ alert('Please upload a JPG, PNG or WebP image.');
+ event.target.value = '';
+ return;
+ }
+
+ // Validate size (10MB max)
+ if (file.size> 10 * 1024 * 1024) {
+ alert('Image must be smaller than 10MB.');
+ event.target.value = '';
+ return;
+ }
+
+ originalFile = file;
+
+ // Open Crop Modal
+ const reader = new FileReader();
+ reader.onload = function (e) {
+ const cropModalImage = document.getElementById('cropModalImage');
+ if (cropModalImage) {
+ cropModalImage.src = e.target.result;
+ 
+ // Show Modal
+ const modal = document.getElementById('cropImageModal');
+ if (modal) {
+ modal.classList.remove('hidden');
+ modal.classList.add('flex');
+ }
+ 
+ // Destroy previous instance
+ if (cropperInstance) {
+ cropperInstance.destroy();
+ }
+ 
+ // Initialize Cropper
+ cropperInstance = new Cropper(cropModalImage, {
+ aspectRatio: 1,
+ viewMode: 1,
+ autoCropArea: 0.8,
+ dragMode: 'move',
+ responsive: true,
+ background: true
+ });
+ }
+ };
+ reader.readAsDataURL(file);
+ }
+
+ window.closeCropModal = function () {
+ const modal = document.getElementById('cropImageModal');
+ if (modal) {
+ modal.classList.add('hidden');
+ modal.classList.remove('flex');
+ }
+ if (cropperInstance) {
+ cropperInstance.destroy();
+ cropperInstance = null;
+ }
+ const input = document.getElementById('profilePicture');
+ if (input) input.value = '';
+ };
+
+ window.cropZoomIn = function () {
+ if (cropperInstance) cropperInstance.zoom(0.1);
+ };
+ window.cropZoomOut = function () {
+ if (cropperInstance) cropperInstance.zoom(-0.1);
+ };
+ window.cropRotateLeft = function () {
+ if (cropperInstance) cropperInstance.rotate(-90);
+ };
+ window.cropRotateRight = function () {
+ if (cropperInstance) cropperInstance.rotate(90);
+ };
+
+ window.saveCroppedImage = function () {
+ if (!cropperInstance || !originalFile) return;
+ 
+ const canvas = cropperInstance.getCroppedCanvas({
+ width: 500,
+ height: 500
+ });
+ 
+ canvas.toBlob((blob) => {
+ if (!blob) {
+ alert('Failed to crop image.');
+ return;
+ }
+ 
+ const croppedFile = new File([blob], originalFile.name, {
+ type: originalFile.type
+ });
+ 
+ window.profilePictureFile = croppedFile;
+ 
+ const previewImg = document.getElementById('previewImg');
+ const imagePreview = document.getElementById('imagePreview');
+ const uploadArea = document.getElementById('uploadArea');
+ 
+ if (previewImg) {
+ previewImg.src = canvas.toDataURL(originalFile.type);
+ previewImg.style.display = 'block';
+ }
+ if (imagePreview) imagePreview.classList.remove('hidden');
+ if (uploadArea) uploadArea.classList.add('hidden');
+ 
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ }
+ 
+ closeCropModal();
+ }, originalFile.type);
+ };
+
+ function removeProfilePicture() {
+ window.profilePictureFile = null;
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ }
+ const input = document.getElementById('profilePicture');
+ if (input) input.value = '';
+ const previewImg = document.getElementById('previewImg');
+ const imagePreview = document.getElementById('imagePreview');
+ const uploadArea = document.getElementById('uploadArea');
+ if (previewImg) { previewImg.src = ''; previewImg.style.display = 'none'; }
+ if (imagePreview) imagePreview.classList.add('hidden');
+ if (uploadArea) uploadArea.classList.remove('hidden');
+ }
+
+ // Blur image utility for privacy
+ async function blurImageFile(file) {
+ return new Promise((resolve) => {
+ const reader = new FileReader();
+ reader.onload = function (e) {
+ const img = new Image();
+ img.onload = function () {
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+ 
+ // Set canvas dimensions
+ canvas.width = img.width;
+ canvas.height = img.height;
+ 
+ // Apply strong blur
+ ctx.filter = 'blur(25px)';
+ ctx.drawImage(img, 0, 0);
+ 
+ // Add a subtle darkening overlay
+ ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+ ctx.fillRect(0, 0, canvas.width, canvas.height);
+ 
+ // Convert back to file
+ canvas.toBlob((blob) => {
+ const blurredFile = new File([blob], file.name, { type: 'image/jpeg' });
+ resolve(blurredFile);
+ }, 'image/jpeg', 0.85);
+ };
+ img.src = e.target.result;
+ };
+ reader.readAsDataURL(file);
+ });
+ }
+
+ // Upload photo AFTER registration (called after we have a JWT token)
+ async function uploadProfilePhotoAfterRegister() {
+ if (!window.profilePictureFile || !window.VM) return;
+ const token = window.VMAuth && window.VMAuth.token();
+ if (!token) return;
+ try {
+ let fileToUpload = window.profilePictureFile;
+ const hidePhotoCheckbox = document.getElementById('hidePhoto');
+ if (hidePhotoCheckbox && hidePhotoCheckbox.checked) {
+ try {
+ fileToUpload = await blurImageFile(window.profilePictureFile);
+ } catch (e) {
+ console.error('Blur failed:', e);
+ }
+ }
+ const result = await window.VM.upload.photo(fileToUpload);
+ console.log('Profile photo uploaded:', result.photo_url);
+ // Update stored user data with new photo URL
+ const user = window.VMAuth.user();
+ user.profile_picture_url = result.photo_url;
+ localStorage.setItem('userData', JSON.stringify(user));
+ } catch (err) {
+ console.warn('Photo upload failed (non-critical):', err.message);
+ }
+ }
+ function goToStep(stepNumber) {
+ console.log('Navigating to step:', stepNumber);
+
+ // Validate current step before proceeding (except when going backwards)
+ if (stepNumber> 1) {
+ if (stepNumber === 3) {
+ const profilePicture = document.getElementById('profilePicture');
+ if (!window.profilePictureFile && (!profilePicture || profilePicture.files.length === 0)) {
+ showMessage('Please upload a profile picture to continue', 'error');
+ return;
+ }
+ if (!window.isIdentityVerified) {
+ showMessage('Please complete identity verification to continue', 'error');
+ return;
+ }
+ }
+ }
+
+ // Hide all steps
+ document.getElementById('step1').classList.add('hidden');
+ document.getElementById('step2').classList.add('hidden');
+ document.getElementById('step3').classList.add('hidden');
+
+
+ // Show target step
+ document.getElementById('step' + stepNumber).classList.remove('hidden');
+
+ // Update progress indicators
+ updateProgressIndicators(stepNumber);
+
+ // Trigger validations for the current step
+ if (stepNumber === 2) {
+ setTimeout(() => validateStep2(), 100);
+ } else if (stepNumber === 3) {
+ setTimeout(() => validateStep3(), 100);
+ }
+
+ // Scroll to top
+ window.scrollTo({ top: 0, behavior: 'smooth' });
+ }
+ window.goToStep = goToStep;
+
+ function updateProgressIndicators(currentStep) {
+ // Reset all steps
+ document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+ const stepNum = index + 1;
+ if (stepNum < currentStep) {
+ // Completed step
+ indicator.className = 'w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full flex items-center justify-center font-bold text-lg step-indicator shadow-lg border-4 border-white transition-all duration-300 hover:scale-110';
+ indicator.innerHTML = '<i class="fas fa-check"></i>';
+ } else if (stepNum === currentStep) {
+ // Current step
+ indicator.className = 'w-12 h-12 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full flex items-center justify-center font-bold text-lg step-indicator active shadow-lg border-4 border-white transition-all duration-300 hover:scale-110';
+ const icons = ['fas fa-user', 'fas fa-upload', 'fas fa-cog'];
+ indicator.innerHTML = `<i class="${icons[index]}"></i>`;
+ } else {
+ // Future step
+ indicator.className = 'w-12 h-12 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold text-lg step-indicator shadow-lg border-4 border-white transition-all duration-300 hover:scale-110';
+ const icons = ['fas fa-user', 'fas fa-upload', 'fas fa-cog'];
+ indicator.innerHTML = `<i class="${icons[index]}"></i>`;
+ }
+ });
+
+ // Update progress line
+ const progressLine = document.getElementById('progressLine');
+ if (progressLine) {
+ const percentage = ((currentStep - 1) / 2) * 75; // 3 steps → 0%, 37.5%, 75% of the bar width
+ progressLine.style.width = percentage + '%';
+ }
+
+ // Update step text colors
+ document.querySelectorAll('[class*="step-indicator"]').forEach((indicator, index) => {
+ const stepNum = index + 1;
+ const stepContainer = indicator.closest('.flex.flex-col');
+ if (stepContainer) {
+ const textElements = stepContainer.querySelectorAll('div');
+ if (stepNum <= currentStep) {
+ textElements.forEach(el => {
+ el.className = el.className.replace('text-gray-600', 'text-pink-600');
+ });
+ } else {
+ textElements.forEach(el => {
+ el.className = el.className.replace('text-pink-600', 'text-gray-600');
+ });
+ }
+ }
+ });
+ }
+
+ // Validate Step 2 - Document uploads
+ function validateStep2() {
+ console.log('Validating Step 2...');
+ let isValid = true;
+
+ const profilePicture = document.getElementById('profilePicture');
+ const documentType = document.getElementById('documentType');
+
+ // Check profile picture
+ if (!window.profilePictureFile && (!profilePicture || profilePicture.files.length === 0)) {
+ console.log('Profile picture not uploaded');
+ isValid = false;
+ }
+
+ // Check document type
+ if (!documentType || documentType.value === '') {
+ console.log('Document type not selected');
+ isValid = false;
+ }
+
+ // Check identity verification state
+ if (!window.isIdentityVerified) {
+ console.log('Identity not verified');
+ isValid = false;
+ }
+
+ console.log('Step 2 validation result:', isValid);
+ return isValid;
+ }
+
+ // Validate Step 3 - Password and agreements
+ function validateStep3() {
+ console.log('Validating Step 3...');
+ let isValid = true;
+
+ const password = document.getElementById('password');
+ const confirmPassword = document.getElementById('confirmPassword');
+ const termsCheckbox = document.getElementById('termsCheckbox');
+ const accuracyCheckbox = document.getElementById('accuracyCheckbox');
+
+ // Use the global showMessage or VM.toast helper
+ const notify = (msg) => {
+ if (window.VM && window.VM.toast) window.VM.toast(msg, 'error');
+ else if (window.showMessage) showMessage(msg, 'error');
+ else alert(msg);
+ };
+
+ // Check password
+ if (!password || password.value.length < 6) {
+ notify('Password must be at least 6 characters long');
+ isValid = false;
+ }
+ // Check password match
+ else if (!confirmPassword || password.value !== confirmPassword.value) {
+ notify('Passwords do not match');
+ isValid = false;
+ }
+ // Check terms acceptance
+ else if (!termsCheckbox || !termsCheckbox.checked) {
+ notify('Please accept the Terms and Conditions');
+ isValid = false;
+ }
+ // Check accuracy confirmation
+ else if (!accuracyCheckbox || !accuracyCheckbox.checked) {
+ notify('Please confirm the accuracy of information');
+ isValid = false;
+ }
+
+ console.log('Step 3 validation result:', isValid);
+ return isValid;
+ }
+
+ // Handle preferred caste custom field
+ document.addEventListener('DOMContentLoaded', function () {
+ const preferredCasteSelect = document.getElementById('preferredCasteSelect');
+ const preferredCasteCustomField = document.getElementById('preferredCasteCustomField');
+ const preferredCasteCustomInput = document.querySelector('input[name="preferredCasteCustom"]');
+
+ if (preferredCasteSelect && preferredCasteCustomField) {
+ preferredCasteSelect.addEventListener('change', function () {
+ if (this.value === 'specific') {
+ preferredCasteCustomField.classList.remove('hidden');
+ preferredCasteCustomInput.required = true;
+ } else {
+ preferredCasteCustomField.classList.add('hidden');
+ preferredCasteCustomInput.required = false;
+ preferredCasteCustomInput.value = '';
+ }
+ });
+ }
+ });
+
+ // Registration form submission handled by register-script.js
+
+ function showMessage(message, type = 'info') {
+ const notification = document.createElement('div');
+ notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${type === 'success' ? 'bg-green-500' :
+ type === 'error' ? 'bg-red-500' :
+ 'bg-blue-500'
+ } text-white max-w-sm transition-all duration-300`;
+
+ notification.innerHTML = `
+ <div class="flex items-center"><i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'} mr-2"></i><span>${message}</span></div>
+ `;
+
+ document.body.appendChild(notification);
+
+ setTimeout(() => {
+ notification.classList.add('opacity-0', 'transform', 'translate-x-full');
+ setTimeout(() => {
+ if (notification.parentNode) {
+ notification.remove();
+ }
+ }, 300);
+ }, 4000);
+ }
+
+ // Helper function to copy text to clipboard
+ function copyToClipboard(text, message) {
+ navigator.clipboard.writeText(text).then(() => {
+ showMessage(message, 'success');
+ }).catch(err => {
+ console.error('Failed to copy text: ', err);
+ showMessage('Failed to copy text.', 'error');
+ });
+ }
+
+ // Handle Family Values "Other" option
+ function handleFamilyValuesChange() {
+ const select = document.getElementById('familyValuesSelect');
+ const otherDiv = document.getElementById('otherHousingTypeDiv');
+ const otherInput = document.getElementById('housingTypeOther');
+
+ if (select.value === 'other') {
+ otherDiv.style.display = 'block';
+ otherInput.required = true;
+ } else {
+ otherDiv.style.display = 'none';
+ otherInput.required = false;
+ otherInput.value = '';
+ }
+ }
+
+ // Handle Disability "Other" option
+ function handleDisabilityChange() {
+ const select = document.getElementById('disabilitySelect');
+ const otherDiv = document.getElementById('disabilityOtherField');
+ const otherInput = document.getElementById('disabilityOtherInput');
+
+ if (select.value === 'other') {
+ otherDiv.classList.remove('hidden');
+ otherInput.required = true;
+ } else {
+ otherDiv.classList.add('hidden');
+ otherInput.required = false;
+ otherInput.value = '';
+ }
+ }
+
+ // Handle Brothers fields visibility
+ function handleBrothersChange() {
+ const numberOfBrothersSelect = document.getElementById('numberOfBrothers');
+ const brotherAgeRelationDiv = document.getElementById('brotherAgeRelation');
+ const brotherMaritalStatusDiv = document.getElementById('brotherMaritalStatus');
+ const brotherOccupationNotesDiv = document.getElementById('brotherOccupationNotes');
+
+ const numberOfBrothers = numberOfBrothersSelect.value;
+
+ if (numberOfBrothers && numberOfBrothers !== '0' && numberOfBrothers !== '') {
+ // Show brother fields
+ brotherAgeRelationDiv.classList.remove('hidden');
+ brotherMaritalStatusDiv.classList.remove('hidden');
+ brotherOccupationNotesDiv.classList.remove('hidden');
+
+ // Make fields required
+ brotherAgeRelationDiv.querySelector('select').required = true;
+ brotherMaritalStatusDiv.querySelector('select').required = true;
+ } else {
+ // Hide brother fields
+ brotherAgeRelationDiv.classList.add('hidden');
+ brotherMaritalStatusDiv.classList.add('hidden');
+ brotherOccupationNotesDiv.classList.add('hidden');
+
+ // Remove required attribute
+ brotherAgeRelationDiv.querySelector('select').required = false;
+ brotherMaritalStatusDiv.querySelector('select').required = false;
+
+ // Clear values
+ brotherAgeRelationDiv.querySelector('select').value = '';
+ brotherMaritalStatusDiv.querySelector('select').value = '';
+ brotherOccupationNotesDiv.querySelector('textarea').value = '';
+ }
+ }
+
+ // Handle Sisters fields visibility
+ function handleSistersChange() {
+ const numberOfSistersSelect = document.getElementById('numberOfSisters');
+ const sisterAgeRelationDiv = document.getElementById('sisterAgeRelation');
+ const sisterMaritalStatusDiv = document.getElementById('sisterMaritalStatus');
+ const sisterOccupationNotesDiv = document.getElementById('sisterOccupationNotes');
+
+ const numberOfSisters = numberOfSistersSelect.value;
+
+ if (numberOfSisters && numberOfSisters !== '0' && numberOfSisters !== '') {
+ // Show sister fields
+ sisterAgeRelationDiv.classList.remove('hidden');
+ sisterMaritalStatusDiv.classList.remove('hidden');
+ sisterOccupationNotesDiv.classList.remove('hidden');
+
+ // Make fields required
+ sisterAgeRelationDiv.querySelector('select').required = true;
+ sisterMaritalStatusDiv.querySelector('select').required = true;
+ } else {
+ // Hide sister fields
+ sisterAgeRelationDiv.classList.add('hidden');
+ sisterMaritalStatusDiv.classList.add('hidden');
+ sisterOccupationNotesDiv.classList.add('hidden');
+
+ // Remove required attribute
+ sisterAgeRelationDiv.querySelector('select').required = false;
+ sisterMaritalStatusDiv.querySelector('select').required = false;
+
+ // Clear values
+ sisterAgeRelationDiv.querySelector('select').value = '';
+ sisterMaritalStatusDiv.querySelector('select').value = '';
+ sisterOccupationNotesDiv.querySelector('textarea').value = '';
+ }
+ }
+
+ </script><script src="mobile-optimization.js"></script><script src="global-settings.js"></script><script src="script.js"></script><script src="vevaha-ai-widget.js"></script><script>
+ // Direct fallback for validateAndGoToStep2 if not loaded from register-script.js
+ // Document Type Handler - Shows/hides dynamic fields
+ // State flags for automated verification & eSign
+ window.isIdentityVerified = false;
+ window.isEsignSigned = false; // kept for backward compat, no longer gating
+
+ // KYC Name Matching validation helper
+ window.checkKycNameMatch = function (verifiedName) {
+ const enteredNameInput = document.querySelector('[name="fullName"]');
+ const enteredName = enteredNameInput ? enteredNameInput.value.trim() : '';
+ let vName = (verifiedName || '').trim();
+
+ // Strip parentheses and their contents (e.g. "(DigiLocker)")
+ vName = vName.replace(/\s*\(.*?\)\s*/g, '').trim();
+
+ const fallbacks = [
+ 'verified member',
+ 'digilocker aadhaar user',
+ 'verified via digilocker',
+ 'digilocker holder',
+ 'verified user'
+ ];
+
+ const normalizedVName = vName.toLowerCase().trim();
+ const isFallback = fallbacks.includes(normalizedVName);
+
+ if (!isFallback) {
+ const normalizeName = (name) => {
+ return name
+.toLowerCase()
+.replace(/[^a-z0-9]/g, '') // strip spaces, punctuation, etc.
+.trim();
+ };
+
+ const isMatch = normalizeName(enteredName) === normalizeName(vName);
+ if (!isMatch) {
+ const errorMsg = `Name mismatch: The name on your document ("${vName}") does not match the name you entered ("${enteredName}").`;
+ 
+ // Show error popup using the page's showMessage function
+ if (window.showMessage) {
+ window.showMessage(errorMsg, 'error');
+ } else {
+ alert(errorMsg);
+ }
+
+ // Reset verification state flags
+ window.isIdentityVerified = false;
+ 
+ // Hide success and show failure badge
+ document.getElementById('verificationSuccessBadge').classList.add('hidden');
+ document.getElementById('verificationErrorBadge').classList.remove('hidden');
+ document.getElementById('verificationErrorMsg').textContent = errorMsg;
+ document.getElementById('verificationActionContainer').classList.remove('hidden');
+ 
+ // Re-enable step validation state
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ } else if (typeof validateStep2 === 'function') {
+ validateStep2();
+ }
+
+ // Retry to step 1 (without erasing the filled data)
+ if (typeof window.goToStep === 'function') {
+ window.goToStep(1);
+ } else if (typeof goToStep === 'function') {
+ goToStep(1);
+ }
+ return false;
+ }
+ }
+ return true;
+ };
+
+ // Document Type Handler - Shows/hides dynamic fields
+ window.handleDocumentTypeChange = function () {
+ try {
+ const docTypeEl = document.getElementById('documentType');
+ const numberContainer = document.getElementById('documentNumberContainer');
+ const dobContainer = document.getElementById('verifyDobContainer');
+ const actionContainer = document.getElementById('verificationActionContainer');
+ 
+ const btnVerify = document.getElementById('btnVerifyDocument');
+ const btnDigilocker = document.getElementById('btnDigilockerConnect');
+ 
+ const numberInput = document.getElementById('documentNumber');
+ const numberLabel = document.getElementById('documentNumberLabel');
+ const numberHint = document.getElementById('documentNumberHint');
+ const verifyDobInput = document.getElementById('verifyDob');
+ 
+ // Reset status banners when document type changes
+ document.getElementById('verificationStatusContainer').classList.add('hidden');
+ document.getElementById('verificationSuccessBadge').classList.add('hidden');
+ document.getElementById('verificationErrorBadge').classList.add('hidden');
+ 
+ if (!docTypeEl || !numberContainer || !actionContainer) {
+ return;
+ }
+
+ const documentType = docTypeEl.value;
+ numberInput.value = '';
+ verifyDobInput.value = '';
+ window.isIdentityVerified = false;
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ } else {
+ validateStep2();
+ }
+
+ if (documentType === '') {
+ numberContainer.classList.add('hidden');
+ dobContainer.classList.add('hidden');
+ actionContainer.classList.add('hidden');
+ return;
+ }
+
+ actionContainer.classList.remove('hidden');
+
+ if (documentType === 'digilocker') {
+ // DigiLocker flow: no manual text input needed
+ numberContainer.classList.add('hidden');
+ dobContainer.classList.add('hidden');
+ btnVerify.classList.add('hidden');
+ btnDigilocker.classList.remove('hidden');
+ } else {
+ // Voter ID / DL / Passport flow: text fields + Verify button
+ numberContainer.classList.remove('hidden');
+ btnVerify.classList.remove('hidden');
+ btnDigilocker.classList.add('hidden');
+ 
+ // Default maxLength to 20 (can be overridden by PAN)
+ numberInput.maxLength = 20;
+ 
+ // Prefill DOB from step 1
+ const step1Dob = document.querySelector('input[name="dob"]');
+ if (step1Dob && step1Dob.value) {
+ verifyDobInput.value = step1Dob.value;
+ }
+
+ if (documentType === 'driving_license') {
+ numberLabel.innerHTML = 'Driving License Number <span class="text-red-600">*</span>';
+ numberHint.textContent = 'Enter driving license number (e.g. DL-1420110012345)';
+ numberInput.placeholder = 'DL Number';
+ dobContainer.classList.remove('hidden');
+ } else if (documentType === 'passport') {
+ numberLabel.innerHTML = 'Passport File Number <span class="text-red-600">*</span>';
+ numberHint.textContent = 'Enter 15-character passport file number (e.g. ABCDP1234512345)';
+ numberInput.placeholder = 'Passport File Number';
+ dobContainer.classList.remove('hidden');
+ } else if (documentType === 'voter_id') {
+ numberLabel.innerHTML = 'Voter ID (EPIC Card) Number <span class="text-red-600">*</span>';
+ numberHint.textContent = 'Enter voter ID number (e.g. ABC1234567)';
+ numberInput.placeholder = 'Voter ID Number';
+ dobContainer.classList.add('hidden');
+ } else if (documentType === 'pan_card') {
+ numberLabel.innerHTML = 'PAN Card Number <span class="text-red-600">*</span>';
+ numberHint.textContent = 'Enter 10-character PAN number (e.g. ABCDE1234F)';
+ numberInput.placeholder = 'PAN Number';
+ numberInput.maxLength = 10;
+ dobContainer.classList.add('hidden');
+ }
+ }
+ } catch (e) {
+ console.error('Error in handleDocumentTypeChange:', e);
+ }
+ };
+
+ // Validate Document Number based on selected type
+ window.validateDocumentNumber = function () {
+ try {
+ const docTypeEl = document.getElementById('documentType');
+ const docNumberEl = document.getElementById('documentNumber');
+ const errorDivEl = document.getElementById('documentNumberError');
+
+ if (!docTypeEl || !docNumberEl || !errorDivEl) {
+ return false;
+ }
+
+ const documentType = docTypeEl.value;
+ const documentNumber = docNumberEl.value.trim().toUpperCase();
+
+ if (!documentNumber) {
+ errorDivEl.classList.add('hidden');
+ return false;
+ }
+
+ let isValid = false;
+ let errorMsg = '';
+
+ if (documentType === 'pan_card') {
+ isValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(documentNumber);
+ errorMsg = isValid ? '' : 'PAN number must be 10 characters (e.g. ABCDE1234F)';
+ } else if (documentType === 'voter_id') {
+ isValid = /^[A-Z0-9]{3,20}$/.test(documentNumber);
+ errorMsg = isValid ? '' : 'Voter ID must be alphanumeric (3-20 characters)';
+ } else if (documentType === 'driving_license') {
+ isValid = /^[A-Z0-9-]{5,20}$/.test(documentNumber);
+ errorMsg = isValid ? '' : 'Driving license format invalid';
+ } else if (documentType === 'passport') {
+ isValid = /^[A-Z0-9]{5,20}$/.test(documentNumber);
+ errorMsg = isValid ? '' : 'Passport file number must be 5-20 alphanumeric characters (e.g. ABCDP1234512345)';
+ } else if (documentType === 'digilocker') {
+ isValid = true; // no manual check
+ }
+
+ if (!isValid) {
+ errorDivEl.textContent = errorMsg;
+ errorDivEl.classList.remove('hidden');
+ } else {
+ errorDivEl.classList.add('hidden');
+ }
+
+ return isValid;
+ } catch (error) {
+ console.error('validateDocumentNumber error:', error.message);
+ return false;
+ }
+ };
+
+ // Validate Step 2 function
+ window.validateStep2 = function () {
+ try {
+ const nextBtn = document.getElementById('nextStep2');
+ if (!nextBtn) return;
+
+ // Step 2 is valid if isIdentityVerified is true AND profile picture is selected/uploaded
+ const hasProfilePic = window.profilePictureFile !== null || (document.getElementById('profilePicture') && document.getElementById('profilePicture').files.length> 0);
+
+ if (window.isIdentityVerified && hasProfilePic) {
+ nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+ nextBtn.removeAttribute('disabled');
+ return true;
+ } else {
+ nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+ nextBtn.setAttribute('disabled', 'disabled');
+ return false;
+ }
+ } catch (error) {
+ console.error('validateStep2 error:', error.message);
+ }
+ };
+
+ // Call verify API for Voter ID / DL / Passport / PAN Card
+ window.performAutomatedVerification = async function () {
+ const docType = document.getElementById('documentType').value;
+ const docNumber = document.getElementById('documentNumber').value.trim();
+ const dob = document.getElementById('verifyDob').value;
+ const email = document.querySelector('[name="email"]').value.trim();
+
+ if (!validateDocumentNumber()) {
+ showMessage('Please enter a valid document number.', 'error');
+ return;
+ }
+ if ((docType === 'driving_license' || docType === 'passport') && !dob) {
+ showMessage('Date of birth is required for DL/Passport verification.', 'error');
+ return;
+ }
+ if (!email) {
+ showMessage('Please provide your email address in Step 1 first.', 'error');
+ return;
+ }
+
+ // Show spinner, disable button
+ const btnText = document.getElementById('verifyBtnText');
+ const spinner = document.getElementById('verifySpinner');
+ const btn = document.getElementById('btnVerifyDocument');
+ btn.disabled = true;
+ spinner.classList.remove('hidden');
+ btnText.textContent = 'Verifying...';
+
+ // Reset badges
+ document.getElementById('verificationStatusContainer').classList.add('hidden');
+ document.getElementById('verificationSuccessBadge').classList.add('hidden');
+ document.getElementById('verificationErrorBadge').classList.add('hidden');
+
+ try {
+ const fullName = (document.querySelector('[name="fullName"]')?.value || document.querySelector('[name="full_name"]')?.value || '').trim();
+ const response = await fetch('/api/verification/verify', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ email, docType, docNumber, dob, fullName })
+ });
+ const data = await response.json();
+
+ if (!response.ok) {
+ throw new Error(data.error || 'Verification failed');
+ }
+
+ // Success!
+ const verifiedName = data.verifiedName || 'Verified User';
+ if (!window.checkKycNameMatch(verifiedName)) {
+ return;
+ }
+
+ window.isIdentityVerified = true;
+ document.getElementById('verifiedNameSpan').textContent = verifiedName;
+ 
+ document.getElementById('verificationActionContainer').classList.add('hidden');
+ document.getElementById('verificationStatusContainer').classList.remove('hidden');
+ document.getElementById('verificationSuccessBadge').classList.remove('hidden');
+ 
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ } else {
+ validateStep2();
+ }
+ showMessage('Identity verified successfully!', 'success');
+ } catch (err) {
+ console.error(err);
+ document.getElementById('verificationStatusContainer').classList.remove('hidden');
+ const errorBadge = document.getElementById('verificationErrorBadge');
+ errorBadge.classList.remove('hidden');
+ document.getElementById('verificationErrorMsg').textContent = err.message;
+ } finally {
+ btn.disabled = false;
+ spinner.classList.add('hidden');
+ btnText.textContent = 'Verify Document';
+ }
+ };
+
+ // Call digilocker initialize and open popup
+ window.initializeDigilocker = async function () {
+ const email = document.querySelector('[name="email"]').value.trim();
+ if (!email) {
+ showMessage('Please provide your email address in Step 1 first.', 'error');
+ return;
+ }
+
+ const btn = document.getElementById('btnDigilockerConnect');
+ btn.disabled = true;
+ const origHTML = btn.innerHTML;
+ btn.innerHTML = 'Connecting DigiLocker...';
+
+ try {
+ const response = await fetch('/api/verification/digilocker/initialize', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ email })
+ });
+ const data = await response.json();
+
+ if (!response.ok) {
+ throw new Error(data.error || 'Failed to initialize DigiLocker');
+ }
+
+ // Open popup window
+ const popupWidth = 600;
+ const popupHeight = 650;
+ const left = (window.screen.width - popupWidth) / 2;
+ const top = (window.screen.height - popupHeight) / 2;
+ const popup = window.open(data.redirect_url, 'DigiLocker Verification', `width=${popupWidth},height=${popupHeight},top=${top},left=${left},scrollbars=yes`);
+
+ // Start polling status as a robust backup
+ const checkInterval = setInterval(async () => {
+ try {
+ const statusResponse = await fetch('/api/verification/digilocker/status', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ email })
+ });
+ const statusData = await statusResponse.json();
+ if (statusData.verified) {
+ clearInterval(checkInterval);
+ if (!window.isIdentityVerified) {
+ const verifiedName = statusData.verifiedName || 'DigiLocker Holder';
+ if (!window.checkKycNameMatch(verifiedName)) {
+ if (popup && !popup.closed) popup.close();
+ return;
+ }
+ window.isIdentityVerified = true;
+ document.getElementById('documentNumber').value = statusData.docNumber || 'DIGILOCKER';
+ document.getElementById('verifiedNameSpan').textContent = verifiedName;
+ 
+ document.getElementById('verificationActionContainer').classList.add('hidden');
+ document.getElementById('verificationStatusContainer').classList.remove('hidden');
+ document.getElementById('verificationSuccessBadge').classList.remove('hidden');
+ document.getElementById('verificationErrorBadge').classList.add('hidden');
+ 
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ } else {
+ validateStep2();
+ }
+ showMessage('DigiLocker verification completed!', 'success');
+ if (popup && !popup.closed) popup.close();
+ }
+ }
+ } catch (pollErr) {
+ console.warn('DigiLocker status polling error:', pollErr);
+ }
+ }, 3000);
+
+ // Clear polling after 5 minutes
+ setTimeout(() => clearInterval(checkInterval), 300000);
+
+ } catch (err) {
+ console.error(err);
+ showMessage(err.message, 'error');
+ } finally {
+ btn.disabled = false;
+ btn.innerHTML = origHTML;
+ }
+ };
+
+ // Call eSign initialize and open popup
+ window.initializeEsign = async function () {
+ const emailInput = document.querySelector('[name="email"]');
+ const email = emailInput ? emailInput.value.trim() : '';
+ const nameInput = document.querySelector('[name="fullName"]');
+ const name = nameInput ? nameInput.value.trim() : '';
+
+ if (!email) {
+ showMessage('Please provide your email address in Step 1 first.', 'error');
+ return;
+ }
+ if (!name) {
+ showMessage('Please provide your full name in Step 1 first.', 'error');
+ return;
+ }
+
+ const btn = document.getElementById('btnStartEsign');
+ const spinner = document.getElementById('esignSpinner');
+ if (btn) btn.disabled = true;
+ if (spinner) spinner.classList.remove('hidden');
+
+ try {
+ const response = await fetch('/api/verification/esign/initialize', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ email, name })
+ });
+ const data = await response.json();
+
+ if (!response.ok) {
+ throw new Error(data.error || 'Failed to initialize eSign');
+ }
+
+ // Open popup window
+ const popupWidth = 800;
+ const popupHeight = 700;
+ const left = (window.screen.width - popupWidth) / 2;
+ const top = (window.screen.height - popupHeight) / 2;
+ const popup = window.open(data.redirect_url, 'Aadhaar eSign Verification', `width=${popupWidth},height=${popupHeight},top=${top},left=${left},scrollbars=yes`);
+
+ // Start polling status as a robust backup
+ const checkInterval = setInterval(async () => {
+ try {
+ const statusResponse = await fetch('/api/verification/esign/status', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ request_id: data.request_id })
+ });
+ const statusData = await statusResponse.json();
+ if (statusData.signed) {
+ clearInterval(checkInterval);
+ if (!window.isEsignSigned) {
+ window.isEsignSigned = true;
+ 
+ // Update UI
+ document.getElementById('esignStatusBadge').classList.add('hidden');
+ document.getElementById('esignSuccessBadge').classList.remove('hidden');
+ if (btn) btn.classList.add('hidden');
+ 
+ showMessage('Aadhaar eSign completed!', 'success');
+ if (popup && !popup.closed) popup.close();
+ }
+ }
+ } catch (pollErr) {
+ console.warn('eSign status polling error:', pollErr);
+ }
+ }, 3000);
+
+ // Clear polling after 5 minutes
+ setTimeout(() => clearInterval(checkInterval), 300000);
+
+ } catch (err) {
+ console.error(err);
+ showMessage(err.message, 'error');
+ } finally {
+ if (btn) btn.disabled = false;
+ if (spinner) spinner.classList.add('hidden');
+ }
+ };
+
+ // Window message event listener for popup callbacks
+ window.addEventListener('message', function (event) {
+ console.log('Received verification popup callback:', event.data);
+ if (event.data && event.data.type === 'DIGILOCKER_SUCCESS') {
+ const verifiedName = event.data.verifiedName || 'DigiLocker Holder';
+ if (!window.checkKycNameMatch(verifiedName)) {
+ return;
+ }
+ window.isIdentityVerified = true;
+ document.getElementById('documentNumber').value = event.data.docNumber || 'DIGILOCKER';
+ document.getElementById('verifiedNameSpan').textContent = verifiedName;
+ 
+ document.getElementById('verificationActionContainer').classList.add('hidden');
+ document.getElementById('verificationStatusContainer').classList.remove('hidden');
+ document.getElementById('verificationSuccessBadge').classList.remove('hidden');
+ document.getElementById('verificationErrorBadge').classList.add('hidden');
+ 
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ } else {
+ validateStep2();
+ }
+ showMessage('DigiLocker verification completed!', 'success');
+ }
+ if (event.data && event.data.type === 'ESIGN_SUCCESS') {
+ window.isEsignSigned = true;
+ // Update UI
+ document.getElementById('esignStatusBadge').classList.add('hidden');
+ document.getElementById('esignSuccessBadge').classList.remove('hidden');
+ const btn = document.getElementById('btnStartEsign');
+ if (btn) btn.classList.add('hidden');
+ showMessage('Aadhaar eSign verification completed!', 'success');
+ }
+ });
+
+ if (typeof window.validateAndGoToStep2 === 'undefined') {
+ console.log(' validateAndGoToStep2 not found, creating fallback...');
+ window.validateAndGoToStep2 = function () {
+ console.log(' Validating Step 1 mandatory fields...');
+
+ const warningDiv = document.getElementById('step1ValidationWarning');
+ const messageP = document.getElementById('step1ValidationMessage');
+
+ const missingFields = [];
+
+ // 1. Check if email is verified FIRST
+ const emailVerified = window.isEmailVerified === true || (typeof isEmailVerified !== 'undefined' && isEmailVerified === true);
+ if (!emailVerified) {
+ const emailInput = document.querySelector('[name="email"]');
+ if (emailInput) {
+ emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ setTimeout(() => {
+ emailInput.focus();
+ window.VM && window.VM.toast ? window.VM.toast('Please verify your email with OTP', 'error') : alert('Please verify your email with OTP');
+ }, 500);
+ }
+ return false;
+ }
+
+ // 1b. Check if mobile is verified
+ const mobileVerified = window.isMobileVerified === true;
+ if (!mobileVerified) {
+ const mobileInput = document.getElementById('phoneInput');
+ if (mobileInput) {
+ mobileInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ setTimeout(() => {
+ mobileInput.focus();
+ window.VM && window.VM.toast ? window.VM.toast('Please verify your mobile number with OTP', 'error') : alert('Please verify your mobile number with OTP');
+ }, 500);
+ }
+ return false;
+ }
+
+ // 2. Check all visible required fields in Step 1
+ let firstMissingInput = null;
+ const requiredInputs = document.querySelectorAll('#step1 [required]');
+ for (const input of requiredInputs) {
+ if (input.offsetParent === null) continue; // Skip hidden elements
+
+ // Handle radio buttons gracefully
+ if (input.type === 'radio') {
+ const radioGroup = document.querySelectorAll(`input[name="${input.name}"]:checked`);
+ if (radioGroup.length === 0) {
+ if (!firstMissingInput) firstMissingInput = input;
+ missingFields.push(input.name);
+ }
+ continue;
+ }
+
+ const value = input.value.trim();
+ if (!value || value === '' || value.startsWith('Select ')) {
+ let label = input.name;
+ const labelEl = input.previousElementSibling;
+ if (labelEl && labelEl.tagName === 'LABEL') {
+ label = labelEl.textContent.replace('*', '').trim();
+ }
+ missingFields.push(label);
+ if (!firstMissingInput) firstMissingInput = input;
+ }
+ }
+
+ // If there are missing fields
+ if (missingFields.length> 0) {
+ // Unhide warning
+ if (warningDiv && messageP) {
+ messageP.innerHTML = `Please fill out: <b>${missingFields[0]}</b>` + (missingFields.length> 1 ? ` and ${missingFields.length - 1} more fields.` : '.');
+ warningDiv.classList.remove('hidden');
+ }
+
+ // Focus the first missing input
+ if (firstMissingInput) {
+ firstMissingInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ setTimeout(() => {
+ firstMissingInput.focus();
+ firstMissingInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.3)';
+ setTimeout(() => { firstMissingInput.style.boxShadow = ''; }, 2000);
+ }, 500);
+ }
+ return false;
+ }
+
+ // All validations passed
+ console.log('? Step 1 validation passed! Proceeding to Step 2...');
+
+ if (warningDiv) {
+ warningDiv.classList.add('hidden');
+ }
+
+ // Proceed to Step 2
+ if (typeof window.goToStep === 'function') {
+ window.goToStep(2);
+ } else {
+ console.error('? goToStep function not found!');
+ }
+ return true;
+ };
+ console.log('? validateAndGoToStep2 fallback created');
+ } else {
+ console.log('? validateAndGoToStep2 loaded from register-script.js');
+ }
+
+ // Validate Step 2 inputs then navigate to Step 3
+ window.validateAndGoToStep3 = function () {
+ const profileFile = document.getElementById('profilePicture');
+ const docType = document.getElementById('documentType');
+ const docNumber = document.getElementById('documentNumber');
+ const docFile = document.getElementById('documentFile');
+
+ // Check profile photo
+ const hasPhoto = (profileFile && profileFile.files.length> 0) || window.profilePictureFile;
+ if (!hasPhoto) {
+ const uploadArea = document.getElementById('uploadArea') || document.getElementById('profilePicture');
+ if (uploadArea) uploadArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ window.VM && window.VM.toast ? window.VM.toast('Please upload a profile picture', 'error') : alert('Please upload a profile picture');
+ return false;
+ }
+
+ // Check document type selected
+ if (!docType || !docType.value) {
+ docType && docType.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ window.VM && window.VM.toast ? window.VM.toast('Please select a document type', 'error') : alert('Please select a document type');
+ return false;
+ }
+
+ // Check document number
+ if (!docNumber || !docNumber.value.trim()) {
+ docNumber && docNumber.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ setTimeout(() => { docNumber && docNumber.focus(); }, 300);
+ window.VM && window.VM.toast ? window.VM.toast('Please enter your document number', 'error') : alert('Please enter your document number');
+ return false;
+ }
+
+ // Check identity verification state
+ if (!window.isIdentityVerified) {
+ window.VM && window.VM.toast ? window.VM.toast('Please complete identity verification to continue', 'error') : alert('Please complete identity verification to continue');
+ return false;
+ }
+
+ // All checks passed © proceed
+ if (typeof window.goToStep === 'function') {
+ window.goToStep(3);
+ } else {
+ console.error('goToStep function not found!');
+ }
+ return true;
+ };
+
+ // Toggle Password Visibility
+ window.togglePasswordVisibility = function (inputId, iconId) {
+ const input = document.getElementById(inputId);
+ const icon = document.getElementById(iconId);
+ if (input) {
+ if (input.type === 'password') {
+ input.type = 'text';
+ if (icon) {
+ icon.classList.remove('fa-eye');
+ icon.classList.add('fa-eye-slash');
+ }
+ } else {
+ input.type = 'password';
+ if (icon) {
+ icon.classList.remove('fa-eye-slash');
+ icon.classList.add('fa-eye');
+ }
+ }
+ }
+ };
+ function togglePasswordVisibility(inputId, iconId) { window.togglePasswordVisibility(inputId, iconId); }
+
+ // Validate Password - Live validation while typing
+ function validatePassword() {
+ const password = document.getElementById('password');
+ if (!password) return false;
+
+ const value = password.value;
+
+ // Get requirement elements
+ const lengthCheck = document.getElementById('length-check');
+ const uppercaseCheck = document.getElementById('uppercase-check');
+ const lowercaseCheck = document.getElementById('lowercase-check');
+ const numberCheck = document.getElementById('number-check');
+ const strengthBar = document.getElementById('strengthBar');
+ const strengthText = document.getElementById('strengthText');
+
+ // Check each requirement
+ const hasLength = value.length>= 6;
+ const hasUppercase = /[A-Z]/.test(value);
+ const hasLowercase = /[a-z]/.test(value);
+ const hasNumber = /[0-9]/.test(value);
+
+ // Update requirement icons
+ if (lengthCheck) {
+ lengthCheck.querySelector('.requirement-icon').textContent = hasLength ? '?' : '?';
+ lengthCheck.classList.toggle('text-green-600', hasLength);
+ lengthCheck.classList.toggle('text-gray-600', !hasLength);
+ }
+ if (uppercaseCheck) {
+ uppercaseCheck.querySelector('.requirement-icon').textContent = hasUppercase ? '?' : '?';
+ uppercaseCheck.classList.toggle('text-green-600', hasUppercase);
+ uppercaseCheck.classList.toggle('text-gray-600', !hasUppercase);
+ }
+ if (lowercaseCheck) {
+ lowercaseCheck.querySelector('.requirement-icon').textContent = hasLowercase ? '?' : '?';
+ lowercaseCheck.classList.toggle('text-green-600', hasLowercase);
+ lowercaseCheck.classList.toggle('text-gray-600', !hasLowercase);
+ }
+ if (numberCheck) {
+ numberCheck.querySelector('.requirement-icon').textContent = hasNumber ? '?' : '?';
+ numberCheck.classList.toggle('text-green-600', hasNumber);
+ numberCheck.classList.toggle('text-gray-600', !hasNumber);
+ }
+
+ // Calculate strength
+ let strength = 0;
+ if (hasLength) strength++;
+ if (hasUppercase) strength++;
+ if (hasLowercase) strength++;
+ if (hasNumber) strength++;
+
+ // Update strength bar
+ const strengthPercent = (strength / 4) * 100;
+ if (strengthBar) {
+ strengthBar.style.width = strengthPercent + '%';
+ if (strength <= 1) {
+ strengthBar.className = 'bg-red-500 h-2 rounded-full transition-all duration-300';
+ } else if (strength === 2) {
+ strengthBar.className = 'bg-orange-500 h-2 rounded-full transition-all duration-300';
+ } else if (strength === 3) {
+ strengthBar.className = 'bg-yellow-500 h-2 rounded-full transition-all duration-300';
+ } else {
+ strengthBar.className = 'bg-green-500 h-2 rounded-full transition-all duration-300';
+ }
+ }
+
+ // Update strength text
+ if (strengthText) {
+ if (strength <= 1) {
+ strengthText.textContent = 'Weak';
+ strengthText.className = 'text-sm font-semibold text-red-600';
+ } else if (strength === 2) {
+ strengthText.textContent = 'Fair';
+ strengthText.className = 'text-sm font-semibold text-orange-600';
+ } else if (strength === 3) {
+ strengthText.textContent = 'Good';
+ strengthText.className = 'text-sm font-semibold text-yellow-600';
+ } else {
+ strengthText.textContent = 'Strong';
+ strengthText.className = 'text-sm font-semibold text-green-600';
+ }
+ }
+
+ // Also validate password match if confirm password has value
+ const confirmPassword = document.getElementById('confirmPassword');
+ if (confirmPassword && confirmPassword.value) {
+ validatePasswordMatch();
+ }
+
+ return hasLength;
+ }
+
+ // Validate Password Match
+ function validatePasswordMatch() {
+ const password = document.getElementById('password');
+ const confirmPassword = document.getElementById('confirmPassword');
+ const matchMessage = document.getElementById('passwordMatchMessage');
+ const matchIcon = document.getElementById('matchIcon');
+ const matchText = document.getElementById('matchText');
+
+ if (!password || !confirmPassword || !matchMessage || !matchIcon || !matchText) return false;
+
+ const passwordValue = password.value;
+ const confirmValue = confirmPassword.value;
+
+ if (confirmValue.length === 0) {
+ matchMessage.classList.add('hidden');
+ return false;
+ }
+
+ matchMessage.classList.remove('hidden');
+
+ if (passwordValue === confirmValue) {
+ matchIcon.textContent = '?';
+ matchText.textContent = 'Passwords match!';
+ matchText.className = 'text-sm text-green-600 font-semibold';
+ return true;
+ } else {
+ matchIcon.textContent = '?';
+ matchText.textContent = 'Passwords do not match';
+ matchText.className = 'text-sm text-red-600 font-semibold';
+ return false;
+ }
+ }
+
+ // Show message helper function
+ function showMessage(message, type) {
+ if (typeof showToast === 'function') { showToast(message, type); return; }
+ var toast = document.createElement('div');
+ toast.className = 'fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg text-white font-semibold transition-all duration-300 ' + (type === 'error' ? 'bg-red-500' : 'bg-green-500');
+ toast.textContent = message;
+ document.body.appendChild(toast);
+ setTimeout(function() { toast.classList.add('opacity-0'); setTimeout(function(){ toast.remove(); }, 300); }, 3000);
+ }
+
+ </script><!-- Supabase auth helpers and registration script --><script src="global-search.js"></script><!-- ===== DEV ONLY FEATURE REMOVED FOR PRODUCTION ===== --><!-- -- Backend API Client ---------------------------- --><script src="api-client.js"></script><!-- -- Register backend connector ------------------- --><script>
+ (function () {
+ window.addEventListener('load', function () {
+ function getV(ids) {
+ for (var id of ids) {
+ var el = document.getElementById(id) || document.querySelector('[name="' + id + '"]');
+ if (el && el.value) return el.value.trim();
+ }
+ return '';
+ }
+ function collectData() {
+ var data = {};
+ var form = document.getElementById('registrationForm') || document.querySelector('form');
+ if (form) {
+ var formData = new FormData(form);
+ for (var pair of formData.entries()) {
+ var key = pair[0];
+ var val = pair[1];
+ if (val instanceof File) continue;
+ data[key] = val;
+ }
+ 
+ // Checkboxes
+ form.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+ if (cb.name) {
+ data[cb.name] = cb.checked;
+ }
+ });
+
+ // Radios
+ form.querySelectorAll('input[type="radio"]').forEach(function(rb) {
+ if (rb.name) {
+ var checkedRb = form.querySelector('input[name="' + rb.name + '"]:checked');
+ data[rb.name] = checkedRb ? checkedRb.value : '';
+ }
+ });
+ }
+
+ // Compatibility overrides
+ data.full_name = data.fullName || getV(['fullName', 'full_name']);
+ data.email = data.email || getV(['email']);
+ data.password = data.password || getV(['password']);
+ data.mobile_number = data.mobile || data.mobile_number || getV(['phoneInput', 'mobile', 'phone']);
+ data.gender = data.gender || getV(['gender']);
+ data.date_of_birth = data.dob || data.date_of_birth || getV(['dateOfBirth', 'dob', 'date_of_birth']);
+ data.religion = data.religion || getV(['religion']);
+ data.caste = data.caste || getV(['caste']);
+ data.mother_tongue = data.motherTongue || data.mother_tongue || getV(['motherTongue', 'mother_tongue']);
+ data.marital_status = data.maritalStatus || data.marital_status || getV(['maritalStatus', 'marital_status']) || 'Never Married';
+ data.education = data.education || getV(['education', 'educationLevel']);
+ data.employment_status = data.employment || data.employment_status || getV(['employmentStatus', 'employment_status']);
+ data.annual_income = data.annualIncome || data.annual_income || getV(['annualIncome', 'annual_income']);
+ data.job_roles = data.occupation || data.job_roles || getV(['jobRoles', 'job_roles', 'occupation']);
+ data.works_at = data.worksAt || data.works_at || getV(['worksAt', 'works_at']);
+ data.height = data.heightDropdown || data.heightCustom || data.height || getV(['heightDropdown', 'heightCustom', 'height']);
+ data.city = data.city || getV(['city']);
+ data.state = data.state || getV(['state']);
+ data.family_type = data.familyType || data.family_type || getV(['familyType', 'family_type']);
+ data.about_myself = data.aboutMyself || data.about_myself || getV(['aboutMyself', 'about_myself', 'aboutMe']);
+ data.rasi = data.rasi || getV(['rasi']);
+ data.star = data.star || getV(['star', 'nakshatra']);
+
+ return data;
+ }
+ window.vmBackendRegister = async function (e) {
+ if (e && e.preventDefault) e.preventDefault();
+ if (typeof validateStep3 === 'function' && !validateStep3()) {
+ return;
+ }
+ var d = collectData();
+ if (!d.full_name) { VM.toast('Please enter your full name', 'error'); return; }
+ if (!d.email) { VM.toast('Please enter your email', 'error'); return; }
+ if (!d.password) { VM.toast('Please create a password', 'error'); return; }
+ var btn = document.querySelector('#submitBtn, button[type="submit"]');
+ VM.setLoading(btn, true, 'Create Account');
+ try {
+ var resp = await VM.auth.register(d);
+ VMAuth.save(resp);
+
+ // 1. Upload profile photo
+ if (typeof uploadProfilePhotoAfterRegister === 'function') {
+ await uploadProfilePhotoAfterRegister();
+ }
+
+ // 2. Upload government document
+ try {
+ var docFileInput = document.getElementById('documentFile');
+ var docTypeRaw = (document.getElementById('documentType') || {}).value || '';
+ var docNumber = (document.getElementById('documentNumber') || {}).value || '';
+ var docTypeMap = { 'aadhaar':'aadhaar', 'pan':'pan_card', 'pan_card':'pan_card', 'driving-license':'driving_license', 'driving_license':'driving_license', 'voter-id':'voter_id', 'voter_id':'voter_id' };
+ var docType = docTypeMap[docTypeRaw] || docTypeRaw;
+ var docFile = docFileInput && docFileInput.files && docFileInput.files[0];
+ if (docFile && docType) {
+ var token = VMAuth.token();
+ var docFD = new FormData();
+ docFD.append('document', docFile);
+ docFD.append('doc_type', docType);
+ if (docNumber) docFD.append('doc_number', docNumber);
+ var docRes = await fetch('/api/upload/document', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token }, body: docFD });
+ var docJson = await docRes.json();
+ if (!docRes.ok) throw new Error(docJson.error || 'Document upload failed');
+ console.log('Document uploaded:', docJson.path);
+ }
+ } catch (docErr) { console.warn('Document upload failed (non-critical):', docErr.message); }
+
+ // 3. Upload horoscope / jathagam
+ try {
+ var horoInput = document.getElementById('horoscopeFile') ||
+ document.getElementById('jathagamFile') ||
+ document.querySelector('input[name="horoscope"]') ||
+ document.querySelector('input[type="file"][id*="horoscope"], input[type="file"][id*="jathagam"]');
+ var horoFile = horoInput && horoInput.files && horoInput.files[0];
+ if (horoFile) {
+ var token2 = VMAuth.token();
+ var horoFD = new FormData();
+ horoFD.append('horoscope', horoFile);
+ var horoRes = await fetch('/api/upload/horoscope', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token2 }, body: horoFD });
+ var horoJson = await horoRes.json();
+ if (!horoRes.ok) throw new Error(horoJson.error || 'Horoscope upload failed');
+ console.log('Horoscope uploaded:', horoJson.path);
+ }
+ } catch (horoErr) { console.warn('Horoscope upload failed (non-critical):', horoErr.message); }
+
+ // 4. Upload marital proof (divorce decree / death certificate)
+ try {
+ if (window._maritalProofFile) {
+ var maritalDocTypeRaw = (document.getElementById('documentTypeSelect') || {}).value || '';
+ var maritalDocTypeMap = { 'divorce-decree': 'divorce_decree', 'death-certificate': 'death_certificate', 'court-order': 'court_order' };
+ var maritalDocType = maritalDocTypeMap[maritalDocTypeRaw] || maritalDocTypeRaw.replace(/-/g, '_');
+ if (maritalDocType) {
+ var token3 = VMAuth.token();
+ var maritalFD = new FormData();
+ maritalFD.append('document', window._maritalProofFile);
+ maritalFD.append('doc_type', maritalDocType);
+ var maritalRes = await fetch('/api/upload/marital-proof', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token3 }, body: maritalFD });
+ var maritalJson = await maritalRes.json();
+ if (!maritalRes.ok) throw new Error(maritalJson.error || 'Marital proof upload failed');
+ console.log('Marital proof uploaded:', maritalJson.path);
+ }
+ }
+ } catch (maritalErr) { console.warn('Marital proof upload failed (non-critical):', maritalErr.message); }
+
+ // Redirect to billing page after registration
+ const regGender = (d.gender || '').toLowerCase();
+ localStorage.setItem('reg_gender_hint', regGender);
+ setTimeout(function () {
+ window.location.href = 'billing.html?new_registration=1';
+ }, 800);
+ } catch (err) {
+ VM.toast(err.message || 'Registration failed', 'error');
+ VM.setLoading(btn, false, 'Create Account');
+ }
+ };
+ var f = document.getElementById('registrationForm') || document.querySelector('form');
+ if (f) f.addEventListener('submit', window.vmBackendRegister);
+ if (typeof window.submitRegistration === 'function') window.submitRegistration = window.vmBackendRegister;
+ console.log('Register backend connector ready');
+ // Disabled arbitrary button forcing to restore OTP lock
+ });
+ })();
+ </script><script src="language.js"></script>
+<!-- Crop Image Modal -->
+<div id="cropImageModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 p-4 sm:p-6 overflow-y-auto">
+ <div class="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-auto p-6 md:p-8 flex flex-col max-h-[90vh]">
+ <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+ <h3 class="text-2xl font-bold text-gray-800"><i class="fas fa-crop text-pink-500 mr-2"></i>Crop Profile Image</h3>
+ <button aria-label="Close Crop Modal" type="button" class="text-gray-400 hover:text-gray-600 transition" onclick="closeCropModal()">
+ <i class="fas fa-times text-xl"></i>
+ </button>
+ </div>
+ 
+ <!-- Cropping workspace -->
+ <div class="my-6 overflow-hidden flex-1 flex justify-center items-center bg-gray-50 border border-gray-100 rounded-2xl min-h-[300px] max-h-[50vh]">
+ <img id="cropModalImage" src="" alt="Image to crop" class="max-w-full max-h-full block">
+ </div>
+ 
+ <!-- Control buttons -->
+ <div class="flex justify-center space-x-3 mb-6">
+ <button type="button" onclick="cropZoomIn()" class="p-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition duration-200" title="Zoom In">
+ <i class="fas fa-search-plus"></i>
+ </button>
+ <button type="button" onclick="cropZoomOut()" class="p-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition duration-200" title="Zoom Out">
+ <i class="fas fa-search-minus"></i>
+ </button>
+ <button type="button" onclick="cropRotateLeft()" class="p-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition duration-200" title="Rotate Left">
+ <i class="fas fa-undo"></i>
+ </button>
+ <button type="button" onclick="cropRotateRight()" class="p-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition duration-200" title="Rotate Right">
+ <i class="fas fa-redo"></i>
+ </button>
+ </div>
+ 
+ <!-- Action buttons -->
+ <div class="grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+ <button type="button" onclick="closeCropModal()" class="w-full py-3 border border-gray-200 text-gray-600 rounded-xl font-bold hover:bg-gray-50 transition duration-200">
+ Cancel
+ </button>
+ <button type="button" onclick="saveCroppedImage()" class="w-full py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl font-bold hover:shadow-lg transition duration-200 flex items-center justify-center gap-2">
+ <i class="fas fa-check"></i> Crop & Save
+ </button>
+ </div>
+ </div>
+</div>
+</body></html>

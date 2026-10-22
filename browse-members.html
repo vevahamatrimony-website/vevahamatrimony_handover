@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="auth-guard.js"></script>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Profiles - VevahaMatrimony</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%); background-attachment: fixed; }
+        .member-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .member-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(236, 72, 153, 0.15); }
+        .membercard-img { transition: transform 0.5s ease; }
+        .member-card:hover .membercard-img { transform: scale(1.05); }
+    </style>
+</head>
+<body data-active-nav="browse">
+
+    <!-- Navbar and Sidebar will be injected by navbar-sidebar.js -->
+
+    <main id="main-content" class="min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Header Section -->
+            <div class="bg-white rounded-3xl shadow-sm p-8 mb-8 border border-pink-100/50">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Browse Profiles</h1>
+                        <p class="text-gray-600">Explore verified profiles curated by our administration. Find your perfect life partner.</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-pink-50 px-6 py-3 rounded-2xl border border-pink-100">
+                        <i class="fas fa-users-viewfinder text-pink-500 text-xl"></i>
+                        <div>
+                            <p class="text-xs text-pink-400 font-bold uppercase tracking-wider">Total Members</p>
+                            <p id="profileCount" class="text-xl font-bold text-pink-600">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profiles Grid -->
+            <div id="membersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Members will be populated by JavaScript -->
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="flex flex-col items-center justify-center py-20">
+                <div class="w-16 h-16 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin"></div>
+                <p class="mt-4 text-gray-500 font-medium">Fetching curated profiles...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-user-slash text-4xl text-pink-400"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">No Profiles Found</h3>
+                <p class="text-gray-600 max-w-md">We couldn't find any curated profiles matching your criteria at the moment. Please check back soon.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Full Profile Modal -->
+    <div id="profileModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeProfileModal()"></div>
+        <div class="relative w-full max-w-4xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col" style="max-height: 85vh;">
+            <div class="bg-gradient-to-br from-pink-500 to-purple-600 p-6 text-white flex justify-between items-center shrink-0">
+                <h2 class="text-2xl font-bold">Member Details</h2>
+                <button onclick="closeProfileModal()" class="text-white opacity-70 hover:opacity-100 transition">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 min-h-0 overflow-y-auto p-8">
+                <div id="modalProfileContent" class="grid md:grid-cols-2 gap-8"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="navbar-sidebar.js"></script>
+    <script src="api-client.js"></script>
+    <script src="vevaha-ai-widget.js"></script>
+    <script src="full-profile-modal.js"></script>
+    <script src="language.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initBrowseMembers();
+        });
+
+        async function initBrowseMembers() {
+            const container = document.getElementById('membersContainer');
+            const loading = document.getElementById('loadingState');
+            const empty = document.getElementById('emptyState');
+            const countEl = document.getElementById('profileCount');
+
+            try {
+                const token = localStorage.getItem('vm_token');
+                if (!token) {
+                    window.location.href = '/login.html?redirect=browse-members.html';
+                    return;
+                }
+
+                const res = await fetch('/api/profile/browse-uploaded', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!res.ok) throw new Error('Failed to fetch profiles');
+                
+                const result = await res.json();
+                const members = result.profiles || [];
+
+                loading.classList.add('hidden');
+                
+                if (members.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+
+                // All members can browse all available profiles
+                let displayMembers = members;
+
+                countEl.textContent = displayMembers.length;
+
+                displayMembers.forEach(member => {
+                    const card = buildMemberCard(member);
+                    container.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error('Failed to load members:', err);
+                loading.innerHTML = `
+                    <div class="text-center text-red-500">
+                        <i class="fas fa-exclamation-circle text-4xl mb-4"></i>
+                        <p class="font-bold">Unable to load profiles</p>
+                        <p class="text-sm opacity-70">${err.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function buildMemberCard(member) {
+            const planMeta = {
+                silver:  { label: 'Silver',  icon: 'fa-medal',  color: 'from-gray-500 to-gray-600' },
+                gold:    { label: 'Gold',    icon: 'fa-trophy', color: 'from-yellow-500 to-yellow-600' },
+                diamond: { label: 'Diamond', icon: 'fa-gem',    color: 'from-blue-500 to-blue-600' },
+                vip:     { label: 'VIP',     icon: 'fa-crown',  color: 'from-purple-500 to-purple-600' },
+                free:    { label: '',        icon: '',          color: '' }
+            };
+            const plan = planMeta[member.plan_name?.toLowerCase()] || planMeta.free;
+            const imgSrc = member.profile_picture_url || '/images/placeholder-profile.svg';
+            
+            const currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
+            const isSelf = member.id === currentUser.id;
+            const isPhotoLocked = !isSelf && (
+                member.hide_photo === true || 
+                member.hide_photo === 'true' || 
+                member.profile_photo_locked === true || 
+                member.profile_photo_locked === 'true'
+            );
+
+            const details = [
+                member.age ? `${member.age} Yrs` : null,
+                member.caste,
+                member.education,
+                member.job_roles,
+                [member.city, member.state].filter(Boolean).join(', ')
+            ].filter(Boolean).join(', ') || 'Details hidden';
+
+            const card = document.createElement('div');
+            card.className = 'member-card bg-white rounded-3xl shadow-md overflow-hidden relative border border-gray-100';
+            
+            card.innerHTML = `
+                ${plan.label ? `
+                    <div class="absolute top-4 left-4 bg-gradient-to-r ${plan.color} text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-md z-10 flex items-center gap-1.5 uppercase tracking-wider">
+                        <i class="fas ${plan.icon}"></i> ${plan.label}
+                    </div>
+                ` : ''}
+                
+                <div class="absolute top-4 right-4 flex flex-col gap-2 z-10">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg text-white" title="Verified Profile">
+                        <i class="fas fa-check text-xs"></i>
+                    </div>
+                </div>
+
+                <div class="aspect-w-1 aspect-h-1 overflow-hidden bg-gray-100 relative">
+                    <img src="${imgSrc}" alt="${member.full_name}" class="w-full h-48 object-cover membercard-img" style="${isPhotoLocked ? 'filter: blur(12px) grayscale(50%); pointer-events: none; -webkit-user-drag: none;' : ''}" onerror="this.src='/images/placeholder-profile.svg'">
+                    ${isPhotoLocked ? `
+                    <div class="absolute bottom-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md">
+                        <i class="fas fa-lock text-gray-600 text-[10px]"></i>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="p-5">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-gray-900 truncate flex-1">${member.full_name || 'Member'}</h3>
+                        <div class="flex gap-1.5 ml-2">
+                            <button onclick="handleContactClick('${member.member_id}')" class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center hover:bg-green-600 shadow-sm transition">
+                                <i class="fab fa-whatsapp text-sm"></i>
+                            </button>
+                            <button onclick="handleContactClick('${member.member_id}')" class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 shadow-sm transition">
+                                <i class="fas fa-phone text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-pink-500 font-bold text-xs mb-3 tracking-wide uppercase">${member.member_id}</p>
+                    <p class="text-gray-500 text-sm line-clamp-2 min-h-[40px] mb-4">${details}</p>
+                    
+                    <div class="flex items-center gap-2">
+                        <button onclick="openProfileView('${member.member_id}')" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-pink-600 text-white text-sm font-bold shadow-sm hover:shadow-md transition">
+                            View Profile
+                        </button>
+                        <button onclick="handleInterestClick('${member.id}', this)" class="w-11 h-11 rounded-xl border-2 border-pink-100 text-pink-500 hover:bg-pink-50 transition flex items-center justify-center">
+                            <i class="fas fa-heart text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        async function handleInterestClick(receiverId, btn) {
+            try {
+                let currentUser = {};
+                try { currentUser = JSON.parse(localStorage.getItem('userData') || localStorage.getItem('vm_user') || '{}'); } catch(e){}
+                const userPlan = (currentUser.plan_name || 'free').toLowerCase();
+                if (userPlan === 'free') {
+                    if (window.showUpgradeModal) {
+                        window.showUpgradeModal(
+                            'Upgrade Required to Express Interest',
+                            'Sending interest requests requires an active membership plan. Please upgrade to connect.',
+                            'Upgrade Plan'
+                        );
+                    } else {
+                        showNotification('Sending interest requests requires an active membership plan.', 'error');
+                    }
+                    return;
+                }
+
+                const token = localStorage.getItem('vm_token');
+                const res = await fetch('/api/requests/send', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ receiver_id: receiverId })
+                });
+
+                const result = await res.json();
+                if (!res.ok) {
+                    if (result.error === 'UPGRADE_REQUIRED' || res.status === 403) {
+                        if (window.showUpgradeModal) {
+                            window.showUpgradeModal('Upgrade Required', result.message || result.error, 'Upgrade Plan');
+                            return;
+                        }
+                    }
+                    throw new Error(result.error || 'Failed to send request');
+                }
+
+                btn.classList.add('bg-pink-500', 'text-white', 'border-pink-500');
+                btn.innerHTML = '<i class="fas fa-check text-lg"></i>';
+                btn.disabled = true;
+                
+                showNotification('Interest request sent successfully!', 'success');
+            } catch (err) {
+                showNotification(err.message, 'error');
+            }
+        }
+
+        function openProfileView(memberId) {
+            if (window.fullProfileModal) {
+                window.fullProfileModal.open(memberId);
+            }
+        }
+
+        function handleContactClick(memberId) {
+            openProfileView(memberId);
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 p-4 rounded-2xl shadow-2xl z-[200] ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white flex items-center gap-3 animate-in`;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i><span>${message}</span>`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="auth-guard.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Call — VevahaMatrimony</title>
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Animated background blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: blobPulse 8s ease-in-out infinite;
+        }
+        .blob1 { width: 500px; height: 500px; background: #ec4899; top: -100px; left: -100px; }
+        .blob2 { width: 400px; height: 400px; background: #8b5cf6; bottom: -80px; right: -80px; animation-delay: 3s; }
+        .blob3 { width: 300px; height: 300px; background: #3b82f6; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 6s; }
+
+        @keyframes blobPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Phone ripple animation */
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        .ripple-ring {
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            border: 2px solid rgba(236, 72, 153, 0.5);
+            animation: ripple 2s ease-out infinite;
+        }
+        .ripple-ring:nth-child(2) { animation-delay: 0.5s; }
+        .ripple-ring:nth-child(3) { animation-delay: 1s; }
+
+        /* Avatar glow */
+        @keyframes avatarGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.4), 0 0 60px rgba(236, 72, 153, 0.2); }
+            50% { box-shadow: 0 0 50px rgba(236, 72, 153, 0.7), 0 0 100px rgba(236, 72, 153, 0.3); }
+        }
+        .avatar-glow { animation: avatarGlow 2s ease-in-out infinite; }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+        }
+
+        /* Control buttons */
+        .ctrl-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            outline: none;
+        }
+        .ctrl-btn:hover { transform: scale(1.1); }
+        .ctrl-btn:active { transform: scale(0.95); }
+
+        .btn-mute {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        .btn-mute.active {
+            background: rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.6);
+        }
+        .btn-speaker {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        .btn-end {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
+        }
+        .btn-end:hover { box-shadow: 0 12px 40px rgba(239, 68, 68, 0.7); }
+
+        /* Status dot */
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .status-dot { animation: statusPulse 1.5s ease-in-out infinite; }
+
+        /* Wave visualizer */
+        @keyframes wave {
+            0%, 100% { height: 8px; }
+            50% { height: 28px; }
+        }
+        .wave-bar {
+            width: 4px;
+            background: rgba(236, 72, 153, 0.7);
+            border-radius: 2px;
+            height: 8px;
+            margin: 0 2px;
+        }
+        .wave-bar:nth-child(1) { animation: wave 0.8s 0s ease-in-out infinite; }
+        .wave-bar:nth-child(2) { animation: wave 0.8s 0.1s ease-in-out infinite; }
+        .wave-bar:nth-child(3) { animation: wave 0.8s 0.2s ease-in-out infinite; }
+        .wave-bar:nth-child(4) { animation: wave 0.8s 0.3s ease-in-out infinite; }
+        .wave-bar:nth-child(5) { animation: wave 0.8s 0.4s ease-in-out infinite; }
+        .wave-bar:nth-child(6) { animation: wave 0.8s 0.3s ease-in-out infinite; }
+        .wave-bar:nth-child(7) { animation: wave 0.8s 0.2s ease-in-out infinite; }
+        .wave-bar:nth-child(8) { animation: wave 0.8s 0.1s ease-in-out infinite; }
+        .wave-bar:nth-child(9) { animation: wave 0.8s 0s ease-in-out infinite; }
+        .wave-bar.silent { animation: none; height: 8px; }
+
+        /* Slide up animation */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: slideUp 0.5s ease-out forwards; }
+    
+
+
+</style>
+</head>
+<body>
+
+    <!-- Background blobs -->
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <!-- Main Call UI -->
+    <div class="glass-card w-full max-w-sm mx-4 p-8 text-white text-center animate-up relative z-10">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <a href="connections.html" class="text-white text-opacity-60 hover:text-opacity-100 transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <span class="text-sm text-white text-opacity-50 font-medium uppercase tracking-widest">Voice Call</span>
+            <div class="w-6"></div>
+        </div>
+
+        <!-- Avatar with ripple rings -->
+        <div class="relative inline-block mb-6">
+            <div class="relative w-36 h-36 mx-auto">
+                <div class="ripple-ring" id="ring1"></div>
+                <div class="ripple-ring" id="ring2"></div>
+                <div class="ripple-ring" id="ring3"></div>
+                <img id="remoteAvatar"
+                     src="/images/placeholder-profile.svg"
+                     onerror="this.src='/images/placeholder-profile.svg'"
+                     class="w-36 h-36 rounded-full object-cover border-4 border-white border-opacity-20 avatar-glow relative z-10">
+            </div>
+        </div>
+
+        <!-- Name & Status -->
+        <h1 id="remoteName" class="text-2xl font-bold mb-2">Connecting...</h1>
+        <div class="flex items-center justify-center gap-2 mb-2">
+            <span class="w-2 h-2 rounded-full bg-pink-400 status-dot" id="statusDot"></span>
+            <p id="callStatusText" class="text-white text-opacity-60 text-sm">Initializing call...</p>
+        </div>
+
+        <!-- Timer -->
+        <p id="callTimer" class="text-3xl font-mono font-bold text-pink-300 mb-8 hidden">00:00</p>
+
+        <!-- Audio wave visualizer -->
+        <div class="flex items-end justify-center mb-8 h-8" id="waveVisualizer">
+            <div class="wave-bar silent" id="wb1"></div>
+            <div class="wave-bar silent" id="wb2"></div>
+            <div class="wave-bar silent" id="wb3"></div>
+            <div class="wave-bar silent" id="wb4"></div>
+            <div class="wave-bar silent" id="wb5"></div>
+            <div class="wave-bar silent" id="wb6"></div>
+            <div class="wave-bar silent" id="wb7"></div>
+            <div class="wave-bar silent" id="wb8"></div>
+            <div class="wave-bar silent" id="wb9"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center justify-center gap-6">
+            <button class="ctrl-btn btn-mute" id="muteBtn" onclick="toggleMute()" title="Mute">
+                <i class="fas fa-microphone" id="muteIcon"></i>
+            </button>
+
+            <button class="ctrl-btn btn-end" id="endBtn" onclick="handleEndCall()" title="End Call">
+                <i class="fas fa-phone-slash"></i>
+            </button>
+
+            <button class="ctrl-btn btn-speaker" id="speakerBtn" onclick="toggleSpeaker()" title="Speaker">
+                <i class="fas fa-volume-up" id="speakerIcon"></i>
+            </button>
+        </div>
+
+        <!-- Network quality indicator -->
+        <div class="mt-6 flex items-center justify-center gap-1 text-xs text-white text-opacity-40">
+            <i class="fas fa-signal"></i>
+            <span id="qualityText">Establishing connection...</span>
+        </div>
+    </div>
+
+    <!-- Hidden audio element for remote stream -->
+    <audio id="remoteAudio" autoplay playsinline></audio>
+
+    <script src="global-settings.js"></script>
+    <script src="api-client.js"></script>
+    <script src="vevaha-ai-widget.js"></script>
+    <script src="webrtc-call.js"></script>
+    <script>
+    // ─── Page Init ────────────────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const receiverMemberId = params.get('receiver'); // caller mode: member_id of callee
+    const incomingCallerId = params.get('caller');   // callee mode
+    const incomingCallId = params.get('callId');
+    const isCallee = !!incomingCallerId;
+
+    let isMuted = false;
+    let isSpeakerOn = true;
+    let waveBarsActive = false;
+
+    function setStatus(msg) {
+        const el = document.getElementById('callStatusText');
+        if (el) el.textContent = msg;
+    }
+
+    function showTimer() {
+        document.getElementById('callTimer').classList.remove('hidden');
+        activateWave();
+        document.getElementById('qualityText').textContent = 'Connected — encrypted WebRTC';
+        // Stop ripple rings
+        ['ring1','ring2','ring3'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.animation = 'none';
+        });
+    }
+
+    function activateWave() {
+        document.querySelectorAll('.wave-bar').forEach(b => b.classList.remove('silent'));
+        waveBarsActive = true;
+    }
+    function silenceWave() {
+        document.querySelectorAll('.wave-bar').forEach(b => b.classList.add('silent'));
+        waveBarsActive = false;
+    }
+
+    async function loadRemoteProfile(memberId) {
+        try {
+            const profile = await VM.profile.get(memberId);
+            if (profile && profile.profile) {
+                const p = profile.profile;
+                document.getElementById('remoteName').textContent = p.full_name || 'Member';
+                if (p.profile_picture_url) {
+                    document.getElementById('remoteAvatar').src = p.profile_picture_url;
+                }
+            }
+        } catch (e) {
+            console.warn('Could not load remote profile:', e);
+        }
+    }
+
+    async function initCall() {
+        if (!VMAuth.isLoggedIn()) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const me = VMAuth.user();
+        const myMemberId = me.member_id; // ✅ use member_id, not UUID
+
+        if (!myMemberId) {
+            setStatus('Profile not loaded. Please log in again.');
+            return;
+        }
+
+        // Register callbacks
+        VevahaWebRTC.onStatusChange(setStatus);
+        VevahaWebRTC.onCallAnswered(() => {
+            showTimer();
+            setStatus('Call connected');
+        });
+        VevahaWebRTC.onRemoteStream((stream) => {
+            const audio = document.getElementById('remoteAudio');
+            audio.srcObject = stream;
+            showTimer();
+        });
+        VevahaWebRTC.onCallEnded((reason) => {
+            setStatus;
+            silenceWave();
+            setTimeout(() => window.location.href = 'connections.html', 2000);
+        });
+
+        if (!isCallee) {
+            // CALLER MODE
+            if (!receiverMemberId) { setStatus('Invalid call link'); return; }
+            await loadRemoteProfile(receiverMemberId);
+            setStatus('Starting call...');
+            try {
+                await VevahaWebRTC.initiateCaller(
+                    receiverMemberId,
+                    'audio',
+                    myMemberId,
+                    me.full_name || 'Member',
+                    me.profile_picture_url || ''
+                );
+                setStatus('Ringing...');
+            } catch (err) {
+                setStatus('Failed: ' + err.message);
+                console.error(err);
+            }
+        } else {
+            // CALLEE MODE — came here after accepting from incoming-call-listener overlay
+            await loadRemoteProfile(incomingCallerId);
+            setStatus('Connecting to call...');
+            await VevahaWebRTC.initiateCallee(incomingCallerId, incomingCallId, 'audio', myMemberId);
+        }
+    }
+
+    function toggleMute() {
+        isMuted = VevahaWebRTC.toggleMute();
+        const icon = document.getElementById('muteIcon');
+        const btn = document.getElementById('muteBtn');
+        icon.className = isMuted ? 'fas fa-microphone-slash' : 'fas fa-microphone';
+        btn.classList.toggle('active', isMuted);
+        if (isMuted) silenceWave(); else if (waveBarsActive !== undefined) activateWave();
+    }
+
+    function toggleSpeaker() {
+        const audio = document.getElementById('remoteAudio');
+        isSpeakerOn = !isSpeakerOn;
+        audio.muted = !isSpeakerOn;
+        const icon = document.getElementById('speakerIcon');
+        icon.className = isSpeakerOn ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+    }
+
+    async function handleEndCall() {
+        setStatus('Ending call...');
+        await VevahaWebRTC.endCall();
+        silenceWave();
+        setTimeout(() => window.location.href = 'connections.html', 1000);
+    }
+
+    // Start on load
+    window.addEventListener('DOMContentLoaded', initCall);
+    </script>
+<script src="language.js"></script>
+</body>
+</html>

@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="auth-guard.js"></script>
+
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing & Membership - VevahaMatrimony</title>
+    <meta name="description" content="Manage your VevahaMatrimony membership plan, view payment history and upgrade to premium.">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);
+            background-attachment: fixed;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar Link Styling (Standard) ───────────────── */
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: #475569;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ec4899, #db2777);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .sidebar-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar-link i {
+            color: inherit;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-link:hover {
+            background: linear-gradient(90deg, #fdf2f8 0%, transparent 100%);
+            color: #db2777;
+            transform: translateX(5px);
+        }
+
+        .sidebar-link:hover i {
+            transform: scale(1.2);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%);
+            color: #db2777;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.1);
+        }
+
+        .sidebar-link.active::before {
+            transform: scaleY(1);
+        }
+
+        /* ── Cards ────────────────────────────────────────── */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(236, 72, 153, 0.08);
+        }
+
+        /* ── Current Plan Card ────────────────────────────── */
+        .current-plan-card {
+            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 50%, #f97316 100%);
+            border-radius: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .current-plan-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .current-plan-card::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -40px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .plan-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 6px 18px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .plan-status-active {
+            background: #10b981;
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            display: inline-block;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.3); }
+        }
+
+        /* ── Plan Upgrade Cards ───────────────────────────── */
+        .plan-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            border-color: #ec4899;
+            box-shadow: 0 16px 40px rgba(236, 72, 153, 0.2);
+        }
+
+        .plan-card.recommended {
+            border-color: #ec4899;
+            box-shadow: 0 8px 32px rgba(236, 72, 153, 0.2);
+        }
+
+        .plan-card.recommended::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: 12px;
+            right: -24px;
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 36px;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+        }
+
+        .plan-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .plan-price sup { font-size: 1rem; vertical-align: super; }
+        .plan-price span { font-size: 2rem; font-weight: 800; line-height: 1; }
+        .plan-price small { font-size: 0.75rem; color: #94a3b8; }
+
+        .plan-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .plan-btn-primary {
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            color: white;
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
+        }
+
+        .plan-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(236, 72, 153, 0.4);
+        }
+
+        .plan-btn-outline {
+            background: transparent;
+            border: 2px solid #e2e8f0 !important;
+            color: #64748b;
+        }
+
+        .plan-btn-outline:hover {
+            border-color: #ec4899 !important;
+            color: #ec4899;
+        }
+
+        .plan-feature {
+            font-size: 0.78rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .plan-feature i { color: #10b981; font-size: 0.7rem; }
+
+        /* ── Payment History Table ────────────────────────── */
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th {
+            font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.8px; color: #94a3b8; padding: 12px 16px;
+            text-align: left; border-bottom: 1px solid rgba(236, 72, 153, 0.08);
+        }
+        .history-table td {
+            padding: 14px 16px; font-size: 0.85rem; color: #334155;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        .history-table tr:hover td { background: rgba(236, 72, 153, 0.03); }
+
+        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.72rem; font-weight: 600; }
+        .status-success { background: #dcfce7; color: #15803d; }
+        .status-pending { background: #fef9c3; color: #854d0e; }
+        .status-failed { background: #fee2e2; color: #dc2626; }
+        .status-refunded { background: #e0f2fe; color: #0369a1; }
+
+        .btn-invoice {
+            background: rgba(236, 72, 153, 0.08);
+            color: #ec4899;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-invoice:hover { background: #ec4899; color: white; }
+
+        /* ── Stats Row ─────────────────────────────────────── */
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(236, 72, 153, 0.08);
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.06);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* ── Mobile Logic Appended ─────────────────────────── */
+        @media (max-width: 768px) {
+            .plans-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+
+        /* ── Animations ─────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fadeUp 0.5s ease-out forwards; }
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <button id="sidebarToggle" class="md:hidden text-gray-600 hover:text-pink-600 focus:outline-none" aria-label="Open navigation">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <a href="home.html" class="flex items-center text-xl font-semibold text-pink-600">
+                    <img src="images/vevaha-logo.png" alt="Vevaha" class="w-10 h-10 mr-2">VevahaMatrimony
+                </a>
+            </div>
+            <div class="relative hidden md:block">
+                <input type="text" id="searchInput" placeholder="Search..."
+                    class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-64 transition-all duration-300"
+                    onfocus="if(window.showSearchSuggestions)showSearchSuggestions();"
+                    onblur="if(window.hideSearchSuggestions)hideSearchSuggestions();"
+                    onkeypress="if(window.handleSearchKeyPress)handleSearchKeyPress(event);">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <button onclick="if(window.performSearch)performSearch();" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200">
+                    <span class="text-xs font-semibold" id="onlineStatusBadge">Online</span>
+                    <button id="onlineToggleBtn" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                        style="background-color: #22c55e;" onclick="if(window.handleOnlineToggleClick)handleOnlineToggleClick();">
+                        <span id="toggleSlider" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm" style="margin-left: 0.125rem;"></span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <button id="userMenuButton" class="flex items-center space-x-3 px-3 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white flex items-center justify-center font-bold" id="userInitials">VM</div>
+                        <div class="text-left hidden sm:block">
+                            <p id="navUserName" class="text-sm font-semibold text-gray-900">Member</p>
+                            <p id="navPlanLabel" class="text-xs text-gray-500">Free plan</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </button>
+                    <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                        <a href="profile.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                            <i class="fas fa-id-badge mr-3 text-pink-500"></i> Profile
+                        </a>
+                        <a href="settings.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                            <i class="fas fa-sliders mr-3 text-pink-500"></i> Settings
+                        </a>
+                        <button onclick="if(window.handleLogout)handleLogout();" class="w-full text-left flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                            <i class="fas fa-arrow-right-from-bracket mr-3 text-pink-500"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative flex">
+        <aside id="appSidebar" class="fixed top-0 md:top-16 left-0 bottom-0 w-60 bg-white border-r border-gray-100 z-40 shadow-lg md:shadow-none" style="transform: translateX(-100%); transition: transform 0.3s;">
+            <div class="flex items-center justify-between px-4 py-4 border-b border-gray-100 md:hidden">
+                <span class="text-sm font-semibold text-gray-700">Navigation</span>
+                <button id="sidebarClose" class="text-gray-500 hover:text-pink-600" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="px-4 py-6 space-y-1 overflow-y-auto h-full">
+                <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="active-members-dash.html" class="sidebar-link"><i class="fas fa-users"></i><span>Active Members</span></a>
+                <a href="messages.html" class="sidebar-link"><i class="fas fa-comments"></i><span>Messages</span></a>
+                <a href="interested-profiles.html" class="sidebar-link"><i class="fas fa-star"></i><span>Interested</span></a>
+                <a href="requests.html" class="sidebar-link"><i class="fas fa-handshake"></i><span>Requests</span></a>
+                <a href="horoscopic-chatbot.html" class="sidebar-link"><i class="fas fa-moon"></i><span>Astro AI</span></a>
+                <a href="connections.html" class="sidebar-link"><i class="fas fa-user-friends"></i><span>My Connections</span></a>
+                <a href="account-settings.html" class="sidebar-link"><i class="fas fa-user-edit"></i><span>Edit Profile</span></a>
+                <a href="settings.html" class="sidebar-link"><i class="fas fa-user-cog"></i><span>Settings</span></a>
+                <a href="billing.html" class="sidebar-link active"><i class="fas fa-credit-card"></i><span>Billing</span></a>
+            </div>
+        </aside>
+        <div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden md:hidden"></div>
+
+        <main class="flex-1 md:ml-60 px-4 sm:px-6 lg:px-8 py-8 pt-24 min-h-screen">
+            <div class="max-w-6xl mx-auto space-y-8">
+                <!-- Page Header -->
+                <div class="fade-up">
+                    <h1 class="text-2xl font-bold text-gray-900">Billing & Membership</h1>
+                    <p class="text-gray-500 text-sm mt-1">Manage your plan, view payment history and download invoices.</p>
+                </div>
+
+                <!-- ── Stat Tiles ───────────────────────────────────── -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-up delay-1">
+                    <div class="stat-card flex items-center gap-3">
+                        <div class="stat-icon" style="background:rgba(236,72,153,0.1)"><i class="fas fa-crown" style="color:#ec4899"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-medium">Current Plan</p>
+                            <p class="font-bold text-gray-900 text-sm" id="statPlanName">Free</p>
+                        </div>
+                    </div>
+                    <div class="stat-card flex items-center gap-3">
+                        <div class="stat-icon" style="background:rgba(168,85,247,0.1)"><i class="fas fa-calendar-check" style="color:#a855f7"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-medium">Valid Until</p>
+                            <p class="font-bold text-gray-900 text-sm" id="statExpiry">—</p>
+                        </div>
+                    </div>
+                    <div class="stat-card flex items-center gap-3">
+                        <div class="stat-icon" style="background:rgba(16,185,129,0.1)"><i class="fas fa-rupee-sign" style="color:#10b981"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-medium">Total Spent</p>
+                            <p class="font-bold text-gray-900 text-sm" id="statTotalSpent">₹0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card flex items-center gap-3">
+                        <div class="stat-icon" style="background:rgba(249,115,22,0.1)"><i class="fas fa-receipt" style="color:#f97316"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-medium">Transactions</p>
+                            <p class="font-bold text-gray-900 text-sm" id="statTxCount">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Current Plan Banner ─────────────────────────── -->
+                <div class="current-plan-card p-8 fade-up delay-2">
+                    <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                        <div>
+                            <div class="plan-badge mb-4"><span class="plan-status-active"></span><span id="planStatusLabel">Active Membership</span></div>
+                            <h2 class="text-3xl md:text-4xl font-extrabold mb-1" id="currentPlanTitle">Free Discovery</h2>
+                            <p class="text-white text-opacity-80 text-sm mb-4" id="currentPlanDesc">Basic visibility — upgrade to unlock messaging, calls and more.</p>
+                            <div class="flex flex-wrap gap-4 text-sm">
+                                <div class="flex items-center gap-2"><i class="fas fa-calendar-alt opacity-70"></i><span>Expires: <strong id="expiryDate">No Expiry</strong></span></div>
+                                <div class="flex items-center gap-2"><i class="fas fa-id-badge opacity-70"></i><span>Member ID: <strong id="memberIdDisplay">—</strong></span></div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3 flex-shrink-0">
+                            <a href="membership.html" class="px-8 py-3 bg-white text-pink-600 rounded-2xl font-bold text-center shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 text-sm" id="upgradeBtn">
+                                <i class="fas fa-arrow-up mr-2"></i> Upgrade Plan
+                            </a>
+                            <button onclick="downloadReceipt()" class="px-8 py-3 bg-white bg-opacity-20 border border-white border-opacity-30 text-white rounded-2xl font-semibold text-sm hover:bg-opacity-30 transition-all">
+                                <i class="fas fa-download mr-2"></i> Download Receipt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── New Registration Notice ────────────────────── -->
+                <div id="newRegistrationBanner" class="hidden fade-up delay-2 mb-6 p-5 rounded-2xl border-2" style="background:linear-gradient(135deg,#fdf2f8,#ede9fe);border-color:#db2777">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" style="background:#db2777">
+                            <i class="fas fa-user-check text-white text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-base font-bold text-gray-900 mb-0.5">🎉 Profile Created Successfully!</h3>
+                            <p class="text-gray-600 text-sm" id="newRegSubtext">Choose a membership plan to unlock full features and connect with matches.</p>
+                        </div>
+                        <button id="skipRegBtn" onclick="skipRegistrationFemale()" class="hidden flex-shrink-0 px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-pink-500 text-pink-600 bg-white hover:bg-pink-50 transition-all">
+                            <i class="fas fa-forward mr-2"></i>Skip & Go to Dashboard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ── Plan Upgrade Options ────────────────────────── -->
+                <div class="fade-up delay-3">
+                    <div class="flex items-center justify-between mb-5">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Available Plans</h2>
+                            <p class="text-gray-500 text-xs mt-0.5">Choose the plan that matches your needs</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 plans-grid">
+                        <div class="plan-card">
+                            <div class="plan-icon" style="background:rgba(148,163,184,0.15)"><i class="fas fa-medal" style="color:#64748b"></i></div>
+                            <p class="font-bold text-gray-800 text-sm mb-1">Silver</p>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">999</span><small> + GST/mo</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹1,179 incl. GST)</div>
+                            <div class="mt-3 space-y-1">
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Basic visibility</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> 15 contacts views</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Profile highlight</div>
+                                <div class="text-center pt-2 pb-1">
+                                    <button onclick="openPlanFeaturesModal('silver')" class="text-[10px] text-pink-500 font-semibold hover:underline">
+                                        + See All Features
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="plan-btn plan-btn-outline" onclick="choosePlan('silver',999)">Select Silver</button>
+                        </div>
+                        <div class="plan-card recommended">
+                            <div class="plan-icon" style="background:rgba(234,179,8,0.15)"><i class="fas fa-crown" style="color:#ca8a04"></i></div>
+                            <p class="font-bold text-gray-800 text-sm mb-1">Gold</p>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">1,999</span><small> + GST/3mo</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹2,359 incl. GST)</div>
+                            <div class="mt-3 space-y-1">
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Extended messaging</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Priority listing</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> View who liked</div>
+                                <div class="text-center pt-2 pb-1">
+                                    <button onclick="openPlanFeaturesModal('gold')" class="text-[10px] text-pink-500 font-semibold hover:underline">
+                                        + See All Features
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="plan-btn plan-btn-primary" onclick="choosePlan('gold',1999)"><i class="fas fa-crown mr-1"></i> Select Gold</button>
+                        </div>
+                        <div class="plan-card">
+                            <div class="plan-icon" style="background:rgba(99,102,241,0.15)"><i class="fas fa-gem" style="color:#6366f1"></i></div>
+                            <p class="font-bold text-gray-800 text-sm mb-1">Diamond</p>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">3,999</span><small> + GST/6mo</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹4,719 incl. GST)</div>
+                            <div class="mt-3 space-y-1">
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Unlimited messages</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Voice & video calls</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Concierge help</div>
+                                <div class="text-center pt-2 pb-1">
+                                    <button onclick="openPlanFeaturesModal('diamond')" class="text-[10px] text-pink-500 font-semibold hover:underline">
+                                        + See All Features
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="plan-btn plan-btn-outline" onclick="choosePlan('diamond',3999)">Select Diamond</button>
+                        </div>
+                        <div class="plan-card">
+                            <div class="plan-icon" style="background:rgba(236,72,153,0.15)"><i class="fas fa-star" style="color:#ec4899"></i></div>
+                            <p class="font-bold text-gray-800 text-sm mb-1">VIP</p>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">49,999</span><small> + GST/yr</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹58,999 incl. GST)</div>
+                            <div class="mt-3 space-y-1">
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Dedicated manager</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> Curated matches</div>
+                                <div class="plan-feature"><i class="fas fa-check-circle"></i> 24/7 Support</div>
+                                <div class="text-center pt-2 pb-1">
+                                    <button onclick="openPlanFeaturesModal('vip')" class="text-[10px] text-pink-500 font-semibold hover:underline">
+                                        + See All Features
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="plan-btn plan-btn-outline" onclick="choosePlan('vip',49999)">Select VIP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Payment History ─────────────────────────────── -->
+                <div class="glass-card p-6 fade-up delay-4">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Payment History</h2>
+                            <p class="text-gray-500 text-xs mt-0.5">All your transactions with VevahaMatrimony</p>
+                        </div>
+                        <button onclick="exportHistory()" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all" style="background:rgba(236,72,153,0.08);color:#ec4899">
+                            <i class="fas fa-download"></i><span class="hidden md:inline">Export CSV</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto hidden md:block">
+                        <table class="history-table" id="paymentTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Transaction ID</th>
+                                    <th>Plan</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Payment Mode</th>
+                                    <th>Status</th>
+                                    <th>Invoice</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentTableBody">
+                                <tr>
+                                    <td colspan="8" class="text-center py-16 text-gray-400">
+                                        <i class="fas fa-receipt text-4xl mb-3 opacity-30 block"></i>
+                                        <p class="font-medium">No transactions yet</p>
+                                        <p class="text-xs mt-1">Your payment history will appear here after your first purchase.</p>
+                                        <a href="membership.html" class="inline-block mt-4 px-6 py-2 rounded-xl text-sm font-bold text-white" style="background:linear-gradient(135deg,#ec4899,#a855f7)">
+                                            Upgrade Now
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="md:hidden space-y-3" id="mobilePaymentList">
+                        <div class="text-center py-10 text-gray-400">
+                            <i class="fas fa-receipt text-4xl mb-3 opacity-30 block"></i>
+                            <p class="font-medium text-sm">No transactions yet</p>
+                            <a href="membership.html" class="inline-block mt-3 px-5 py-2 rounded-xl text-sm font-bold text-white" style="background:linear-gradient(135deg,#ec4899,#a855f7)">
+                                Upgrade Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Plan Modal -->
+    <div id="planModal" class="fixed inset-0 z-50 hidden" style="background:rgba(0,0,0,0.5); backdrop-filter:blur(4px)">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl" id="planModalBox">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-gray-900">Confirm Purchase</h3>
+                    <button onclick="closePlanModal()" class="w-9 h-9 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="rounded-2xl p-5 mb-6" style="background:linear-gradient(135deg,rgba(236,72,153,0.05),rgba(168,85,247,0.05));border:1px solid rgba(236,72,153,0.12)">
+                    <p class="text-xs text-gray-500 font-medium mb-1">Selected Plan</p>
+                    <p class="text-2xl font-extrabold text-gray-900" id="modalPlanName">Gold</p>
+                    <p class="text-3xl font-extrabold gradient-text mt-1" id="modalPlanPrice">₹2,999</p>
+                    <p class="text-xs text-gray-500 font-semibold mt-1" id="modalPlanTotal">Total: ₹2,359 (including 18% GST)</p>
+                    <p class="text-xs text-gray-400 mt-1" id="modalPlanDurationText">per month · auto-renews monthly</p>
+                </div>
+                <button onclick="proceedToPayment()" class="w-full py-4 rounded-2xl font-bold text-white text-base shadow-lg hover:-translate-y-1 transition-all" style="background:linear-gradient(135deg,#ec4899,#a855f7);box-shadow:0 8px 24px rgba(236,72,153,0.4)">
+                    <i class="fas fa-lock mr-2"></i> Pay Securely Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Registration Success Popup ─────────────────────── -->
+    <div id="regSuccessPopup" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4" style="background:rgba(0,0,0,0.65);backdrop-filter:blur(6px)">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center animate-in" style="animation:popIn 0.4s ease">
+            <div class="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center" style="background:linear-gradient(135deg,#db2777,#9333ea)">
+                <i class="fas fa-check-circle text-white text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-extrabold text-gray-900 mb-1">Registration Complete!</h2>
+            <p class="text-gray-500 text-sm mb-6">Welcome to VevahaMatrimony. Save your details below.</p>
+            <div class="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-5 mb-6 text-left space-y-3 border border-pink-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-id-badge text-pink-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">Your Member ID</p>
+                        <p class="text-xl font-black text-pink-700 tracking-widest" id="popupMemberId">—</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-envelope text-purple-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">Registered Email</p>
+                        <p class="font-bold text-gray-800 text-sm break-all" id="popupEmail">—</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xs text-gray-400 mb-5">📋 Please note your Member ID — you'll need it to log in and for support.</p>
+            <button onclick="closeRegSuccessPopup()" class="w-full py-3.5 rounded-2xl font-bold text-white text-base transition-all hover:opacity-90" style="background:linear-gradient(135deg,#db2777,#9333ea)">
+                <i class="fas fa-home mr-2"></i>Go to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <!-- Plan Features Modal -->
+    <div id="planFeaturesModal" class="hidden fixed inset-0 z-[140] items-center justify-center p-4" style="background:rgba(0,0,0,0.65);backdrop-filter:blur(5px)">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden" style="max-height: 85vh;">
+            <div id="pfmHeader" class="bg-gradient-to-r from-pink-500 to-purple-600 p-5 text-white relative flex-shrink-0">
+                <button onclick="closePlanFeaturesModal()" class="absolute top-4 right-4 text-white/70 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur flex-shrink-0">
+                        <i class="fas fa-medal text-3xl text-yellow-300"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Plan Details</span>
+                        <h3 id="pfmPlanName" class="text-2xl font-black mt-0.5">Plan Name</h3>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span id="pfmPrice" class="text-xl font-bold">&#x20B9;0</span>
+                            <span class="text-white/70 text-sm">/ <span id="pfmDuration">Time</span></span>
+                        </div>
+                        <div class="text-[10px] text-white/80 mt-0.5">(18% GST included)</div>
+                        <p id="pfmTagline" class="text-white/80 text-xs mt-1">Tagline</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 min-h-0 overflow-y-auto p-5" style="max-height: 60vh;">
+                <h4 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">What's Included</h4>
+                <div id="pfmFeatureList"></div>
+            </div>
+            <div class="flex-shrink-0 px-5 py-4 border-t border-gray-100 flex gap-3">
+                <button onclick="closePlanFeaturesModal()" class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-2xl font-bold hover:bg-gray-200 transition text-sm">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="navbar-init.js"></script>
+    <script src="vevaha-ai-widget.js"></script>
+    <script src="global-search.js"></script>
+    <script src="api-client.js"></script>
+    <script src="premium-gate.js"></script>
+    <script>
+        (function() {
+            'use strict';
+
+            // Preload letterhead template image for instant invoice generation
+            const letterheadTemplate = new Image();
+            letterheadTemplate.src = 'images/VEVAHA_Matrimony_Letterhead_page-0001.jpg';
+
+            const PLANS = {
+                free:    { label: 'Free Discovery',  price: 0,     desc: 'Basic visibility — upgrade to unlock messaging, calls and more.' },
+                silver:  { label: 'Silver',           price: 999,   desc: 'Enhanced visibility with 30-day contact access.' },
+                gold:    { label: 'Gold',             price: 1999,  desc: 'Extended messaging, priority listing, and 3-month reach.' },
+                diamond: { label: 'Diamond',          price: 3999,  desc: 'Unlimited messages, voice & video calls, and 6-month validity.' },
+                vip:     { label: 'VIP Concierge',    price: 49999, desc: 'Dedicated manager, curated matches, and 12-month priority.' }
+            };
+
+            const PLAN_DATA = [
+                { key: 'silver',  name: 'Silver Plan',  price: '₹999 + GST',    duration: '1 Month'   },
+                { key: 'gold',    name: 'Gold Plan',    price: '₹1,999 + GST',  duration: '3 Months'  },
+                { key: 'diamond', name: 'Diamond Plan', price: '₹3,999 + GST',  duration: '6 Months'  },
+                { key: 'vip',     name: 'VIP Plan',     price: '₹49,999 + GST', duration: '12 Months' }
+            ];
+
+            const PLAN_FEATURES_DATA = {
+                silver: {
+                    tagline: 'Kickstart your matrimony journey',
+                    features: [
+                        { label: 'Profile Views', value: '15 Contacts', icon: 'fa-eye' },
+                        { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
+                        { label: 'Messaging', value: '15 / Day', icon: 'fa-comments' },
+                        { label: 'Voice Calls', value: '❌ Not Included', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: '❌ Not Included', icon: 'fa-video' },
+                        { label: 'Horoscope AI', value: '✅ Included', icon: 'fa-moon' },
+                        { label: 'Duration', value: '1 Month', icon: 'fa-calendar' }
+                    ]
+                },
+                gold: {
+                    tagline: 'Perfect for serious seekers',
+                    features: [
+                        { label: 'Profile Views', value: '30 Contacts', icon: 'fa-eye' },
+                        { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
+                        { label: 'Messaging', value: '10 / Day', icon: 'fa-comments' },
+                        { label: 'Voice Calls', value: '❌ Not Included', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: '❌ Not Included', icon: 'fa-video' },
+                        { label: 'Horoscope AI', value: '✅ Included', icon: 'fa-moon' },
+                        { label: 'Duration', value: '3 Months', icon: 'fa-calendar' }
+                    ]
+                },
+                diamond: {
+                    tagline: 'Unlock full features and direct connections',
+                    features: [
+                        { label: 'Profile Views', value: '50 Contacts', icon: 'fa-eye' },
+                        { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
+                        { label: 'Messaging', value: 'Unlimited', icon: 'fa-comments' },
+                        { label: 'Voice Calls', value: '✅ Unlimited', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: '✅ Unlimited', icon: 'fa-video' },
+                        { label: 'Horoscope AI', value: '✅ Included', icon: 'fa-moon' },
+                        { label: 'Duration', value: '6 Months', icon: 'fa-calendar' }
+                    ]
+                },
+                vip: {
+                    tagline: 'Our most elite tier for customized matchmaking',
+                    features: [
+                        { label: 'Profile Views', value: 'Unlimited', icon: 'fa-eye' },
+                        { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
+                        { label: 'Messaging', value: 'Unlimited', icon: 'fa-comments' },
+                        { label: 'Voice Calls', value: '✅ Unlimited', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: '✅ Unlimited', icon: 'fa-video' },
+                        { label: 'Relationship Manager', value: '✅ Assigned', icon: 'fa-user-tie' },
+                        { label: 'Personal Matchmaking', value: '✅ Curated', icon: 'fa-star' },
+                        { label: 'Duration', value: '12 Months', icon: 'fa-calendar' }
+                    ]
+                }
+            };
+
+            let currentSelectedPlan = null;
+            let currentSelectedPrice = 0;
+
+            function getUser() { try { return JSON.parse(localStorage.getItem('userData') || '{}'); } catch (e) { return {}; } }
+            
+            function formatDate(str) {
+                if (!str) return '—';
+                const d = new Date(str);
+                return isNaN(d) ? str : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            }
+
+            function formatCurrency(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
+
+            async function refreshMembershipDisplay() {
+                try {
+                    const mem = await VM.membership.status();
+                    const u = getUser();
+                    // Merge latest plan info into user data for consistency
+                    u.plan_name = mem.plan;
+                    u.plan_expiry = mem.expiry_date;
+                    localStorage.setItem('userData', JSON.stringify(u));
+
+                    const planKey = (mem.plan || 'free').toLowerCase();
+                    const plan = PLANS[planKey] || PLANS.free;
+
+                    if (document.getElementById('statPlanName')) document.getElementById('statPlanName').textContent = plan.label;
+                    if (document.getElementById('currentPlanTitle')) document.getElementById('currentPlanTitle').textContent = plan.label;
+                    if (document.getElementById('currentPlanDesc')) document.getElementById('currentPlanDesc').textContent = plan.desc;
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const isNewReg = urlParams.get('new_registration') === '1' || localStorage.getItem('pending_reg_popup') === '1';
+                    if (document.getElementById('memberIdDisplay')) {
+                        if (isNewReg) {
+                            document.getElementById('memberIdDisplay').textContent = 'Hidden until active';
+                        } else {
+                            document.getElementById('memberIdDisplay').textContent = u.member_id || u.memberId || '—';
+                        }
+                    }
+
+                    const expiryText = mem.expiry_date ? formatDate(mem.expiry_date) : (planKey === 'free' ? 'No Expiry' : '—');
+                    if (document.getElementById('statExpiry')) document.getElementById('statExpiry').textContent = expiryText;
+                    if (document.getElementById('expiryDate')) document.getElementById('expiryDate').textContent = expiryText;
+                    
+                    // Update navigation if elements exist
+                    const navPlan = document.getElementById('navPlanLabel');
+                    if (navPlan) navPlan.textContent = plan.label + ' plan';
+                } catch (e) {
+                    console.error('Failed to refresh membership status:', e);
+                }
+            }
+
+            window.choosePlan = function(planKey, price) {
+                currentSelectedPlan = planKey;
+                currentSelectedPrice = price;
+                const plan = PLANS[planKey] || {};
+                document.getElementById('modalPlanName').textContent = plan.label || planKey;
+                document.getElementById('modalPlanPrice').textContent = formatCurrency(price) + ' + GST';
+                
+                // Show total including 18% GST
+                let total = price;
+                let durationDesc = 'One-time payment';
+                if (planKey === 'silver') {
+                    total = 1179;
+                    durationDesc = '1 Month · Auto-renews monthly';
+                } else if (planKey === 'gold') {
+                    total = 2359;
+                    durationDesc = '3 Months reach';
+                } else if (planKey === 'diamond') {
+                    total = 4719;
+                    durationDesc = '6 Months reach';
+                } else if (planKey === 'vip') {
+                    total = 58999;
+                    durationDesc = '12 Months reach';
+                }
+                
+                document.getElementById('modalPlanTotal').textContent = `Total: ${formatCurrency(total)} (including 18% GST)`;
+                document.getElementById('modalPlanDurationText').textContent = durationDesc;
+                document.getElementById('planModal').classList.remove('hidden');
+            };
+
+            window.closePlanModal = function() { document.getElementById('planModal').classList.add('hidden'); };
+
+            window.proceedToPayment = async function() {
+                if (!currentSelectedPlan) return;
+                
+                const btn = document.querySelector('#planModal button[onclick="proceedToPayment()"]');
+                const originalText = btn.innerHTML;
+                
+                try {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Initializing...';
+                    
+                    const resp = await VM.payment.createOrder(currentSelectedPlan);
+                    
+                    if (!resp.key_id) {
+                        throw new Error('Payment config missing: key_id not returned from server.');
+                    }
+                    if (!resp.order_id && !resp.subscription_id) {
+                        throw new Error('Payment config missing: order_id or subscription_id not returned from server.');
+                    }
+
+                    const options = {
+                        key: resp.key_id,
+                        name: "VevahaMatrimony",
+                        description: `${currentSelectedPlan.toUpperCase()} Membership Upgrade`,
+                        theme: { color: "#ec4899" },
+                        handler: async function (res) {
+                            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...';
+                            try {
+                                const verifyData = {
+                                    razorpay_payment_id: res.razorpay_payment_id,
+                                    razorpay_signature: res.razorpay_signature,
+                                    plan: currentSelectedPlan
+                                };
+                                if (resp.type === 'subscription') {
+                                    verifyData.razorpay_subscription_id = res.razorpay_subscription_id || resp.subscription_id;
+                                } else {
+                                    verifyData.razorpay_order_id = res.razorpay_order_id || resp.order_id;
+                                }
+                                await VM.payment.verify(verifyData);
+                                window.location.href = 'billing.html?payment=success&plan=' + currentSelectedPlan;
+                            } catch (e) {
+                                console.error('Verification error:', e);
+                                VM.toast(e.message || 'Verification failed', 'error');
+                                btn.disabled = false;
+                                btn.innerHTML = originalText;
+                            }
+                        },
+                        modal: {
+                            ondismiss: function() {
+                                btn.disabled = false;
+                                btn.innerHTML = originalText;
+                            }
+                        }
+                    };
+
+                    if (resp.type === 'subscription') {
+                        options.subscription_id = resp.subscription_id;
+                    } else {
+                        options.order_id = resp.order_id;
+                        options.amount = resp.amount;
+                        options.currency = resp.currency || 'INR';
+                    }
+
+                    // Prefill customer details if available
+                    const u = window.VMAuth?.user();
+                    if (u) {
+                        options.prefill = {};
+                        if (u.full_name) options.prefill.name = u.full_name;
+                        if (u.email_address || u.email) options.prefill.email = u.email_address || u.email;
+                        if (u.mobile_number) {
+                            let num = u.mobile_number;
+                            if (!num.startsWith('+') && num.length === 10) num = '+91' + num;
+                            options.prefill.contact = num;
+                        }
+                    }
+
+                    console.log('🐞 [DEBUG] Initiating Razorpay with options:', JSON.stringify(options, null, 2));
+
+                    const rzp = new Razorpay(options);
+                    rzp.on('payment.failed', function (response){
+                        console.error('Razorpay payment.failed:', response.error);
+                        const msg = response.error ? `Error: ${response.error.description}\nReason: ${response.error.reason}\nStep: ${response.error.step}\nSource: ${response.error.source}` : 'Unknown payment error';
+                        alert('Payment failed!\n' + msg);
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    });
+                    
+                    try {
+                        rzp.open();
+                    } catch(e) {
+                        console.error('Razorpay open() exception:', e);
+                        alert('Browser issue opening Razorpay: ' + e.message + '\n\nPlease ensure your browser allows popups, third-party cookies, and you are not in strict private mode.');
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    }
+                    
+                } catch (e) {
+                    VM.toast(e.message || 'Payment initialization failed', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            };
+
+            window.downloadInvoice = function(txId, plan, amount, date) {
+                const u = getUser();
+                const planLabel = PLANS[plan?.toLowerCase()]?.label || plan || 'Member Plan';
+                
+                if (window.VM && VM.toast) {
+                    VM.toast('Generating invoice JPG on letterhead...', 'info');
+                }
+                
+                function generateInvoice(img) {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 1240;
+                        canvas.height = 1754;
+                        const ctx = canvas.getContext('2d');
+                        
+                        // Draw letterhead background
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        // Set text drawing parameters
+                        ctx.fillStyle = '#1e293b'; // Slate 800
+                        ctx.textBaseline = 'top';
+                        
+                        // Title
+                        ctx.font = 'bold 40px Poppins, Arial, sans-serif';
+                        ctx.fillText('INVOICE / RECEIPT', 120, 680);
+                        
+                        // Date & Invoice No
+                        ctx.font = '22px Poppins, Arial, sans-serif';
+                        ctx.fillText('Date: ' + formatDate(date), 120, 750);
+                        
+                        ctx.textAlign = 'right';
+                        ctx.fillText('Invoice No: INV-' + (txId || 'VM').substring(0, 10).toUpperCase(), 1120, 750);
+                        ctx.textAlign = 'left';
+                        
+                        // Divider
+                        ctx.strokeStyle = '#cbd5e1'; // Slate 200
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(120, 800);
+                        ctx.lineTo(1120, 800);
+                        ctx.stroke();
+                        
+                        // Bill To Section
+                        ctx.font = 'bold 26px Poppins, Arial, sans-serif';
+                        ctx.fillText('BILL TO:', 120, 840);
+                        
+                        ctx.font = '22px Poppins, Arial, sans-serif';
+                        ctx.fillStyle = '#475569'; // Slate 600
+                        ctx.fillText('Name: ' + (u.full_name || u.fullName || 'Member'), 120, 885);
+                        ctx.fillText('Member ID: ' + (u.member_id || '—'), 120, 925);
+                        ctx.fillText('Email: ' + (u.email_address || u.email || '—'), 120, 965);
+                        
+                        // Divider
+                        ctx.beginPath();
+                        ctx.moveTo(120, 1015);
+                        ctx.lineTo(1120, 1015);
+                        ctx.stroke();
+                        
+                        // Table Header
+                        ctx.fillStyle = '#1e293b';
+                        ctx.font = 'bold 24px Poppins, Arial, sans-serif';
+                        ctx.fillText('DESCRIPTION', 140, 1050);
+                        ctx.textAlign = 'right';
+                        ctx.fillText('AMOUNT (INR)', 1100, 1050);
+                        ctx.textAlign = 'left';
+                        
+                        // Divider
+                        ctx.beginPath();
+                        ctx.moveTo(120, 1095);
+                        ctx.lineTo(1120, 1095);
+                        ctx.stroke();
+                        
+                        // Calculate tax breakdown (18% GST)
+                        let totalAmt = Number(amount || 0);
+                        let baseAmt = 0;
+                        let gstAmt = 0;
+                        
+                        if (totalAmt === 1179) {
+                            baseAmt = 999;
+                            gstAmt = 180;
+                        } else if (totalAmt === 2359) {
+                            baseAmt = 1999;
+                            gstAmt = 360;
+                        } else if (totalAmt === 4719) {
+                            baseAmt = 3999;
+                            gstAmt = 720;
+                        } else if (totalAmt === 58999) {
+                            baseAmt = 49999;
+                            gstAmt = 9000;
+                        } else if (totalAmt === 999) {
+                            baseAmt = 847;
+                            gstAmt = 152;
+                        } else if (totalAmt === 1999) {
+                            baseAmt = 1694;
+                            gstAmt = 305;
+                        } else if (totalAmt === 3999) {
+                            baseAmt = 3389;
+                            gstAmt = 610;
+                        } else if (totalAmt === 49999) {
+                            baseAmt = 42372;
+                            gstAmt = 7627;
+                        } else {
+                            baseAmt = Math.round(totalAmt / 1.18);
+                            gstAmt = totalAmt - baseAmt;
+                        }
+                        
+                        // Table Rows
+                        ctx.fillStyle = '#475569';
+                        ctx.font = '22px Poppins, Arial, sans-serif';
+                        
+                        // Base Plan Row
+                        ctx.fillText(planLabel + ' (Base Price)', 140, 1130);
+                        ctx.textAlign = 'right';
+                        ctx.fillText(formatCurrency(baseAmt) + '.00', 1100, 1130);
+                        ctx.textAlign = 'left';
+                        
+                        // GST Row
+                        ctx.fillText('GST (18%)', 140, 1175);
+                        ctx.textAlign = 'right';
+                        ctx.fillText(formatCurrency(gstAmt) + '.00', 1100, 1175);
+                        ctx.textAlign = 'left';
+                        
+                        // Divider
+                        ctx.beginPath();
+                        ctx.moveTo(120, 1225);
+                        ctx.lineTo(1120, 1225);
+                        ctx.stroke();
+                        
+                        // Total Row
+                        ctx.fillStyle = '#1e293b';
+                        ctx.font = 'bold 24px Poppins, Arial, sans-serif';
+                        ctx.fillText('TOTAL (GST Inclusive)', 140, 1255);
+                        ctx.textAlign = 'right';
+                        ctx.fillText(formatCurrency(totalAmt) + '.00', 1100, 1255);
+                        ctx.textAlign = 'left';
+                        
+                        // Divider
+                        ctx.beginPath();
+                        ctx.moveTo(120, 1305);
+                        ctx.lineTo(1120, 1305);
+                        ctx.stroke();
+                        
+                        // Payment Details
+                        ctx.fillStyle = '#1e293b';
+                        ctx.font = 'bold 26px Poppins, Arial, sans-serif';
+                        ctx.fillText('PAYMENT DETAILS:', 380, 1335);
+                        
+                        ctx.font = '22px Poppins, Arial, sans-serif';
+                        ctx.fillStyle = '#475569';
+                        ctx.fillText('Payment Status: ', 380, 1380);
+                        
+                        // Draw green "PAID" badge text
+                        ctx.fillStyle = '#10b981';
+                        ctx.font = 'bold 22px Poppins, Arial, sans-serif';
+                        ctx.fillText('PAID', 560, 1380);
+                        
+                        ctx.fillStyle = '#475569';
+                        ctx.font = '22px Poppins, Arial, sans-serif';
+                        ctx.fillText('Payment Mode: Razorpay', 380, 1425);
+                        ctx.fillText('Transaction ID: ' + (txId || '—'), 380, 1470);
+                        
+                        // Note / Footer text
+                        ctx.fillStyle = '#94a3b8';
+                        ctx.font = 'italic 18px Poppins, Arial, sans-serif';
+                        ctx.fillText('This is a computer-generated invoice and does not require a physical signature.', 380, 1530);
+                        ctx.fillText('For billing questions, please contact support@vevahamatrimony.com', 380, 1565);
+                        
+                        // Trigger JPG download
+                        canvas.toBlob(function(blob) {
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(blob);
+                            a.download = 'Vevaha-Invoice-' + (txId || 'Receipt') + '.jpg';
+                            a.click();
+                            if (window.VM && VM.toast) {
+                                VM.toast('Invoice JPG downloaded successfully!', 'success');
+                            }
+                        }, 'image/jpeg', 0.95);
+                    } catch (err) {
+                        console.error('Error drawing canvas invoice:', err);
+                        if (window.VM && VM.toast) {
+                            VM.toast('Error creating image invoice. Downloading as text file instead.', 'warning');
+                        }
+                        fallbackTextDownload(txId, planLabel, amount, date, u);
+                    }
+                }
+                
+                if (letterheadTemplate.complete && letterheadTemplate.naturalWidth !== 0) {
+                    generateInvoice(letterheadTemplate);
+                } else {
+                    letterheadTemplate.onload = function() {
+                        generateInvoice(letterheadTemplate);
+                    };
+                    letterheadTemplate.onerror = function(err) {
+                        console.error('Failed to load letterhead image:', err);
+                        if (window.VM && VM.toast) {
+                            VM.toast('Failed to load letterhead image. Downloading as text file.', 'warning');
+                        }
+                        fallbackTextDownload(txId, planLabel, amount, date, u);
+                    };
+                    // Ensure src is set to trigger load if it wasn't already
+                    if (!letterheadTemplate.src) {
+                        letterheadTemplate.src = 'images/VEVAHA_Matrimony_Letterhead_page-0001.jpg';
+                    }
+                }
+            };
+
+            function fallbackTextDownload(txId, planLabel, amount, date, u) {
+                const content = [
+                    '==========================================',
+                    '          VEVAHAMATRIMONY INVOICE          ',
+                    '==========================================',
+                    '',
+                    'DATE: ' + formatDate(date),
+                    'INVOICE NO: INV-' + (txId || 'VM').substring(0, 10).toUpperCase(),
+                    '',
+                    'BILL TO:',
+                    'Name     : ' + (u.full_name || u.fullName || 'Member'),
+                    'Member ID: ' + (u.member_id || '—'),
+                    'Email    : ' + (u.email_address || u.email || '—'),
+                    '',
+                    '------------------------------------------',
+                    'DESCRIPTION                AMOUNT (INR)   ',
+                    '------------------------------------------',
+                    planLabel.padEnd(27) + formatCurrency(amount).padStart(14),
+                    '------------------------------------------',
+                    'TOTAL                      ' + formatCurrency(amount).padStart(14),
+                    '------------------------------------------',
+                    '',
+                    'Payment Status: PAID',
+                    'Payment Mode  : Razorpay',
+                    'Transaction ID: ' + (txId || '—'),
+                    '',
+                    '==========================================',
+                    '         Thank you for your trust!         ',
+                    '            www.vevahamatrimony.com        ',
+                    '==========================================='
+                ].join('\n');
+
+                const blob = new Blob([content], { type: 'text/plain' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'Vevaha-Invoice-' + (txId || 'Receipt') + '.txt';
+                a.click();
+            }
+
+            async function loadBillingData() {
+                if (!window.VMAuth || !VMAuth.isLoggedIn()) { window.location.href = 'login.html'; return; }
+                
+                // Check for payment success in URL query parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const isNewReg = urlParams.get('new_registration') === '1';
+                const isPaymentSuccess = urlParams.get('payment') === 'success';
+
+                // Handle new registration flow
+                if (isNewReg) {
+                    // Store flag so it persists through the Razorpay payment redirect
+                    localStorage.setItem('pending_reg_popup', '1');
+                    const banner = document.getElementById('newRegistrationBanner');
+                    if (banner) banner.classList.remove('hidden');
+                    // Show skip button only for female profiles
+                    const userGender = (localStorage.getItem('reg_gender_hint') || '').toLowerCase();
+                    const u = getUser();
+                    const gender = userGender || (u.gender || '').toLowerCase();
+                    if (gender && !gender.startsWith('male')) {
+                        const skipBtn = document.getElementById('skipRegBtn');
+                        if (skipBtn) skipBtn.classList.remove('hidden');
+                        const subtext = document.getElementById('newRegSubtext');
+                        if (subtext) subtext.textContent = 'Membership is optional for female profiles. You can skip and explore for free, or choose a plan for premium features.';
+                    } else {
+                        const subtext = document.getElementById('newRegSubtext');
+                        if (subtext) subtext.textContent = 'Membership is required to activate your male profile. Please select a plan below to get started.';
+                    }
+                }
+
+                if (isPaymentSuccess) {
+                    const planName = urlParams.get('plan') || 'Premium';
+                    // Show success popup for new registrations
+                    const isRegPayment = isNewReg || localStorage.getItem('pending_reg_popup') === '1' || localStorage.getItem('reg_gender_hint');
+                    if (isRegPayment) {
+                        localStorage.removeItem('pending_reg_popup');
+                        setTimeout(() => showRegSuccessPopup(), 600);
+                    } else {
+                        setTimeout(() => {
+                            VM.toast(`🎉 Payment successful! Your ${planName.toUpperCase()} plan is now active.`, 'success');
+                        }, 500);
+                    }
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+
+                try {
+                    await refreshMembershipDisplay();
+                    
+                    const hist = await VM.payment.history();
+                    const payments = hist.payments || [];
+                    
+                    document.getElementById('statTotalSpent').textContent = formatCurrency(hist.total_spent || 0);
+                    document.getElementById('statTxCount').textContent = payments.length;
+
+                    const tbody = document.getElementById('paymentTableBody');
+                    const mobileList = document.getElementById('mobilePaymentList');
+                    
+                    if (payments.length > 0) {
+                        tbody.innerHTML = payments.map((p, i) => {
+                            const date = p.created_at;
+                            const txId = p.razorpay_payment_id || p.id;
+                            const isPaid = p.status === 'paid';
+                            return `<tr>
+                                <td>${i + 1}</td>
+                                <td class="font-medium text-gray-900 font-mono text-xs">${txId}</td>
+                                <td><span class="font-semibold">${(p.plan_name || 'Free').toUpperCase()}</span></td>
+                                <td>${formatDate(date)}</td>
+                                <td class="font-bold">${formatCurrency(p.amount)}</td>
+                                <td class="text-xs text-gray-500">${p.method || 'Online'}</td>
+                                <td><span class="status-badge ${isPaid ? 'status-success' : 'status-failed'}">${p.status.toUpperCase()}</span></td>
+                                <td>
+                                    ${isPaid ? `<button onclick="downloadInvoice('${txId}','${p.plan_name}',${p.amount},'${date}')" class="btn-invoice">Invoice</button>` : '—'}
+                                </td>
+                            </tr>`;
+                        }).join('');
+                        
+                        mobileList.innerHTML = payments.map(p => {
+                            const txId = p.razorpay_payment_id || p.id;
+                            const isPaid = p.status === 'paid';
+                            return `<div class="glass-card p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="font-bold text-gray-900">${(p.plan_name || 'Free').toUpperCase()}</p>
+                                    <span class="status-badge ${isPaid ? 'status-success' : 'status-failed'}">${p.status.toUpperCase()}</span>
+                                </div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-500">${formatDate(p.created_at)}</span>
+                                    <span class="font-bold">${formatCurrency(p.amount)}</span>
+                                </div>
+                                ${isPaid ? `<button onclick="downloadInvoice('${txId}','${p.plan_name}',${p.amount},'${p.created_at}')" class="w-full py-2 bg-pink-50 text-pink-600 rounded-lg text-xs font-bold mt-2"><i class="fas fa-download mr-1"></i> Download Invoice</button>` : ''}
+                            </div>`;
+                        }).join('');
+                    }
+                } catch (err) { 
+                    console.error('Billing Load Error:', err); 
+                }
+            }
+
+            window.downloadReceipt = function() {
+                // Logic already integrated via history download buttons, 
+                // but this helper can download the LATEST one.
+                VM.payment.history().then(h => {
+                    const latest = (h.payments || []).find(p => p.status === 'paid');
+                    if (latest) {
+                        downloadInvoice(latest.razorpay_payment_id, latest.plan_name, latest.amount, latest.created_at);
+                    } else {
+                        VM.toast('No paid transactions found.', 'info');
+                    }
+                });
+            };
+
+            window.exportHistory = async function() {
+                try {
+                    const hist = await VM.payment.history();
+                    const payments = hist.payments || [];
+                    if (!payments.length) { VM.toast('No payment history to export.', 'info'); return; }
+                    
+                    const rows = [['#', 'Transaction ID', 'Plan', 'Date', 'Amount (INR)', 'Method', 'Status']];
+                    payments.forEach((p, i) => {
+                        rows.push([
+                            i + 1, 
+                            p.razorpay_payment_id || p.id || '', 
+                            (p.plan_name || '').toUpperCase(), 
+                            formatDate(p.created_at), 
+                            p.amount || 0, 
+                            p.method || 'Online', 
+                            p.status || 'Success'
+                        ]);
+                    });
+                    const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'Vevaha-Billing-History.csv';
+                    a.click();
+                } catch (e) {
+                    VM.toast('Failed to export history', 'error');
+                }
+            };
+
+            window.openPlanFeaturesModal = function(planKey) {
+                const data = PLAN_FEATURES_DATA[planKey];
+                const plan = PLAN_DATA.find(p => p.key === planKey);
+                if (!data || !plan) return;
+                const modal = document.getElementById('planFeaturesModal');
+                const hdr = document.getElementById('pfmHeader');
+                if (hdr) hdr.style.background = `linear-gradient(135deg, ${planKey === 'silver' ? '#9ca3af,#4b5563' : planKey === 'gold' ? '#fbbf24,#d97706' : planKey === 'diamond' ? '#60a5fa,#2563eb' : '#ec4899,#a855f7'})`;
+                document.getElementById('pfmPlanName').textContent = plan.name;
+                document.getElementById('pfmPrice').textContent = plan.price;
+                document.getElementById('pfmDuration').textContent = plan.duration;
+                document.getElementById('pfmTagline').textContent = data.tagline;
+                document.getElementById('pfmFeatureList').innerHTML = data.features.map(f => {
+                    const isInc = f.value.indexOf('\u274C') === -1;
+                    return `<div class="flex items-center justify-between p-3 rounded-xl ${isInc ? 'bg-green-50' : 'bg-gray-50'} mb-2">
+                        <div class="flex items-center gap-3">
+                            <i class="fas ${f.icon} text-gray-400 w-5"></i>
+                            <span class="text-xs font-semibold text-gray-700">${f.label}</span>
+                        </div>
+                        <span class="text-xs font-bold ${isInc ? 'text-green-600' : 'text-gray-400'}">${f.value.replace('\u2705 ', '').replace('\u274C ', '')}</span>
+                    </div>`;
+                }).join('');
+                modal.classList.replace('hidden', 'flex');
+            };
+
+            window.closePlanFeaturesModal = () => document.getElementById('planFeaturesModal')?.classList.replace('flex', 'hidden');
+
+            // Initial Load
+            window.addEventListener('load', loadBillingData);
+
+            // ── Registration Success Popup Functions ──────────────────
+            window.showRegSuccessPopup = function() {
+                const u = getUser();
+                const memberId = u.member_id || u.memberId || '—';
+                const email = u.email_address || u.email || '—';
+                const midEl = document.getElementById('popupMemberId');
+                const emailEl = document.getElementById('popupEmail');
+                if (midEl) midEl.textContent = memberId;
+                if (emailEl) emailEl.textContent = email;
+                const popup = document.getElementById('regSuccessPopup');
+                if (popup) popup.classList.remove('hidden');
+            };
+
+            window.closeRegSuccessPopup = function() {
+                const popup = document.getElementById('regSuccessPopup');
+                if (popup) popup.classList.add('hidden');
+                // Clear registration hints
+                localStorage.removeItem('reg_gender_hint');
+                localStorage.removeItem('pending_reg_popup');
+                window.location.href = 'home.html';
+            };
+
+            window.skipRegistrationFemale = function() {
+                // Female skipped payment — clear flags immediately
+                localStorage.removeItem('reg_gender_hint');
+                localStorage.removeItem('pending_reg_popup');
+                // Try to show popup with member details
+                const popup = document.getElementById('regSuccessPopup');
+                if (popup) {
+                    showRegSuccessPopup();
+                    // Auto-navigate after 5 seconds if user doesn't click
+                    setTimeout(function() {
+                        window.location.href = 'home.html';
+                    }, 5000);
+                } else {
+                    // Popup not found — navigate directly
+                    window.location.href = 'home.html';
+                }
+            };
+        })();
+    </script>
+    <style>
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+    </style>
+    <script src="mobile-bottom-nav.js"></script>
+    <script src="language.js"></script>
+</body>
+
+</html>

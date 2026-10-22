@@ -1,0 +1,24 @@
+# Node dependencies
+node_modules/
+
+# Environment variables & secrets (CRITICAL: Do NOT commit secrets to GitHub)
+.env
+.env.local
+.env.*.local
+
+# Large Excel database files and member backups (Exceeds GitHub 100MB limit and protects sensitive customer data)
+*.xlsx
+*.xls
+*.csv
+
+# User uploaded member files (profile pictures & horoscopes)
+temp_uploads/
+
+# Logs & runtime files
+*.log
+npm-debug.log*
+
+# OS generated files
+Thumbs.db
+.DS_Store
+desktop.ini

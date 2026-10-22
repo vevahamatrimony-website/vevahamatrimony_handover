@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiLocker — Secure Identity Sharing</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .logo-digilocker {
+            height: 36px;
+        }
+
+        .logo-vevaha {
+            height: 32px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        p.desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--text-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-icon {
+            color: var(--success);
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card" id="mainCard">
+            <div class="logo-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/DigiLocker_logo.svg" alt="DigiLocker" class="logo-digilocker">
+            </div>
+            <h2>Verify Identity via DigiLocker</h2>
+            <p class="desc">VevahaMatrimony requires a secure connection to your DigiLocker account to verify your Aadhaar identity card automatically.</p>
+
+            <!-- Step 1: Aadhaar Number -->
+            <div id="stepAadhaar">
+                <div class="form-group">
+                    <label for="aadhaarInput">Aadhaar Number (12 Digits)</label>
+                    <input type="text" id="aadhaarInput" placeholder="1234 5678 9012" maxlength="14" autocomplete="off">
+                </div>
+                <button type="button" id="btnNext" onclick="sendOtp()">Send OTP</button>
+            </div>
+
+            <!-- Step 2: OTP Verification -->
+            <div id="stepOtp" class="hidden">
+                <p style="font-size:13px; color:#94a3b8; margin-bottom:12px;">OTP sent to Aadhaar-linked mobile number</p>
+                <div class="form-group">
+                    <label for="otpInput">Enter 6-Digit OTP (Sent to Aadhaar Mobile)</label>
+                    <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="6" autocomplete="one-time-code">
+                </div>
+                <button type="button" id="btnVerify" onclick="submitOtp()">Submit OTP</button>
+            </div>
+
+            <!-- Step 3: Loading -->
+            <div id="stepLoading" class="hidden">
+                <div class="loader" style="margin: 20px 0;"></div>
+                <p style="color: var(--text-muted); font-size: 14px;">Establishing secure handshake with government database...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestId = urlParams.get('request_id');
+        const email = urlParams.get('email');
+
+        // Formats Aadhaar input automatically
+        const aadhaarInput = document.getElementById('aadhaarInput');
+        aadhaarInput.addEventListener('input', function (e) {
+            let target = e.target;
+            let position = target.selectionEnd;
+            let length = target.value.length;
+            
+            target.value = target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+            
+            // Adjust cursor position
+            if (length !== target.value.length && (target.value.charAt(position - 1) === ' ')) {
+                target.selectionEnd = position + 1;
+            }
+        });
+
+        function sendOtp() {
+            const rawVal = aadhaarInput.value.replace(/\s/g, '');
+            if (rawVal.length !== 12) {
+                alert('Please enter a valid 12-digit Aadhaar number.');
+                return;
+            }
+            document.getElementById('stepAadhaar').classList.add('hidden');
+            document.getElementById('stepOtp').classList.remove('hidden');
+        }
+
+        function submitOtp() {
+            const otp = document.getElementById('otpInput').value.trim();
+            if (otp.length !== 6) {
+                alert('Please enter a valid 6-digit OTP.');
+                return;
+            }
+
+            document.getElementById('stepOtp').classList.add('hidden');
+            document.getElementById('stepLoading').classList.remove('hidden');
+
+            setTimeout(() => {
+                // Redirect back to our callback route which processes the response
+                window.location.href = `/api/verification/digilocker/callback?request_id=${requestId}&status=success`;
+            }, 1200);
+        }
+    </script>
+<script src="language.js"></script>
+</body>
+</html>

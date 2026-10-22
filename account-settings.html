@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="auth-guard.js"></script>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - VevahaMatrimony</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .loading-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .field-disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        @media (min-width: 768px) {
+            #appSidebar {
+                transform: translateX(0) !important;
+                top: 4rem;
+            }
+
+            #sidebarToggle {
+                display: none !important;
+            }
+        }
+</style>
+<style id="vm-sidebar-css">
+* { font-family: 'Poppins', sans-serif; }
+body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%); background-attachment: fixed; }
+.sidebar-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; border-radius: 0.75rem;
+    color: #475569; font-weight: 500; text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden;
+}
+.sidebar-link::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    height: 100%; width: 3px;
+    background: linear-gradient(180deg, #ec4899, #db2777);
+    transform: scaleY(0); transition: transform 0.3s;
+}
+.sidebar-link:hover::before, .sidebar-link.active::before { transform: scaleY(1); }
+.sidebar-link i { color: inherit; transition: transform 0.3s; }
+.sidebar-link:hover { background: linear-gradient(90deg, #fdf2f8 0%, transparent 100%); color: #db2777; transform: translateX(5px); }
+.sidebar-link:hover i { transform: scale(1.2); }
+.sidebar-link.active { background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%); color: #db2777; font-weight: 600; box-shadow: 0 4px 15px rgba(236,72,153,0.1); }
+</style>
+</head><body class="bg-gradient-to-br from-pink-50 to-white min-h-screen" data-active-nav="settings">
+
+
+<nav class="bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <button id="sidebarToggle" class="md:hidden text-gray-600 hover:text-pink-600 focus:outline-none" aria-label="Open navigation">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <a href="home.html" class="flex items-center text-xl font-semibold text-pink-600">
+                <img src="images/vevaha-logo.png" alt="Vevaha" class="w-10 h-10 mr-2">VevahaMatrimony
+            </a>
+        </div>
+        <div class="relative hidden md:block">
+            <input type="text" id="searchInput" placeholder="Search..."
+                class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-64 transition-all duration-300"
+                onfocus="if(window.showSearchSuggestions)showSearchSuggestions();"
+                onblur="if(window.hideSearchSuggestions)hideSearchSuggestions();"
+                onkeypress="if(window.handleSearchKeyPress)handleSearchKeyPress(event);">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <button onclick="if(window.performSearch)performSearch();" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200">
+                <span class="text-xs font-semibold" id="onlineStatusBadge">Online</span>
+                <button id="onlineToggleBtn" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    style="background-color: #22c55e;" onclick="if(window.handleOnlineToggleClick)handleOnlineToggleClick();">
+                    <span id="toggleSlider" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm" style="margin-left: 0.125rem;"></span>
+                </button>
+            </div>
+            <div class="relative">
+                <button id="userMenuButton" class="flex items-center space-x-3 px-3 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white flex items-center justify-center font-bold" id="userInitials">VM</div>
+                    <div class="text-left hidden sm:block">
+                        <p id="navUserName" class="text-sm font-semibold text-gray-900">Member</p>
+                        <p class="text-xs text-gray-500" id="navPlanLabel">Free plan</p>
+                    </div>
+                    <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                </button>
+                <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                    <a href="profile.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-id-badge mr-3 text-pink-500"></i> Profile
+                    </a>
+                    <a href="settings.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-sliders mr-3 text-pink-500"></i> Settings
+                    </a>
+                    <button onclick="if(window.handleLogout)handleLogout();" class="w-full text-left flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-arrow-right-from-bracket mr-3 text-pink-500"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="relative flex">
+<aside id="appSidebar" class="fixed top-0 md:top-16 left-0 bottom-0 w-60 bg-white border-r border-gray-100 z-40 shadow-lg md:shadow-none" style="transform: translateX(-100%); transition: transform 0.3s; --tw-md: 768px;">
+    <div class="flex items-center justify-between px-4 py-4 border-b border-gray-100 md:hidden">
+        <span class="text-sm font-semibold text-gray-700">Navigation</span>
+        <button id="sidebarClose" class="text-gray-500 hover:text-pink-600" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="px-4 py-6 space-y-1 overflow-y-auto h-full">
+        <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="active-members-dash.html" class="sidebar-link"><i class="fas fa-users"></i><span>Active Members</span></a>
+        <a href="messages.html" class="sidebar-link"><i class="fas fa-comments"></i><span>Messages</span></a>
+        <a href="interested-profiles.html" class="sidebar-link"><i class="fas fa-star"></i><span>Interested</span></a>
+        <a href="requests.html" class="sidebar-link"><i class="fas fa-handshake"></i><span>Requests</span></a>
+        <a href="horoscopic-chatbot.html" class="sidebar-link"><i class="fas fa-moon"></i><span>Astro AI</span></a>
+        <a href="connections.html" class="sidebar-link"><i class="fas fa-user-friends"></i><span>My Connections</span></a>
+        <a href="account-settings.html" class="sidebar-link active"><i class="fas fa-user-edit"></i><span>Edit Profile</span></a>
+        <a href="settings.html" class="sidebar-link"><i class="fas fa-user-cog"></i><span>Settings</span></a>
+        <a href="billing.html" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Billing</span></a>
+    </div>
+</aside>
+<div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden md:hidden"></div>
+<main class="flex-1 md:ml-60 px-4 sm:px-6 lg:px-8 py-8 pt-24 min-h-screen" id="pageMain">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><!-- Loading State --><div id="loadingState" class="bg-white rounded-2xl shadow-2xl p-8"><div class="text-center py-12"><div class="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-pink-600"></div><p class="text-gray-600 mt-4 text-lg">Loading your profile data...</p></div></div><!-- Error State --><div id="errorState" class="hidden bg-white rounded-2xl shadow-2xl p-8"><div class="text-center py-12"><i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i><h2 class="text-2xl font-bold text-gray-800 mb-2">Unable to Load Profile</h2><p id="errorMessage" class="text-gray-600 mb-6"></p><button onclick="location.reload()"
+                        class="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700"><i class="fas fa-redo mr-2"></i>Retry
+                    </button><div class="mt-8 pt-8 border-t border-gray-100"><button onclick="toggleDebugInfo()" class="text-gray-400 text-sm hover:text-gray-600 italic">
+                            [Show Debug Details]
+                        </button><div id="debugInfo"
+                            class="hidden mt-4 p-4 bg-gray-900 text-green-400 text-left rounded-lg font-mono text-xs overflow-auto max-h-60"></div></div></div></div><!-- Settings Form (Hidden initially) --><div id="settingsForm" class="hidden bg-white rounded-2xl shadow-2xl overflow-hidden"><div class="bg-gradient-to-r from-pink-500 to-pink-600 text-white p-8 text-center"><h1 class="text-4xl font-bold mb-2">Account Settings</h1><p class="text-pink-100 text-lg">Update your profile information</p></div><form id="accountForm" class="p-8"><!-- Success/Error Messages --><div id="updateSuccess"
+                        class="hidden mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"><i class="fas fa-check-circle mr-2"></i><span>Profile updated successfully!</span></div><div id="updateError"
+                        class="hidden mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg"><i class="fas fa-exclamation-triangle mr-2"></i><span id="updateErrorMessage"></span></div><!-- Basic Info Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-user text-pink-600 mr-3"></i>
+                            Basic Information
+                        </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Registering On Behalf Of</label><select name="onBehalfOf" class="w-full form-input h-12"><option value="">Select Relationship</option><option value="myself">Myself</option><option value="son">Son</option><option value="daughter">Daughter</option><option value="brother">Brother</option><option value="sister">Sister</option><option value="friend">Friend</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Full Name *</label><input type="text" name="fullName" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Gender *</label><select name="gender" class="w-full form-input h-12"><option value="">Select Gender</option><option value="male">Male</option><option value="female">Female</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Date of Birth *</label><input type="date" name="dob" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Time of Birth</label><input type="time" name="timeOfBirth" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Place of Birth <span class="text-xs font-normal text-gray-400">(used for horoscope only)</span></label><input type="text" name="placeOfBirth" class="w-full form-input h-12" placeholder="e.g. Dharmapuri"><p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle mr-1"></i>This is your birth city for horoscope — not shown as location on profile.</p></div></div></div><!-- Contact Info Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-phone text-pink-600 mr-3"></i>
+                            Contact Information
+                        </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Mobile Number *</label><div class="flex"><span
+                                        class="inline-flex items-center px-4 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 font-semibold">+91</span><input type="tel" name="mobile" readonly
+                                        class="flex-1 form-input rounded-l-none h-12 field-disabled" maxlength="10"
+                                        pattern="[6-9][0-9]{9}" title="Mobile number cannot be changed"></div><p class="text-xs text-gray-500 mt-1"><i class="fas fa-lock mr-1"></i>Mobile number cannot be changed</p></div><div><label class="block text-gray-700 font-semibold mb-3">Email Address</label><input type="email" name="email" readonly class="w-full form-input h-12 field-disabled"
+                                    title="Email cannot be changed"><p class="text-xs text-gray-500 mt-1"><i class="fas fa-lock mr-1"></i>Email cannot be
+                                    changed</p></div><div><label class="block text-gray-700 font-semibold mb-3">Member ID</label><input type="text" name="memberId" readonly
+                                    class="w-full form-input h-12 field-disabled" title="Member ID is auto-generated"><p class="text-xs text-gray-500 mt-1"><i class="fas fa-lock mr-1"></i>Auto-generated ID
+                                </p></div></div></div><!-- Profile Photo Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-camera text-pink-600 mr-3"></i>
+                            Profile Picture
+                        </h2><div class="bg-pink-50 border-2 border-dashed border-pink-300 rounded-xl p-8"><div class="text-center"><div class="mb-4"><img id="profilePhotoPreview" src="" alt="Profile Photo"
+                                        class="w-48 h-48 object-cover rounded-xl shadow-lg mx-auto border-4 border-white"
+                                        onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Member&background=ec4899&color=fff'"></div><input type="file" id="profilePhotoInput"
+                                    accept="image/jpeg,image/jpg,image/png,image/webp" class="hidden"><div class="flex justify-center space-x-3"><button type="button" onclick="document.getElementById('profilePhotoInput').click()"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"><i class="fas fa-edit mr-2"></i>Change Photo
+                                    </button><button type="button" onclick="removeProfilePhoto()"
+                                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"><i class="fas fa-trash mr-2"></i>Remove
+                                    </button></div>
+                                    <div class="mt-6 max-w-xs mx-auto"><label
+                                        class="flex items-center justify-center space-x-3 bg-white p-4 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 transition-colors"><input type="checkbox" id="hidePhoto" name="hidePhoto"
+                                            class="form-checkbox h-5 w-5 text-pink-600"><span class="text-gray-700 font-medium">Hide my photo from others</span><i class="fas fa-eye-slash text-gray-400"></i></label><p class="text-xs text-gray-500 mt-2">Your photo will be blurred for privacy</p></div>
+                                    <p class="text-xs text-gray-500 mt-3">JPG, PNG, WebP up to 10MB</p></div></div></div><!-- Personal Information --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-user-circle text-pink-600 mr-3"></i>
+                            Personal Information
+                        </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Height</label><input type="text" name="height" class="w-full form-input h-12"
+                                    placeholder="e.g., 5'6&quot;"></div><div><label class="block text-gray-700 font-semibold mb-3">Weight (kg)</label><input type="number" name="weight" class="w-full form-input h-12" min="30" max="200"></div><div><label class="block text-gray-700 font-semibold mb-3">Body Type</label><select name="bodyType" class="w-full form-input h-12"><option value="">Select Body Type</option><option value="Slim">Slim</option><option value="Average">Average</option><option value="Athletic">Athletic</option><option value="Heavy">Heavy</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Marital Status *</label><select name="maritalStatus" class="w-full form-input h-12"><option value="">Select Status</option><option value="never-married">Never Married</option><option value="divorced">Divorced</option><option value="widowed">Widowed</option><option value="separated">Separated</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Disability</label><select name="disability" class="w-full form-input h-12"><option value="">Select Disability Status</option><option value="none">None</option><option value="physical">Physical Disability</option><option value="visual">Visual Impairment</option><option value="hearing">Hearing Impairment</option></select><div><label class="block text-gray-700 font-semibold mb-3">Skin Complexion</label><select name="complexion" class="w-full form-input h-12"><option value="">Select Complexion</option><option value="fair">Fair</option><option value="very-fair">Very Fair</option><option value="wheatish">Wheatish</option><option value="dark">Dark</option></select></div><div class="lg:col-span-2"><label class="block text-gray-700 font-semibold mb-3">About Myself</label><textarea name="bio" rows="4" class="w-full form-input p-4"
+                                        placeholder="Describe yourself, your interests, and what you are looking for in a partner..."></textarea></div></div></div><!-- Lifestyle Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-utensils text-pink-600 mr-3"></i>
+                                Lifestyle
+                            </h2><div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Eating Habits</label><select name="eating" class="w-full form-input h-12"><option value="">Select Option</option><option value="vegetarian">Vegetarian</option><option value="non-vegetarian">Non-Vegetarian</option><option value="eggetarian">Eggetarian</option><option value="vegan">Vegan</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Smoking Habits</label><select name="smoking" class="w-full form-input h-12"><option value="">Select Option</option><option value="no">Never Smokes</option><option value="occasionally">Occasionally</option><option value="regularly">Regularly</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Drinking Habits</label><select name="drinking" class="w-full form-input h-12"><option value="">Select Option</option><option value="no">Never Drinks</option><option value="occasionally">Occasionally</option><option value="regularly">Regularly</option></select></div></div></div><!-- Horoscope Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-star text-pink-600 mr-3"></i>
+                                Horoscope Information
+                            </h2><div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Rasi (Zodiac)</label><input type="text" name="rasi" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Nakshatra (Star)</label><input type="text" name="nakshatra" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Gotra</label><input type="text" name="gotra" class="w-full form-input h-12"></div></div><!-- Horoscope File Upload -->
+<div class="mt-6">
+    <label class="block text-gray-700 font-semibold mb-3">Horoscope Document</label>
+    <div class="bg-pink-50 border-2 border-dashed border-pink-300 rounded-xl p-6">
+        <div id="horoscopePreview" class="text-center mb-4">
+            <i class="fas fa-file-pdf text-6xl text-pink-400"></i>
+            <p id="horoscopeFileName" class="text-gray-700 mt-2 font-medium">No file uploaded</p>
+        </div>
+        <input type="file" id="horoscopeInput" accept="image/*,.pdf" class="hidden">
+        <div class="flex justify-center space-x-3">
+            <button type="button" onclick="document.getElementById('horoscopeInput').click()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                <i class="fas fa-upload mr-2"></i>Upload / Change Horoscope
+            </button>
+            <button type="button" id="removeHoroscopeBtn" onclick="removeHoroscopeDocument()" class="hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                <i class="fas fa-trash mr-2"></i>Remove
+            </button>
+        </div>
+                                        <div class="mt-4 max-w-xs mx-auto">
+                                            <label class="flex items-center justify-center space-x-3 bg-white p-3 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 transition-colors">
+                                                <input type="checkbox" id="hideHoroscope" name="hideHoroscope" class="form-checkbox h-5 w-5 text-pink-600">
+                                                <span class="text-gray-700 font-medium">Hide my horoscope</span>
+                                                <i class="fas fa-eye-slash text-gray-400"></i>
+                                            </label>
+                                            <p class="text-[10px] text-gray-500 mt-1.5 text-center">Your horoscope will be blurred for privacy</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-3 text-center">Image or PDF format</p></div></div></div><!-- Religious Info --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-pray text-pink-600 mr-3"></i>
+                                Religious Information
+                            </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Religion</label><select name="religion" class="w-full form-input h-12"><option value="">Select Religion</option><option value="Hindu">Hindu</option><option value="Muslim">Muslim</option><option value="Christian">Christian</option><option value="Sikh">Sikh</option><option value="Buddhist">Buddhist</option><option value="Jain">Jain</option><option value="Other">Other</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Caste</label><input type="text" name="caste" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Subcaste</label><input type="text" name="subcaste" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Mother Tongue</label><select name="motherTongue" class="w-full form-input h-12"><option value="">Select Language</option><option value="Tamil">Tamil</option><option value="Telugu">Telugu</option><option value="Malayalam">Malayalam</option><option value="Kannada">Kannada</option><option value="Hindi">Hindi</option><option value="English">English</option><option value="Other">Other</option></select></div></div></div><!-- Education & Career --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-graduation-cap text-pink-600 mr-3"></i>
+                                Education & Career
+                            </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Education *</label><input type="text" name="education" id="accountEducation" class="w-full form-input h-12" placeholder="e.g. B.Tech, B.Ed, MBA, B.Sc" list="accountEducationSuggestions"><datalist id="accountEducationSuggestions"><option value="B.Tech"><option value="B.E"><option value="B.Ed"><option value="B.Sc"><option value="B.Com"><option value="B.A"><option value="BBA"><option value="BCA"><option value="M.Tech"><option value="M.E"><option value="M.Ed"><option value="MBA"><option value="MCA"><option value="M.Sc"><option value="M.Com"><option value="M.A"><option value="MBBS"><option value="MD"><option value="MS"><option value="BDS"><option value="MDS"><option value="B.Pharm"><option value="M.Pharm"><option value="LLB"><option value="LLM"><option value="CA"><option value="ICWA"><option value="CS"><option value="Diploma"><option value="Intermediate/12th"><option value="High School"><option value="PhD / Doctorate"><option value="Other"></datalist></div><div><label class="block text-gray-700 font-semibold mb-3">Studied At</label><input type="text" name="studiedAt" class="w-full form-input h-12" placeholder="University / College / Institution name"></div><div><label class="block text-gray-700 font-semibold mb-3">Employment Status</label><select name="employment" class="w-full form-input h-12"><option value="">Select Status</option><option value="working">Working</option><option value="not-working">Not Working</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Occupation</label><input type="text" name="occupation" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Works At</label><input type="text" name="worksAt" class="w-full form-input h-12" placeholder="Company / Organization name"></div><div><label class="block text-gray-700 font-semibold mb-3">Annual Income</label><select name="annualIncome" class="w-full form-input h-12"><option value="">Select Income Range</option><option value="below-1-lakh">< ₹1 Lakh</option><option value="1-5-lakhs">₹1-5 Lakhs</option><option value="5-10-lakhs">₹5-10 Lakhs</option><option value="10-25-lakhs">₹10-25 Lakhs</option><option value="25-plus-lakhs">₹25+ Lakhs</option></select></div></div></div><!-- Address Section --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-map-marker-alt text-pink-600 mr-3"></i>
+Address
+                            </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">House/Building &
+                                        Street</label><input type="text" name="houseStreet" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Locality/Area</label><input type="text" name="locality" class="w-full form-input h-12"></div><div><label class="block text-pink-700 font-bold mb-1">⭐ Current City (shown on your profile)</label><input type="text" name="city" id="cityInput" class="w-full form-input h-12 border-2 border-pink-300 focus:border-pink-500" placeholder="e.g. Salem, Chennai, Krishnagiri"><p class="text-xs text-pink-600 font-semibold mt-1"><i class="fas fa-map-marker-alt mr-1"></i>This is the city shown to other members on your profile.</p></div><div><label class="block text-gray-700 font-semibold mb-3">State</label><input type="text" name="state" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">PIN Code</label><input type="text" name="pinCode" class="w-full form-input h-12" maxlength="6"
+                                        pattern="[0-9]{6}"></div></div></div><!-- Family Details --><div class="mb-10"><h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center"><i class="fas fa-home text-pink-600 mr-3"></i>
+                                Family Details
+                            </h2><div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"><div><label class="block text-gray-700 font-semibold mb-3">Father's Name</label><input type="text" name="fatherName" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Father's Occupation</label><input type="text" name="fatherOccupation" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Mother's Name</label><input type="text" name="motherName" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Mother's Occupation</label><input type="text" name="motherOccupation" class="w-full form-input h-12"></div><div><label class="block text-gray-700 font-semibold mb-3">Family Type</label><select name="familyType" class="w-full form-input h-12"><option value="">Select Family Type</option><option value="Nuclear">Nuclear</option><option value="Joint">Joint</option></select></div><div><label class="block text-gray-700 font-semibold mb-3">Family Status</label><select name="familyStatus" class="w-full form-input h-12"><option value="">Select Status</option><option value="Middle Class">Middle Class</option><option value="Upper Middle Class">Upper Middle Class</option><option value="Rich">Rich</option></select></div></div></div>
+                                
+                                <!-- Partner Preferences Section -->
+                                <div class="mb-10">
+                                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                                        <i class="fas fa-heart text-pink-600 mr-3"></i>
+                                        Partner Preferences
+                                    </h2>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Age (From)</label>
+                                            <input type="number" name="prefAgeFrom" class="w-full form-input h-12" placeholder="e.g. 21">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Age (To)</label>
+                                            <input type="number" name="prefAgeTo" class="w-full form-input h-12" placeholder="e.g. 30">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Height (From)</label>
+                                            <input type="text" name="prefHeightFrom" class="w-full form-input h-12" placeholder="e.g. 5'0&quot;">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Height (To)</label>
+                                            <input type="text" name="prefHeightTo" class="w-full form-input h-12" placeholder="e.g. 6'0&quot;">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Marital Status</label>
+                                            <select name="prefMaritalStatus" class="w-full form-input h-12">
+                                                <option value="">Any Marital Status</option>
+                                                <option value="never-married">Never Married</option>
+                                                <option value="divorced">Divorced</option>
+                                                <option value="widowed">Widowed</option>
+                                                <option value="separated">Separated</option>
+                                                <option value="any-status">Any Status</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Location</label>
+                                            <input type="text" name="prefLocation" class="w-full form-input h-12" placeholder="e.g. Chennai, Tamil Nadu">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Caste</label>
+                                            <input type="text" name="prefCaste" class="w-full form-input h-12" placeholder="e.g. Mudaliar or Any">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Mother Tongue</label>
+                                            <select name="prefMotherTongue" class="w-full form-input h-12">
+                                                <option value="">Any Mother Tongue</option>
+                                                <option value="Tamil">Tamil</option>
+                                                <option value="Telugu">Telugu</option>
+                                                <option value="Malayalam">Malayalam</option>
+                                                <option value="Kannada">Kannada</option>
+                                                <option value="Hindi">Hindi</option>
+                                                <option value="English">English</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Education</label>
+                                            <input type="text" name="prefEducation" class="w-full form-input h-12" placeholder="e.g. B.E, MBA or Any">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Profession / Job</label>
+                                            <input type="text" name="prefProfession" class="w-full form-input h-12" placeholder="e.g. Software Engineer or Any">
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Diet</label>
+                                            <select name="prefDiet" class="w-full form-input h-12">
+                                                <option value="">Any Diet</option>
+                                                <option value="vegetarian">Vegetarian</option>
+                                                <option value="non-vegetarian">Non-Vegetarian</option>
+                                                <option value="eggetarian">Eggetarian</option>
+                                                <option value="vegan">Vegan</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Family Type</label>
+                                            <select name="prefFamilyType" class="w-full form-input h-12">
+                                                <option value="">Any Family Type</option>
+                                                <option value="Nuclear">Nuclear</option>
+                                                <option value="Joint">Joint</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-semibold mb-3">Preferred Rasi</label>
+                                            <input type="text" name="prefRasi" class="w-full form-input h-12" placeholder="e.g. Mesha or Any">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Action Buttons --><div class="flex justify-center space-x-4 mt-10"><button type="button" onclick="resetForm()"
+                                class="bg-gray-300 text-gray-700 px-8 py-3 rounded-xl font-bold text-lg hover:bg-gray-400"><i class="fas fa-undo mr-2"></i>Cancel
+                            </button><button type="submit" id="saveButton"
+                                class="bg-gradient-to-r from-pink-600 to-pink-700 text-white px-12 py-3 rounded-xl font-bold text-lg hover:from-pink-700 hover:to-pink-800 shadow-lg"><i class="fas fa-save mr-2"></i>Save Changes
+                            </button></div></form></div></div></main><script src="global-settings.js"></script><script src="api-client.js"></script><script src="vevaha-ai-widget.js"></script><script>
+        (function () {
+            const form = document.getElementById('accountForm');
+            const loadingState = document.getElementById('loadingState');
+            const settingsForm = document.getElementById('settingsForm');
+            const errorState = document.getElementById('errorState');
+            const errorMessage = document.getElementById('errorMessage');
+
+            const map = {
+                'onBehalfOf': 'registering_on_behalf_of',
+                'fullName': 'full_name',
+                'gender': 'gender',
+                'dob': 'date_of_birth',
+                'timeOfBirth': 'time_of_birth',
+                'placeOfBirth': 'place_of_birth',
+                'mobile': 'mobile_number',
+                'height': 'height',
+                'weight': 'weight',
+                'bodyType': 'body_type',
+                'maritalStatus': 'marital_status',
+                'disability': 'disability',
+                'rasi': 'rasi',
+                'nakshatra': 'star',
+                'gotra': 'gotra',
+                'religion': 'religion',
+                'caste': 'caste',
+                'subcaste': 'subcaste',
+                'motherTongue': 'mother_tongue',
+                'education': 'education',
+                'studiedAt': 'studied_at',
+                'employment': 'employment_status',
+                'occupation': 'job_roles',
+                'worksAt': 'works_at',
+                'annualIncome': 'annual_income',
+                'houseStreet': 'house_building',
+                'locality': 'locality',
+                'city': 'city',
+                'state': 'state',
+                'pinCode': 'pin_code',
+                'fatherName': 'father_name',
+                'fatherOccupation': 'father_occupation',
+                'motherName': 'mother_name',
+                'motherOccupation': 'mother_occupation',
+                'familyType': 'family_type',
+                'familyStatus': 'family_status',
+                'bio': 'about_myself',
+                'complexion': 'skin_colour',
+                'eating': 'eating_habits',
+                'smoking': 'smoking_habits',
+                'drinking': 'drinking_habits',
+                'hidePhoto': 'hide_photo',
+                'hideHoroscope': 'hide_horoscope',
+                'prefAgeFrom': 'preferred_age_from',
+                'prefAgeTo': 'preferred_age_to',
+                'prefHeightFrom': 'preferred_height_from',
+                'prefHeightTo': 'preferred_height_to',
+                'prefMaritalStatus': 'preferred_marital_status',
+                'prefLocation': 'preferred_location',
+                'prefCaste': 'preferred_caste',
+                'prefMotherTongue': 'preferred_mother_tongue',
+                'prefEducation': 'preferred_education',
+                'prefProfession': 'preferred_profession',
+                'prefDiet': 'preferred_diet',
+                'prefFamilyType': 'preferred_family_type',
+                'prefRasi': 'preferred_rasi'
+            };
+
+            window.toggleDebugInfo = function () {
+                const di = document.getElementById('debugInfo');
+                di.classList.toggle('hidden');
+            };
+
+
+            window.renderHoroscopePreview = function (horoscopePath) {
+                const previewDiv = document.getElementById('horoscopePreview');
+                const removeBtn = document.getElementById('removeHoroscopeBtn');
+                if (!previewDiv) return;
+
+                if (!horoscopePath || horoscopePath === 'null' || horoscopePath === 'undefined' || horoscopePath === '[]') {
+                    previewDiv.innerHTML = `
+                        <i class="fas fa-file-pdf text-6xl text-pink-400"></i>
+                        <p id="horoscopeFileName" class="text-gray-700 mt-2 font-medium">No file uploaded</p>
+                    `;
+                    if (removeBtn) removeBtn.classList.add('hidden');
+                    return;
+                }
+
+                if (removeBtn) removeBtn.classList.remove('hidden');
+
+                let fullUrl = horoscopePath;
+                if (!horoscopePath.startsWith('http://') && !horoscopePath.startsWith('https://') && !horoscopePath.startsWith('data:')) {
+                    fullUrl = `https://kpmbiatjlfdbuerzxpch.supabase.co/storage/v1/object/public/horoscopes/${horoscopePath}`;
+                }
+
+                const isPdf = horoscopePath.toLowerCase().endsWith('.pdf');
+
+                if (isPdf) {
+                    previewDiv.innerHTML = `
+                        <div class="inline-flex flex-col items-center bg-white p-4 rounded-xl shadow border border-pink-200">
+                            <i class="fas fa-file-pdf text-5xl text-red-500 mb-2"></i>
+                            <p id="horoscopeFileName" class="text-gray-800 font-semibold text-sm mb-2">${horoscopePath.split('/').pop()}</p>
+                            <a href="${fullUrl}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-pink-100 text-pink-700 hover:bg-pink-200 rounded-lg text-xs font-semibold transition">
+                                <i class="fas fa-external-link-alt mr-1.5"></i> View PDF Document
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    previewDiv.innerHTML = `
+                        <div class="relative inline-block group">
+                            <img id="horoscopeImagePreview" src="${fullUrl}" alt="Uploaded Horoscope" class="max-h-64 max-w-full rounded-xl shadow-lg border-4 border-white object-contain cursor-pointer hover:opacity-95 transition" onclick="window.open('${fullUrl}', '_blank')" title="Click to view full image">
+                            <div class="mt-2">
+                                <a href="${fullUrl}" target="_blank" class="inline-flex items-center text-xs text-pink-600 font-semibold hover:underline">
+                                    <i class="fas fa-search-plus mr-1"></i> View Full Size Horoscope
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }
+            };
+
+            window.removeHoroscopeDocument = async function () {
+                if (!confirm("Are you sure you want to remove your uploaded horoscope document?")) return;
+                try {
+                    const token = localStorage.getItem('vm_token');
+                    const response = await fetch('/api/profile/me', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({ horoscope_path: '', horoscope_file_path: '' })
+                    });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.error || 'Failed to remove horoscope document');
+                    
+                    renderHoroscopePreview(null);
+                    alert("Horoscope document removed successfully!");
+                } catch (err) {
+                    console.error('Error removing horoscope:', err);
+                    alert(err.message);
+                }
+            };
+
+            // ======== NEW: FILE UPLOAD HANDLERS ========
+            async function handleFileUpload(inputId, endpoint, previewId, nameId) {
+                const input = document.getElementById(inputId);
+                if (!input || !input.files[0]) return;
+                const file = input.files[0];
+
+                const formData = new FormData();
+                formData.append(endpoint, file);
+
+                try {
+                    const token = localStorage.getItem('vm_token');
+                    const url = '/api/upload/' + endpoint;
+
+                    const btn = input.nextElementSibling ? (input.nextElementSibling.querySelector('button') || input.nextElementSibling) : null;
+                    let oldText = '';
+                    if (btn && btn.tagName === 'BUTTON') {
+                        oldText = btn.innerHTML;
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Uploading...';
+                        btn.disabled = true;
+                    }
+
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Authorization': 'Bearer ' + token },
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (btn && btn.tagName === 'BUTTON') {
+                        btn.innerHTML = oldText;
+                        btn.disabled = false;
+                    }
+
+                    if (!response.ok) throw new Error(result.error || 'Upload failed');
+
+                    if (previewId === 'profilePhotoPreview' && result.photo_url) {
+                        const pv = document.getElementById(previewId);
+                        if (pv) pv.src = result.photo_url;
+                    } else if (endpoint === 'horoscope' && result.path) {
+                        renderHoroscopePreview(result.path);
+                    } else if (nameId) {
+                        const nm = document.getElementById(nameId);
+                        if (nm) nm.textContent = file.name;
+                    }
+
+                    alert(endpoint + " uploaded successfully!");
+                } catch (err) {
+                    console.error('Upload error:', err);
+                    alert(err.message);
+                }
+            }
+
+            window.removeProfilePhoto = async function () {
+                if (!confirm("Are you sure you want to remove your profile photo?")) return;
+                try {
+                    const token = localStorage.getItem('vm_token');
+                    const response = await fetch('/api/profile/me', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({ profile_picture_url: '' })
+                    });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.error || 'Failed to remove photo');
+                    
+                    const name = (VMAuth.user() || {}).full_name || 'Member';
+                    document.getElementById('profilePhotoPreview').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=ec4899&color=fff';
+                    
+                    // Sync LocalStorage
+                    const current = VMAuth.user();
+                    current.profile_picture_url = '';
+                    VMAuth.save({
+                        access_token: localStorage.getItem('vm_token'),
+                        refresh_token: localStorage.getItem('vm_refresh'),
+                        user: current
+                    });
+                    
+                    alert("Profile photo removed successfully!");
+                } catch (err) {
+                    console.error('Error removing photo:', err);
+                    alert(err.message);
+                }
+            };
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const pInput = document.getElementById('profilePhotoInput');
+                if (pInput) {
+                    pInput.addEventListener('change', () => {
+                        handleFileUpload('profilePhotoInput', 'photo', 'profilePhotoPreview', null);
+                    });
+                }
+
+                const hInput = document.getElementById('horoscopeInput');
+                if (hInput) {
+                    hInput.addEventListener('change', () => {
+                        handleFileUpload('horoscopeInput', 'horoscope', null, 'horoscopeFileName');
+                    });
+                }
+            });
+            // ===========================================
+
+            async function init() {
+                console.log("DEBUG: Initializing Account Settings...");
+                if (!window.VMAuth || !VMAuth.isLoggedIn()) {
+                    console.warn("DEBUG: Not logged in, redirecting...");
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                try {
+                    console.log("DEBUG: Fetching profile data...");
+                    const resp = await VM.profile.me();
+                    const p = resp.profile;
+                    console.log("DEBUG: Profile loaded:", p);
+
+                    if (!p) throw new Error("No profile data returned from server.");
+
+                    // Populate Fields
+                    Object.keys(map).forEach(htmlName => {
+                        const apiField = map[htmlName];
+                        const el = form.elements[htmlName];
+                        if (el) {
+                            let val = p[apiField];
+                            if (el.type === 'checkbox') {
+                                el.checked = val === true || val === 'true' || val === 'on' || val === 1 || val === '1';
+                            } else {
+                                if (val === undefined || val === null) val = '';
+                                
+                                // Normalizations to align registration options with setting dropdown options
+                                const lowerVal = String(val).toLowerCase().trim();
+                                if (htmlName === 'eating') {
+                                    if (lowerVal.includes('veg') && !lowerVal.includes('non-veg')) val = 'vegetarian';
+                                    else if (lowerVal.includes('non-veg')) val = 'non-vegetarian';
+                                    else if (lowerVal.includes('eggetarian')) val = 'eggetarian';
+                                    else if (lowerVal.includes('vegan')) val = 'vegan';
+                                } else if (htmlName === 'smoking') {
+                                    if (lowerVal === 'never' || lowerVal === 'no') val = 'no';
+                                    else if (lowerVal === 'rarely' || lowerVal === 'occasionally') val = 'occasionally';
+                                    else if (lowerVal === 'often' || lowerVal === 'regularly' || lowerVal === 'yes') val = 'regularly';
+                                } else if (htmlName === 'drinking') {
+                                    if (lowerVal === 'never' || lowerVal === 'no') val = 'no';
+                                    else if (lowerVal === 'rarely' || lowerVal === 'occasionally') val = 'occasionally';
+                                    else if (lowerVal === 'often' || lowerVal === 'regularly' || lowerVal === 'yes') val = 'regularly';
+                                } else if (htmlName === 'maritalStatus') {
+                                    val = lowerVal.replace(' ', '-');
+                                } else if (htmlName === 'education') {
+                                    if (lowerVal.includes('high school') || lowerVal.includes('10th') || lowerVal.includes('12th') || lowerVal.includes('intermediate')) val = 'High School';
+                                    else if (lowerVal.includes('diploma')) val = 'Diploma';
+                                    else if (lowerVal.includes('bachelor')) val = 'Bachelor\'s';
+                                    else if (lowerVal.includes('master')) val = 'Master\'s';
+                                    else if (lowerVal.includes('phd') || lowerVal.includes('doctor')) val = 'Doctorate';
+                                } else if (htmlName === 'bodyType') {
+                                    if (val) val = val.charAt(0).toUpperCase() + val.slice(1).toLowerCase();
+                                } else if (htmlName === 'disability') {
+                                    val = lowerVal;
+                                }
+
+                                // Date formatting for input[type=date]
+                                if (htmlName === 'dob' && val) val = val.split('T')[0];
+                                el.value = val;
+                            }
+                        }
+                    });
+
+                    // Fixed fields
+                    if (form.elements['email']) form.elements['email'].value = p.email_address || '';
+                    if (form.elements['memberId']) form.elements['memberId'].value = p.member_id || '';
+                    if (p.profile_picture_url) {
+                        document.getElementById('profilePhotoPreview').src = p.profile_picture_url;
+                    } else {
+                        document.getElementById('profilePhotoPreview').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(p.full_name || 'Member') + '&background=ec4899&color=fff';
+                    }
+
+                    // Render Horoscope Document preview
+                    renderHoroscopePreview(p.horoscope_file_path || p.horoscope_path);
+
+                    // Show Form
+                    loadingState.classList.add('hidden');
+                    settingsForm.classList.remove('hidden');
+                    console.log("DEBUG: UI Ready.");
+
+                } catch (err) {
+                    console.error("DEBUG ERROR:", err);
+                    loadingState.classList.add('hidden');
+                    errorState.classList.remove('hidden');
+                    errorMessage.textContent = err.message || "Failed to connect to the server. Please check your internet or VPN.";
+
+                    // Detailed debug info
+                    const debugInfo = document.getElementById('debugInfo');
+                    debugInfo.textContent = "Timestamp: " + new Date().toISOString() +
+                        "\nError: " + (err.message || 'Unknown') +
+                        "\nStack: " + (err.stack || 'No stack available');
+                }
+            }
+
+            form.onsubmit = async function (e) {
+                e.preventDefault();
+                const btn = document.getElementById('saveButton');
+                const successMsg = document.getElementById('updateSuccess');
+                const errorMsg = document.getElementById('updateError');
+                const updateErrTxt = document.getElementById('updateErrorMessage');
+
+                successMsg.classList.add('hidden');
+                errorMsg.classList.add('hidden');
+
+                const updates = {};
+                Object.keys(map).forEach(htmlName => {
+                    const apiField = map[htmlName];
+                    const el = form.elements[htmlName];
+                    if (el) {
+                        if (el.type === 'checkbox') {
+                            updates[apiField] = el.checked;
+                        } else {
+                            updates[apiField] = el.value;
+                        }
+                    }
+                });
+
+                VM.setLoading(btn, true, 'Save Changes');
+                console.log("DEBUG: Sending updates...", updates);
+
+                try {
+                    const resp = await VM.profile.update(updates);
+                    console.log("DEBUG: Update success:", resp);
+
+                    // Sync LocalStorage
+                    const current = VMAuth.user();
+                    VMAuth.save({
+                        access_token: localStorage.getItem('vm_token'),
+                        refresh_token: localStorage.getItem('vm_refresh'),
+                        user: { ...current, ...resp.profile }
+                    });
+
+                    successMsg.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => successMsg.classList.add('hidden'), 5000);
+                } catch (err) {
+                    console.error("DEBUG UPDATE ERROR:", err);
+                    errorMsg.classList.remove('hidden');
+                    updateErrTxt.textContent = err.message || "Failed to update profile.";
+                } finally {
+                    VM.setLoading(btn, false, 'Save Changes');
+                }
+            };
+
+            window.handleLogout = async function () {
+                await VM.auth.logout();
+            };
+
+            init();
+        })();
+    </script><script src="language.js"></script>
+</main>
+</div>
+
+    <script src="navbar-init.js"></script>
+    <script src="mobile-bottom-nav.js"></script>
+</body></html>

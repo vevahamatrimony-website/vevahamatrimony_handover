@@ -1,0 +1,1589 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Admin - Upload Members Excel | Vevaha Matrimony</title>
+ <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="style.css">
+ <style>
+ body { font-family: 'Poppins', sans-serif; }
+.upload-area {
+ border: 2px dashed #d1d5db;
+ transition: all 0.3s ease;
+ }
+.upload-area.dragover {
+ border-color: #ec4899;
+ background-color: #fdf2f8;
+ }
+.upload-area:hover {
+ border-color: #ec4899;
+ }
+ /* Fix for gigantic logo issues */
+ nav img {
+ max-height: 40px;
+ width: auto;
+ object-fit: contain;
+ }
+
+ </style>
+</head>
+<body class="bg-gray-50">
+
+ <!-- Navigation -->
+ <nav class="bg-white shadow-lg">
+ <div class="w-full">
+ <div class="flex justify-between items-center h-16">
+ <div class="flex items-center flex-shrink-0">
+ <a href="index.html" class="navbar-brand flex items-center text-xl sm:text-2xl font-bold text-pink-600">
+ <img src="images/vevaha-logo.png" alt="VPS Logo" class="w-10 h-10 mr-2">
+ vevahamatrimony
+ </a>
+ </div>
+ <!-- Desktop Navigation -->
+ <div class="hidden md:flex items-center space-x-4" id="navbarContent">
+ <a href="index.html" class="text-pink-600 font-semibold px-3 py-2 rounded-md border-b-2 border-pink-600">
+ Home
+ 
+ </a>
+ <a href="register.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">
+ Register
+ 
+ </a>
+ <a href="membership.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">
+ Premium Plans
+ 
+ </a>
+ <a href="active-members-dash.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">
+ Active Members
+ 
+ </a>
+ <a href="horoscopic-chatbot.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">
+ Astro AI
+ 
+ </a>
+
+ <!-- Search Bar -->
+ <div class="relative hidden md:block">
+ <input type="text" id="searchInput" placeholder="Search..." 
+ class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-48 transition-all duration-300"
+ onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()" onkeypress="handleSearchKeyPress(event)">
+ <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+ <button onclick="performSearch()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600">
+ <i class="fas fa-arrow-right"></i>
+ </button>
+
+ <!-- Search Suggestions Dropdown -->
+ <div id="searchSuggestions" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 search-suggestions hidden" style="min-width: 300px;">
+ <div class="p-2">
+ <div onmousedown="navigateToPage('advanced-search.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer">
+ <i class="fas fa-heart text-pink-500 mr-3"></i>
+ <div>
+ <div class="font-medium text-gray-800">
+ Search your match
+ 
+ </div>
+ <div class="text-sm text-gray-500">
+ Find your perfect life partner
+ 
+ </div>
+ </div>
+ </div>
+ <div onmousedown="navigateToPage('active-members-dash.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer">
+ <i class="fas fa-users text-blue-500 mr-3"></i>
+ <div>
+ <div class="font-medium text-gray-800">
+ Browse profiles
+ 
+ </div>
+ <div class="text-sm text-gray-500">
+ View active members
+ 
+ </div>
+ </div>
+ </div>
+ <div onmousedown="navigateToPage('membership.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer">
+ <i class="fas fa-crown text-purple-500 mr-3"></i>
+ <div>
+ <div class="font-medium text-gray-800">
+ Premium members
+ 
+ </div>
+ <div class="text-sm text-gray-500">
+ View premium profiles
+ 
+ </div>
+ </div>
+ </div>
+ <div onmousedown="navigateToPage('settings.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer">
+ <i class="fas fa-cog text-gray-500 mr-3"></i>
+ <div>
+ <div class="font-medium text-gray-800">
+ ⚙️ Settings
+ 
+ </div>
+ <div class="text-sm text-gray-500">
+ Customize your experience
+ 
+ </div>
+ </div>
+ </div>
+ <div onmousedown="navigateToPage('about.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer">
+ <i class="fas fa-info-circle text-orange-500 mr-3"></i>
+ <div>
+ <div class="font-medium text-gray-800">
+ About us
+ 
+ </div>
+ <div class="text-sm text-gray-500">
+ Learn more about vevahamatrimony
+ 
+ </div>
+ </div>
+ </div>
+ <div onmousedown="navigateToPage('contact.html'); return false;" class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer">
+ <i class="fas fa-envelope text-green-500 mr-3"></i>
+ <div>
+ <div class="font-medium text-gray-800">
+ Contact us
+ 
+ </div>
+ <div class="text-sm text-gray-500">
+ Get in touch with vevahamatrimony
+ 
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <a href="login.html" class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700">
+ Login
+ 
+ </a>
+ </div>
+
+ <!-- Mobile menu button -->
+ <div class="md:hidden">
+ <button id="mobile-menu-button" class="text-gray-700 hover:text-pink-600 focus:outline-none" onclick="toggleMobileMenu()">
+ <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+ </svg>
+ </button>
+ </div>
+ </div>
+ </div>
+ </nav>
+
+ <!-- Mobile Navigation Menu -->
+ <div id="mobile-nav-menu" class="hidden md:hidden bg-white shadow-lg border-t">
+ <div class="px-4 py-2 space-y-2">
+ <a href="index.html" class="block text-pink-600 font-semibold px-3 py-2 rounded-md">Home</a>
+ <a href="register.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Register</a>
+ <a href="membership.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Premium Plans</a>
+ <a href="active-members-dash.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Active Members</a>
+ <a href="horoscopic-chatbot.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md">Astro AI</a>
+ <!-- Search Bar (Mobile) -->
+ <div class="relative">
+ <input type="text" id="mobileSearchInput" placeholder="Search..." 
+ class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-full transition-all duration-300"
+ onkeypress="handleMobileSearchKeyPress(event)">
+ <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+ <button onclick="performMobileSearch()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600">
+ <i class="fas fa-arrow-right"></i>
+ </button>
+ </div>
+ <a href="login.html" class="block bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 text-center">Login</a>
+ </div>
+ </div>
+
+
+
+ <!-- Header -->
+ <div class="bg-gradient-to-r from-pink-600 to-purple-600 text-white py-8">
+ <div class="max-w-4xl mx-auto px-4 text-center">
+ <h1 class="text-3xl font-bold mb-2">Admin Panel - Upload Members Data</h1>
+ <p class="text-xl opacity-90">Upload Excel file containing member information</p>
+ </div>
+ </div>
+
+ <!-- Main Content -->
+ <div class="max-w-4xl mx-auto px-4 py-8">
+
+ <!-- Upload Section -->
+ <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+ <h2 class="text-2xl font-bold text-gray-800 mb-6">Upload Excel File</h2>
+ 
+ <!-- Multiseries Option -->
+ <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+ <div class="flex items-center mb-4">
+ <i class="fas fa-tags text-blue-600 mr-2"></i>
+ <h3 class="text-lg font-semibold text-blue-800">Member ID Series Configuration</h3>
+ </div>
+ <div class="flex items-center space-x-4">
+ <label class="flex items-center">
+ <input type="checkbox" id="enableMultiseries" class="mr-2 text-blue-600">
+ <span class="text-sm font-medium text-gray-700">Enable Custom Member ID Series</span>
+ </label>
+ </div>
+ <div id="multiseriesOptions" class="hidden mt-4">
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-700 mb-1">Custom Series Prefix</label>
+ <input type="text" id="seriesPrefix" placeholder="e.g., SM, AM, KM" 
+ class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+ maxlength="3" style="text-transform: uppercase;">
+ <p class="text-xs text-gray-500 mt-1">Default: VM (Vevaha Matrimony)</p>
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-700 mb-1">Series Description</label>
+ <input type="text" id="seriesDescription" placeholder="e.g., Shree Matrimony, Arun Matrimony" 
+ class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+ <p class="text-xs text-gray-500 mt-1">Optional: For your reference</p>
+ </div>
+ </div>
+ <div class="mt-3 p-3 bg-yellow-50 rounded border border-yellow-200">
+ <p class="text-sm text-yellow-800">
+ <i class="fas fa-info-circle mr-1"></i>
+ <strong>Format:</strong> <span id="formatPreview">VM12345678</span> 
+ (Prefix + 8-digit random number)
+ </p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Upload Area -->
+ <div id="uploadArea" class="upload-area rounded-lg p-8 text-center cursor-pointer">
+ <div id="uploadContent">
+ <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 mb-4"></i>
+ <h3 class="text-xl font-semibold text-gray-700 mb-2">Drop your Excel file here</h3>
+ <p class="text-gray-500 mb-4">or click to browse</p>
+ <div class="text-sm text-gray-400">
+ <p>Supported formats:.xlsx,.xls,.xml,.json,.sql,.csv</p>
+ <p>Max file size: 1GB</p>
+ </div>
+ </div>
+ <input type="file" id="fileInput" accept=".xlsx,.xls,.xml,.json,.sql,.csv" class="hidden">
+ </div>
+
+ <!-- Selected File Info -->
+ <div id="fileInfo" class="hidden mt-4 p-4 bg-blue-50 rounded-lg">
+ <div class="flex items-center justify-between">
+ <div class="flex items-center">
+ <i class="fas fa-file-excel text-green-600 text-2xl mr-3"></i>
+ <div>
+ <p id="fileName" class="font-semibold text-gray-800"></p>
+ <p id="fileSize" class="text-sm text-gray-500"></p>
+ </div>
+ </div>
+ <button id="removeFile" class="text-red-500 hover:text-red-700">
+ <i class="fas fa-times"></i>
+ </button>
+ </div>
+ </div>
+
+ <!-- Upload Button -->
+ <button id="uploadBtn" class="hidden w-full bg-pink-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-pink-700 transition duration-300 mt-4">
+ <i class="fas fa-upload mr-2"></i>
+ Upload and Process Excel File
+ </button>
+
+ <!-- Progress Bar -->
+ <div id="progressContainer" class="hidden mt-4">
+ <div class="bg-gray-200 rounded-full h-2">
+ <div id="progressBar" class="bg-pink-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+ </div>
+ <p id="progressText" class="text-sm text-gray-500 mt-2">Uploading...</p>
+ </div>
+ </div>
+
+ <!-- Undo/Redo Controls -->
+ <div id="undoRedoSection" class="hidden bg-white rounded-lg shadow-md p-6 mb-8">
+ <h2 class="text-2xl font-bold text-gray-800 mb-4">
+ <i class="fas fa-history text-purple-600 mr-2"></i>
+ Upload History Controls
+ </h2>
+ <div class="flex flex-wrap gap-4 items-center">
+ <button id="undoBtn" class="bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+ <i class="fas fa-undo mr-2"></i>
+ Undo Last Upload
+ </button>
+ <button id="redoBtn" class="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+ <i class="fas fa-redo mr-2"></i>
+ Redo Upload
+ </button>
+ <button id="clearHistoryBtn" class="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+ <i class="fas fa-trash mr-2"></i>
+ Clear History
+ </button>
+ <div class="text-sm text-gray-600">
+ <span id="historyStatus">No upload history</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- Recently Added Files Section -->
+ <div id="recentFilesSection" class="hidden bg-white rounded-lg shadow-md p-6 mb-8">
+ <h2 class="text-2xl font-bold text-gray-800 mb-6">
+ <i class="fas fa-clock text-blue-600 mr-2"></i>
+ Recently Added Files
+ </h2>
+ <div id="recentFilesList" class="space-y-4">
+ <!-- Recent files will be populated here -->
+ </div>
+ </div>
+
+ <!-- Results Section -->
+ <div id="resultsSection" class="hidden bg-white rounded-lg shadow-md p-8 mb-8">
+ <h2 class="text-2xl font-bold text-gray-800 mb-6">Upload Results</h2>
+ <div id="resultsContent"></div>
+ </div>
+
+ <!-- Review Section (Semi-Automation) -->
+ <div id="reviewSection" class="hidden bg-white rounded-lg shadow-md p-8 mb-8">
+ <div class="flex justify-between items-center mb-6">
+ <div>
+ <h2 class="text-2xl font-bold text-gray-800">
+ <i class="fas fa-eye text-blue-600 mr-2"></i>
+ Review & Fix Images
+ </h2>
+ <p class="text-gray-600">Please verify the extracted images. Click any image to replace it manually.</p>
+ </div>
+ <button id="confirmUploadBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-lg flex items-center">
+ <i class="fas fa-cloud-upload-alt mr-2"></i>
+ Confirm & Upload to Database
+ </button>
+ </div>
+ 
+ <div id="reviewGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <!-- Preview cards injected here -->
+ </div>
+ 
+ <!-- Hidden file input for swapping images -->
+ <input type="file" id="swapImageInput" accept="image/jpeg, image/png, image/webp" class="hidden">
+ </div>
+
+ <!-- Expected Format Section -->
+ <div class="bg-white rounded-lg shadow-md p-8">
+ <h2 class="text-2xl font-bold text-gray-800 mb-6">Expected Excel Format</h2>
+ <p class="text-gray-600 mb-4">Your Excel file should contain the following columns:</p>
+ 
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+ <div class="space-y-2">
+ <h3 class="font-semibold text-gray-700">Basic Information</h3>
+ <ul class="text-sm text-gray-600 space-y-1">
+ <li>• Gender</li>
+ <li>• Name ()</li>
+ <li>• Birth Date ( )</li>
+ <li>• Birth Time ( )</li>
+ <li>• Birth Place ( )</li>
+ <li>• Age</li>
+ <li>• Height ()</li>
+ </ul>
+ </div>
+ 
+ <div class="space-y-2">
+ <h3 class="font-semibold text-gray-700">Family & Education</h3>
+ <ul class="text-sm text-gray-600 space-y-1">
+ <li>• Education ()</li>
+ <li>• Job ()</li>
+ <li>• Monthly Income</li>
+ <li>• Father Name & Occupation</li>
+ <li>• Mother Name & Occupation</li>
+ <li>• Siblings</li>
+ <li>• Property</li>
+ </ul>
+ </div>
+ 
+ <div class="space-y-2">
+ <h3 class="font-semibold text-gray-700">Religious & Contact</h3>
+ <ul class="text-sm text-gray-600 space-y-1">
+ <li>• Caste</li>
+ <li>• Gotra ()</li>
+ <li>• Rasi ()</li>
+ <li>• Star ()</li>
+ <li>• Contact Address & Location</li>
+ <li>• Phone Numbers</li>
+ <li>• Whatsapp Numbers</li>
+ <li>• Expectations</li>
+ <li>• Others</li>
+ </ul>
+ </div>
+ </div>
+
+ <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
+ <div class="flex items-start">
+ <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-3"></i>
+ <div class="text-sm text-yellow-800">
+ <p class="font-semibold mb-1">Important Notes:</p>
+ <ul class="space-y-1">
+ <li>• First row should contain column headers</li>
+ <li>• Tamil text is supported and will be preserved</li>
+ <li>• Empty cells will be left blank (no "N/A" or "undefined")</li>
+ <li>• Unique Matrimony IDs will be generated automatically</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Navigation -->
+ <div class="mt-8 text-center">
+ <a href="active-members-dash.html" class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition duration-300">
+ <i class="fas fa-users mr-2"></i>
+ View Active Members
+ </a>
+ </div>
+ </div>
+
+ <script>
+ const uploadArea = document.getElementById('uploadArea');
+ const fileInput = document.getElementById('fileInput');
+ const fileInfo = document.getElementById('fileInfo');
+ const fileName = document.getElementById('fileName');
+ const fileSize = document.getElementById('fileSize');
+ const removeFile = document.getElementById('removeFile');
+ const uploadBtn = document.getElementById('uploadBtn');
+ const progressContainer = document.getElementById('progressContainer');
+ const progressBar = document.getElementById('progressBar');
+ const progressText = document.getElementById('progressText');
+ const resultsSection = document.getElementById('resultsSection');
+ const resultsContent = document.getElementById('resultsContent');
+ const undoRedoSection = document.getElementById('undoRedoSection');
+ const recentFilesSection = document.getElementById('recentFilesSection');
+ const undoBtn = document.getElementById('undoBtn');
+ const redoBtn = document.getElementById('redoBtn');
+ const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+ const historyStatus = document.getElementById('historyStatus');
+ const recentFilesList = document.getElementById('recentFilesList');
+
+ let selectedFile = null;
+ let uploadHistory = JSON.parse(localStorage.getItem('uploadHistory') || '[]');
+ let currentHistoryIndex = uploadHistory.length - 1;
+ let recentUploads = JSON.parse(localStorage.getItem('recentUploads') || '[]');
+
+ // Multiseries functionality
+ const enableMultiseries = document.getElementById('enableMultiseries');
+ const multiseriesOptions = document.getElementById('multiseriesOptions');
+ const seriesPrefix = document.getElementById('seriesPrefix');
+ const seriesDescription = document.getElementById('seriesDescription');
+ const formatPreview = document.getElementById('formatPreview');
+
+ // Toggle multiseries options
+ enableMultiseries.addEventListener('change', function() {
+ if (this.checked) {
+ multiseriesOptions.classList.remove('hidden');
+ seriesPrefix.value = seriesPrefix.value || 'VM';
+ updateFormatPreview();
+ } else {
+ multiseriesOptions.classList.add('hidden');
+ seriesPrefix.value = 'VM';
+ updateFormatPreview();
+ }
+ });
+
+ // Update format preview
+ seriesPrefix.addEventListener('input', function() {
+ this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '');
+ if (this.value.length> 3) {
+ this.value = this.value.substring(0, 3);
+ }
+ updateFormatPreview();
+ });
+
+ function updateFormatPreview() {
+ const prefix = seriesPrefix.value || 'VM';
+ const randomExample = Math.floor(10000000 + Math.random() * 90000000);
+ formatPreview.textContent = `${prefix}${randomExample}`;
+ }
+
+ function getCustomSeriesConfig() {
+ if (enableMultiseries.checked && seriesPrefix.value.trim()) {
+ // Clean and validate prefix
+ let cleanPrefix = seriesPrefix.value.trim().toUpperCase().replace(/[^A-Z]/g, '').substring(0, 3);
+ 
+ if (cleanPrefix) {
+ return {
+ enabled: true,
+ prefix: cleanPrefix,
+ description: seriesDescription.value.trim() || `Custom Series (${cleanPrefix})`
+ };
+ }
+ }
+ 
+ // Default configuration
+ return {
+ enabled: false,
+ prefix: 'VM',
+ description: 'Vevaha Matrimony'
+ };
+ }
+
+ // Click to upload
+ uploadArea.addEventListener('click', () => {
+ fileInput.click();
+ });
+
+ // Drag and drop functionality
+ uploadArea.addEventListener('dragover', (e) => {
+ e.preventDefault();
+ uploadArea.classList.add('dragover');
+ });
+
+ uploadArea.addEventListener('dragleave', () => {
+ uploadArea.classList.remove('dragover');
+ });
+
+ uploadArea.addEventListener('drop', (e) => {
+ e.preventDefault();
+ uploadArea.classList.remove('dragover');
+ const files = e.dataTransfer.files;
+ if (files.length> 0) {
+ handleFileSelect(files[0]);
+ }
+ });
+
+ // File input change
+ fileInput.addEventListener('change', (e) => {
+ if (e.target.files.length> 0) {
+ handleFileSelect(e.target.files[0]);
+ }
+ });
+
+ // Handle file selection
+ function handleFileSelect(file) {
+ // Validate file type
+ const allowedExtensions = ['.xlsx', '.xls', '.xml', '.json', '.sql', '.csv'];
+ const fileName = file.name.toLowerCase();
+ const isValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+ 
+ if (!isValidExtension) {
+ alert('Please select a valid file (.xlsx,.xls,.xml,.json,.sql,.csv)');
+ return;
+ }
+
+ // Validate file size (1GB)
+ if (file.size> 1024 * 1024 * 1024) {
+ alert('File size must be less than 1GB');
+ return;
+ }
+
+ selectedFile = file;
+ fileName.textContent = file.name;
+ fileSize.textContent = `${(file.size / 1024 / 1024).toFixed(2)} MB`;
+ 
+ fileInfo.classList.remove('hidden');
+ uploadBtn.classList.remove('hidden');
+ }
+
+ // Remove file
+ removeFile.addEventListener('click', (e) => {
+ e.stopPropagation();
+ selectedFile = null;
+ fileInput.value = '';
+ fileInfo.classList.add('hidden');
+ uploadBtn.classList.add('hidden');
+ resultsSection.classList.add('hidden');
+ });
+
+ // Initialize undo/redo functionality
+ function initializeUndoRedo() {
+ updateUndoRedoButtons();
+ displayRecentFiles();
+ 
+ if (uploadHistory.length> 0) {
+ undoRedoSection.classList.remove('hidden');
+ }
+ 
+ if (recentUploads.length> 0) {
+ recentFilesSection.classList.remove('hidden');
+ }
+ }
+
+ function updateUndoRedoButtons() {
+ undoBtn.disabled = currentHistoryIndex < 0;
+ redoBtn.disabled = currentHistoryIndex>= uploadHistory.length - 1;
+ clearHistoryBtn.disabled = uploadHistory.length === 0;
+ 
+ if (uploadHistory.length === 0) {
+ historyStatus.textContent = 'No upload history';
+ } else {
+ historyStatus.textContent = `History: ${currentHistoryIndex + 1}/${uploadHistory.length} operations`;
+ }
+ }
+
+ function saveToHistory(operation) {
+ // Remove any operations after current index (for redo functionality)
+ uploadHistory = uploadHistory.slice(0, currentHistoryIndex + 1);
+ 
+ // Create unique ID and add new operation
+ const operationId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+ uploadHistory.push({
+...operation,
+ timestamp: new Date().toISOString(),
+ id: operationId
+ });
+ 
+ currentHistoryIndex = uploadHistory.length - 1;
+ localStorage.setItem('uploadHistory', JSON.stringify(uploadHistory));
+ updateUndoRedoButtons();
+ undoRedoSection.classList.remove('hidden');
+ 
+ console.log('✅ Operation saved to history:', operationId);
+ }
+
+ function addToRecentUploads(uploadData) {
+ // Use existing ID if available, otherwise create new one
+ const uploadId = uploadData.id || Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+ 
+ const recentUpload = {
+ id: uploadId,
+ fileName: uploadData.fileName,
+ fileFormat: uploadData.fileFormat,
+ membersCount: uploadData.membersCount || uploadData.newMembers || 0,
+ timestamp: uploadData.timestamp || new Date().toISOString(),
+ members: uploadData.members || []
+ };
+ 
+ // Remove existing upload with same ID if it exists
+ recentUploads = recentUploads.filter(upload => upload.id !== uploadId);
+ 
+ // Add new upload to the beginning
+ recentUploads.unshift(recentUpload);
+ 
+ // Keep only last 15 uploads (increased limit)
+ if (recentUploads.length> 15) {
+ recentUploads = recentUploads.slice(0, 15);
+ }
+ 
+ localStorage.setItem('recentUploads', JSON.stringify(recentUploads));
+ displayRecentFiles();
+ recentFilesSection.classList.remove('hidden');
+ 
+ console.log('✅ Upload added to recent files:', uploadId);
+ }
+
+ function displayRecentFiles() {
+ recentFilesList.innerHTML = '';
+ 
+ if (recentUploads.length === 0) {
+ recentFilesList.innerHTML = `
+ <div class="text-center py-8 text-gray-500">
+ <i class="fas fa-clock text-4xl mb-4"></i>
+ <p>No recent uploads found</p>
+ </div>
+ `;
+ return;
+ }
+ 
+ recentUploads.forEach((upload, index) => {
+ const uploadDate = new Date(upload.timestamp).toLocaleDateString();
+ const uploadTime = new Date(upload.timestamp).toLocaleTimeString();
+ const timeDiff = Date.now() - new Date(upload.timestamp);
+ const isRecent = timeDiff < 24 * 60 * 60 * 1000; // Less than 24 hours
+ 
+ const fileItem = document.createElement('div');
+ fileItem.className = `border border-gray-200 rounded-lg p-4 ${isRecent ? 'bg-blue-50 border-blue-200' : 'bg-gray-50'}`;
+ fileItem.innerHTML = `
+ <div class="flex items-center justify-between">
+ <div class="flex-1">
+ <div class="flex items-center mb-2">
+ <i class="fas fa-file-excel text-green-600 mr-2"></i>
+ <h4 class="font-semibold text-gray-800">${upload.fileName}</h4>
+ ${isRecent ? '<span class="ml-2 px-2 py-1 bg-blue-200 text-blue-800 text-xs rounded-full">Recent</span>' : ''}
+ ${index === 0 ? '<span class="ml-2 px-2 py-1 bg-green-200 text-green-800 text-xs rounded-full">Latest</span>' : ''}
+ </div>
+ <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+ <div>
+ <span class="font-medium">Format:</span> ${upload.fileFormat || 'Unknown'}
+ </div>
+ <div>
+ <span class="font-medium">Members:</span> ${upload.membersCount || 0}
+ </div>
+ <div>
+ <span class="font-medium">Date:</span> ${uploadDate}
+ </div>
+ <div>
+ <span class="font-medium">Time:</span> ${uploadTime}
+ </div>
+ </div>
+ <div class="mt-2 text-xs text-gray-500">
+ <span class="font-medium">Upload ID:</span> ${upload.id}
+ </div>
+ </div>
+ <div class="flex flex-col space-y-2 ml-4">
+ <button onclick="deleteRecentUpload('${upload.id}')" 
+ class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 text-sm">
+ <i class="fas fa-trash mr-1"></i>
+ Delete
+ </button>
+ <a href="active-members-dash.html" 
+ class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 text-sm text-center">
+ <i class="fas fa-users mr-1"></i>
+ View Members
+ </a>
+ </div>
+ </div>
+ `;
+ 
+ recentFilesList.appendChild(fileItem);
+ });
+ }
+
+ // Enhanced Undo functionality with better error handling
+ undoBtn.addEventListener('click', async () => {
+ if (currentHistoryIndex>= 0) {
+ const operation = uploadHistory[currentHistoryIndex];
+ 
+ try {
+ undoBtn.disabled = true;
+ undoBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+ 
+ // Call server to undo the upload
+ const response = await fetch('/api/undo-upload', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json'
+ },
+ body: JSON.stringify({
+ operationId: operation.id,
+ membersToRemove: operation.members || []
+ })
+ });
+ 
+ if (!response.ok) {
+ throw new Error(`HTTP error! status: ${response.status}`);
+ }
+ 
+ const result = await response.json();
+ 
+ if (result.success) {
+ currentHistoryIndex--;
+ updateUndoRedoButtons();
+ showNotification(`Upload undone successfully! Removed ${result.removedCount || 0} members.`, 'success');
+ 
+ // Remove from recent uploads
+ recentUploads = recentUploads.filter(upload => upload.id !== operation.id);
+ localStorage.setItem('recentUploads', JSON.stringify(recentUploads));
+ displayRecentFiles();
+ 
+ // Hide recent files section if empty
+ if (recentUploads.length === 0) {
+ recentFilesSection.classList.add('hidden');
+ }
+ } else {
+ showNotification('Failed to undo upload: ' + (result.error || 'Unknown error'), 'error');
+ }
+ } catch (error) {
+ console.error('Undo error:', error);
+ showNotification('Error undoing upload: ' + error.message, 'error');
+ } finally {
+ undoBtn.disabled = currentHistoryIndex < 0;
+ undoBtn.innerHTML = '<i class="fas fa-undo mr-2"></i>Undo Last Upload';
+ }
+ }
+ });
+
+ // Enhanced Redo functionality with better error handling
+ redoBtn.addEventListener('click', async () => {
+ if (currentHistoryIndex < uploadHistory.length - 1) {
+ const operation = uploadHistory[currentHistoryIndex + 1];
+ 
+ try {
+ redoBtn.disabled = true;
+ redoBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+ 
+ // Call server to redo the upload
+ const response = await fetch('/api/redo-upload', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json'
+ },
+ body: JSON.stringify({
+ operationId: operation.id,
+ membersToAdd: operation.members || []
+ })
+ });
+ 
+ if (!response.ok) {
+ throw new Error(`HTTP error! status: ${response.status}`);
+ }
+ 
+ const result = await response.json();
+ 
+ if (result.success) {
+ currentHistoryIndex++;
+ updateUndoRedoButtons();
+ showNotification(`Upload redone successfully! Added ${result.addedCount || 0} members.`, 'success');
+ 
+ // Add back to recent uploads
+ addToRecentUploads(operation);
+ recentFilesSection.classList.remove('hidden');
+ } else {
+ showNotification('Failed to redo upload: ' + (result.error || 'Unknown error'), 'error');
+ }
+ } catch (error) {
+ console.error('Redo error:', error);
+ showNotification('Error redoing upload: ' + error.message, 'error');
+ } finally {
+ redoBtn.disabled = currentHistoryIndex>= uploadHistory.length - 1;
+ redoBtn.innerHTML = '<i class="fas fa-redo mr-2"></i>Redo Upload';
+ }
+ }
+ });
+
+ // Clear all history functionality with confirmation
+ clearHistoryBtn.addEventListener('click', () => {
+ if (uploadHistory.length === 0) {
+ showNotification('No history to clear', 'info');
+ return;
+ }
+ 
+ const confirmMessage = `Are you sure you want to clear all upload history?\n\nThis will remove all ${uploadHistory.length} operations from the history. This action cannot be undone.`;
+ 
+ if (confirm(confirmMessage)) {
+ try {
+ clearHistoryBtn.disabled = true;
+ clearHistoryBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Clearing...';
+ 
+ // Clear all history from localStorage
+ uploadHistory = [];
+ currentHistoryIndex = -1;
+ recentUploads = [];
+ 
+ localStorage.removeItem('uploadHistory');
+ localStorage.removeItem('recentUploads');
+ 
+ // Update UI
+ updateUndoRedoButtons();
+ displayRecentFiles();
+ undoRedoSection.classList.add('hidden');
+ recentFilesSection.classList.add('hidden');
+ 
+ showNotification('Upload history cleared successfully', 'success');
+ 
+ console.log('✅ Upload history cleared completely');
+ } catch (error) {
+ console.error('Clear history error:', error);
+ showNotification('Error clearing history: ' + error.message, 'error');
+ } finally {
+ clearHistoryBtn.disabled = uploadHistory.length === 0;
+ clearHistoryBtn.innerHTML = '<i class="fas fa-trash mr-2"></i>Clear History';
+ }
+ }
+ });
+
+ // Enhanced Delete functionality with confirmation and better feedback
+ async function deleteRecentUpload(uploadId) {
+ const upload = recentUploads.find(u => u.id == uploadId);
+ 
+ if (!upload) {
+ showNotification('Upload not found', 'error');
+ return;
+ }
+ 
+ const confirmMessage = `Are you sure you want to delete this upload?\n\nFile: ${upload.fileName}\nMembers: ${upload.membersCount}\n\nThis will permanently remove all ${upload.membersCount} members from the active members page.`;
+ 
+ if (confirm(confirmMessage)) {
+ try {
+ // Disable the delete button to prevent double-clicks
+ const deleteBtn = event.target.closest('button');
+ deleteBtn.disabled = true;
+ deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Deleting...';
+ 
+ const response = await fetch('/api/delete-upload', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json'
+ },
+ body: JSON.stringify({
+ uploadId: uploadId,
+ membersToRemove: upload.members || []
+ })
+ });
+ 
+ if (!response.ok) {
+ throw new Error(`HTTP error! status: ${response.status}`);
+ }
+ 
+ const result = await response.json();
+ 
+ if (result.success) {
+ // Remove from recent uploads
+ recentUploads = recentUploads.filter(u => u.id != uploadId);
+ localStorage.setItem('recentUploads', JSON.stringify(recentUploads));
+ 
+ // Remove from history
+ uploadHistory = uploadHistory.filter(op => op.id != uploadId);
+ currentHistoryIndex = Math.min(currentHistoryIndex, uploadHistory.length - 1);
+ localStorage.setItem('uploadHistory', JSON.stringify(uploadHistory));
+ 
+ displayRecentFiles();
+ updateUndoRedoButtons();
+ showNotification(`Upload deleted successfully! Removed ${result.removedCount || 0} members.`, 'success');
+ 
+ // Hide sections if empty
+ if (recentUploads.length === 0) {
+ recentFilesSection.classList.add('hidden');
+ }
+ if (uploadHistory.length === 0) {
+ undoRedoSection.classList.add('hidden');
+ }
+ } else {
+ showNotification('Failed to delete upload: ' + (result.error || 'Unknown error'), 'error');
+ deleteBtn.disabled = false;
+ deleteBtn.innerHTML = '<i class="fas fa-trash mr-1"></i>Delete';
+ }
+ } catch (error) {
+ console.error('Delete error:', error);
+ showNotification('Error deleting upload: ' + error.message, 'error');
+ deleteBtn.disabled = false;
+ deleteBtn.innerHTML = '<i class="fas fa-trash mr-1"></i>Delete';
+ }
+ }
+ }
+
+ function showNotification(message, type = 'info') {
+ const notification = document.createElement('div');
+ notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 max-w-sm ${
+ type === 'success' ? 'bg-green-500' : 
+ type === 'error' ? 'bg-red-500' : 
+ 'bg-blue-500'
+ } text-white`;
+
+ notification.innerHTML = `
+ <div class="flex items-center">
+ <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'} mr-2"></i>
+ <span>${message}</span>
+ <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">×</button>
+ </div>
+ `;
+
+ document.body.appendChild(notification);
+
+ setTimeout(() => {
+ if (notification.parentNode) {
+ notification.parentNode.removeChild(notification);
+ }
+ }, 5000);
+ }
+
+ // Initialize on page load
+ initializeUndoRedo();
+
+ // Upload file
+ uploadBtn.addEventListener('click', async () => {
+ if (!selectedFile) return;
+
+ const formData = new FormData();
+ formData.append('databaseFile', selectedFile);
+ 
+ // Add multiseries configuration
+ const seriesConfig = getCustomSeriesConfig();
+ formData.append('multiseries', JSON.stringify(seriesConfig));
+
+ uploadBtn.disabled = true;
+ uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+ progressContainer.classList.remove('hidden');
+ 
+ try {
+ const response = await fetch('/api/upload-database-file', {
+ method: 'POST',
+ body: formData
+ });
+
+ // Check if response is ok
+ if (!response.ok) {
+ throw new Error(`HTTP error! status: ${response.status}`);
+ }
+
+ // Check if response has content
+ const contentLength = response.headers.get('content-length');
+ if (contentLength === '0') {
+ throw new Error('Server returned empty response');
+ }
+
+ // Get response text first
+ const responseText = await response.text();
+ 
+ // Check if response is empty
+ if (!responseText || responseText.trim() === '') {
+ throw new Error('Server returned empty response');
+ }
+
+ // Try to parse as JSON
+ let result;
+ try {
+ result = JSON.parse(responseText);
+ } catch (jsonError) {
+ console.error('JSON parse error:', jsonError);
+ console.error('Response text:', responseText);
+ throw new Error('Server returned invalid JSON response');
+ }
+ 
+ progressBar.style.width = '100%';
+ progressText.textContent = 'Upload complete!';
+
+ setTimeout(() => {
+ progressContainer.classList.add('hidden');
+ 
+ if (result.status === "preview") {
+ showReviewUI(result);
+ } else {
+ showResults(result);
+ }
+ }, 1000);
+
+ } catch (error) {
+ console.error('Upload error:', error);
+ progressContainer.classList.add('hidden');
+ showResults({
+ success: false,
+ error: 'Upload failed: ' + error.message
+ });
+ } finally {
+ uploadBtn.disabled = false;
+ uploadBtn.innerHTML = '<i class="fas fa-upload mr-2"></i>Upload and Process Excel File';
+ }
+ });
+
+ // Show results
+ function showResults(result) {
+ resultsSection.classList.remove('hidden');
+ 
+ if (result.success) {
+ resultsContent.innerHTML = `
+ <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+ <div class="flex items-center mb-4">
+ <i class="fas fa-check-circle text-green-600 text-2xl mr-3"></i>
+ <h3 class="text-xl font-semibold text-green-800">Upload Successful!</h3>
+ </div>
+ <p class="text-green-700 mb-4">${result.message}</p>
+ <div class="bg-white p-4 rounded border">
+ <p class="font-semibold text-gray-800">File Format: ${result.fileFormat}</p>
+ <p class="font-semibold text-gray-800">New Members: ${result.newMembers}</p>
+ <p class="font-semibold text-gray-800">Total Members: ${result.totalMembers}</p>
+ <p class="font-semibold text-gray-800">Male: ${result.maleCount} | Female: ${result.femaleCount}</p>
+ ${result.multiseriesDetails ? `
+ <div class="mt-2 p-3 bg-blue-50 rounded border border-blue-200">
+ <p class="font-semibold text-blue-800">Member ID Series Details:</p>
+ <p class="text-sm text-blue-700">• Prefix: ${result.multiseriesDetails.prefix}</p>
+ <p class="text-sm text-blue-700">• Description: ${result.multiseriesDetails.description}</p>
+ <p class="text-sm text-blue-700">• Sample ID: ${result.multiseriesDetails.sampleId}</p>
+ <p class="text-sm text-blue-700">• Status: ${result.multiseriesDetails.enabled ? 'Custom Series' : 'Default Series'}</p>
+ </div>
+ ` : ''}
+ ${result.duplicatesRemoved> 0 ? `<p class="text-sm text-orange-600">Duplicates removed: ${result.duplicatesRemoved}</p>` : ''}
+ </div>
+ <div class="mt-4">
+ <a href="active-members-dash.html" class="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition duration-300">
+ <i class="fas fa-users mr-2"></i>
+ View Members
+ </a>
+ </div>
+ </div>
+ `;
+ } else {
+ resultsContent.innerHTML = `
+ <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+ <div class="flex items-center mb-4">
+ <i class="fas fa-exclamation-circle text-red-600 text-2xl mr-3"></i>
+ <h3 class="text-xl font-semibold text-red-800">Upload Failed</h3>
+ </div>
+ <p class="text-red-700">${result.error}</p>
+ <div class="mt-4">
+ <button onclick="location.reload()" class="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition duration-300">
+ <i class="fas fa-redo mr-2"></i>
+ Try Again
+ </button>
+ </div>
+ </div>
+ `;
+ }
+ }
+
+ // Progress simulation
+ function simulateProgress() {
+ let progress = 0;
+ const interval = setInterval(() => {
+ progress += Math.random() * 15;
+ if (progress>= 90) {
+ progress = 90;
+ clearInterval(interval);
+ }
+ progressBar.style.width = progress + '%';
+ progressText.textContent = `Processing... ${Math.round(progress)}%`;
+ }, 200);
+ }
+
+ uploadBtn.addEventListener('click', () => {
+ if (selectedFile) {
+ simulateProgress();
+ }
+ });
+
+ // --- Review UI Logic ---
+ let previewData = null;
+ let currentSwapTarget = null; // { memberId, type: 'profile'|'jathagam' }
+
+ function showReviewUI(data) {
+ previewData = data;
+ document.getElementById('uploadArea').parentElement.classList.add('hidden');
+ document.getElementById('undoRedoSection').classList.add('hidden');
+ document.getElementById('recentFilesSection').classList.add('hidden');
+ document.getElementById('reviewSection').classList.remove('hidden');
+ renderReviewGrid();
+ }
+
+ function renderReviewGrid() {
+ const grid = document.getElementById('reviewGrid');
+ grid.innerHTML = '';
+ 
+ previewData.members.forEach(member => {
+ const card = document.createElement('div');
+ card.className = 'border rounded-lg p-4 bg-gray-50 flex flex-col items-center text-center shadow-sm relative';
+ 
+ // Add a warning badge if no images were found
+ let warningHTML = '';
+ if (!member.profile_picture_url && !member.jathagam_url) {
+ warningHTML = '<span class="absolute top-2 right-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full"><i class="fas fa-exclamation-triangle"></i> No Images</span>';
+ }
+
+ card.innerHTML = `
+ ${warningHTML}
+ <h3 class="font-bold text-lg text-gray-800 mb-1">${member.full_name}</h3>
+ <p class="text-sm text-gray-600 mb-4">${member.gender} • ${member.age || 'N/A'}</p>
+ 
+ <div class="flex space-x-4 w-full">
+ <div class="flex-1 flex flex-col items-center">
+ <p class="text-xs font-semibold text-gray-500 mb-1">Profile</p>
+ <div class="relative group cursor-pointer w-24 h-24 rounded-full overflow-hidden border-2 border-pink-200"
+ onclick="triggerImageSwap('${member.member_id}', 'profile')">
+ <img src="${member.profile_picture_url || 'images/default-avatar.png'}" 
+ class="w-full h-full object-cover" 
+ id="img_profile_${member.member_id}">
+ <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+ <i class="fas fa-camera text-white text-xl"></i>
+ </div>
+ </div>
+ </div>
+ <div class="flex-1 flex flex-col items-center">
+ <p class="text-xs font-semibold text-gray-500 mb-1">Jathagam</p>
+ <div class="relative group cursor-pointer w-24 h-32 rounded bg-white overflow-hidden border-2 border-blue-200 shadow-sm"
+ onclick="triggerImageSwap('${member.member_id}', 'jathagam')">
+ <img src="${member.jathagam_url || 'images/default-jathagam.png'}" 
+ class="w-full h-full object-cover" 
+ id="img_jathagam_${member.member_id}"
+ onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23f3f4f6\\'/><text x=\\'50\\' y=\\'50\\' font-family=\\'Arial\\' font-size=\\'12\\' text-anchor=\\'middle\\' alignment-baseline=\\'middle\\' fill=\\'%239ca3af\\'>No Image</text></svg>'">
+ <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+ <i class="fas fa-camera text-white text-xl"></i>
+ </div>
+ </div>
+ </div>
+ </div>
+ `;
+ grid.appendChild(card);
+ });
+ }
+
+ function triggerImageSwap(memberId, type) {
+ currentSwapTarget = { memberId, type };
+ document.getElementById('swapImageInput').click();
+ }
+
+ document.getElementById('swapImageInput').addEventListener('change', function(e) {
+ const file = e.target.files[0];
+ if (!file || !currentSwapTarget) return;
+
+ const reader = new FileReader();
+ reader.onload = function(event) {
+ const base64Data = event.target.result;
+ const { memberId, type } = currentSwapTarget;
+ 
+ // Update the data payload
+ const member = previewData.members.find(m => m.member_id === memberId);
+ if (member) {
+ if (type === 'profile') member.profile_picture_url = base64Data;
+ if (type === 'jathagam') member.jathagam_url = base64Data;
+ }
+ 
+ // Update UI instantly
+ const imgEl = document.getElementById(`img_${type}_${memberId}`);
+ if (imgEl) imgEl.src = base64Data;
+ 
+ showNotification(`Updated ${type} image successfully.`, 'success');
+ };
+ reader.readAsDataURL(file);
+ });
+
+ document.getElementById('confirmUploadBtn').addEventListener('click', async function() {
+ if (!previewData || !previewData.members.length) return;
+ 
+ const btn = this;
+ btn.disabled = true;
+ btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Uploading to Database...';
+ 
+ try {
+ const response = await fetch('/api/confirm-upload', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify(previewData)
+ });
+ 
+ const result = await response.json();
+ 
+ document.getElementById('reviewSection').classList.add('hidden');
+ document.getElementById('uploadArea').parentElement.classList.remove('hidden');
+ 
+ if (response.ok && result.success) {
+ // Inject compatibility data for history tracking
+ result.newMembers = result.total_processed;
+ result.totalMembers = result.total_processed;
+ result.fileFormat = "XLSX (Verified)";
+ 
+ showResults(result);
+ 
+ const uploadData = {
+ fileName: selectedFile ? selectedFile.name : "Verified Upload",
+ fileFormat: result.fileFormat,
+ membersCount: result.newMembers,
+ members: previewData.members.map(m => ({id: m.member_id, name: m.full_name})),
+ totalMembers: result.totalMembers
+ };
+ saveToHistory(uploadData);
+ addToRecentUploads(uploadData);
+ } else {
+ throw new Error(result.error || "Unknown error occurred");
+ }
+ } catch (err) {
+ showNotification("Error: " + err.message, "error");
+ showResults({ success: false, error: err.message });
+ } finally {
+ btn.disabled = false;
+ btn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-2"></i>Confirm & Upload to Database';
+ }
+ });
+
+ </script>
+ <!-- Footer -->
+ <footer class="bg-gray-800 text-white py-12 w-full mt-auto">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+ <div class="sm:col-span-2 md:col-span-1">
+ <div class="flex items-center mb-4">
+ <span class="text-xl sm:text-2xl font-bold">vevahamatrimony</span>
+ </div>
+ <p class="text-gray-400 text-sm sm:text-base leading-relaxed">Connecting hearts, creating families. Your trusted partner in finding true love.</p>
+ </div>
+ <div>
+ <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+ <ul class="space-y-2">
+ <li><a href="about.html" class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">About Us</a></li>
+ <li><a href="membership.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Premium Plans</a></li>
+ <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Contact</a></li>
+ <li><a href="terms.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Terms & Conditions</a></li>
+ </ul>
+ </div>
+ <div>
+ <h3 class="text-lg font-semibold mb-4">Support</h3>
+ <ul class="space-y-2">
+ <li><a href="privacy-policy.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Privacy Policy</a></li>
+ <li><a href="faq.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">FAQ</a></li>
+ <li><a href="help-center.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Help Center</a></li>
+ <li><a href="safety-tips.html" class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Safety Tips</a></li>
+ </ul>
+ </div>
+ <div>
+ <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
+ <div class="space-y-3 text-gray-400">
+ <div class="flex items-center">
+ <i class="fas fa-phone mr-2 text-pink-400 flex-shrink-0"></i>
+ <span class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm:text-base" onclick="copyToClipboard('+91 9487161672', 'Phone number copied!')" title="Click to copy">
+ +91 9487161672
+ </span>
+ </div>
+ <div class="flex items-center">
+ <i class="fas fa-envelope mr-2 text-pink-400 flex-shrink-0"></i>
+ <a href="mailto:vevahamatrimonydb@gmail.com" class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm:text-base break-all" onclick="copyToClipboard('vevahamatrimonydb@gmail.com', 'Email copied!')" title="Click to copy or send email">
+ vevahamatrimonydb@gmail.com
+ </a>
+ </div>
+ 
+ <div class="flex items-center space-x-3 mt-4 pt-2">
+ <span class="text-sm text-gray-400">Follow us:</span>
+ <a href="https://www.instagram.com/vevahamatrimony/" target="_blank" rel="noopener noreferrer"
+ class="bg-pink-500 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-pink-600 transition duration-300 transform hover:scale-110">
+ <i class="fab fa-instagram text-sm:text-base"></i>
+ </a>
+ <a href="https://www.youtube.com/@VevahaMatrimony" target="_blank" rel="noopener noreferrer"
+ class="bg-red-600 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-red-700 transition duration-300 transform hover:scale-110">
+ <i class="fab fa-youtube text-sm:text-base"></i>
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+ <p class="text-xs sm:text-sm text-pink-300" id="copyright-text"></p>
+ </div>
+ </div>
+ </footer>
+
+ <!-- Legacy auth CDN scripts removed -->
+ <!-- Legacy auth removed -->
+ <script src="global-settings.js"></script>
+ <script src="watermark-system.js"></script>
+ <script src="script.js"></script>
+ <!-- Domain AI Service Verification -->
+ <script src="domain-ai-service.js"></script>
+
+ <!-- Swiper.js Script -->
+ <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+ <script>
+ // Initialize Premium Members Swiper
+ document.addEventListener('DOMContentLoaded', function() {
+ const premiumSwiper = new Swiper('.premium-members-swiper', {
+ slidesPerView: 1,
+ spaceBetween: 15,
+ autoplay: {
+ delay: 4000,
+ disableOnInteraction: false,
+ pauseOnMouseEnter: true,
+ },
+ pagination: {
+ el: '.swiper-pagination',
+ clickable: true,
+ bulletActiveClass: 'swiper-pagination-bullet-active',
+ },
+ loop: true,
+ centeredSlides: true,
+ grabCursor: true,
+ touchRatio: 1,
+ touchAngle: 45,
+ preventInteractionOnTransition: true,
+ breakpoints: {
+ 480: {
+ slidesPerView: 1,
+ spaceBetween: 15,
+ },
+ 640: {
+ slidesPerView: 2,
+ spaceBetween: 20,
+ },
+ 1024: {
+ slidesPerView: 3,
+ spaceBetween: 25,
+ },
+ },
+ effect: 'slide',
+ speed: 400,
+ resistance: true,
+ resistanceRatio: 0.85,
+ });
+ });
+ </script>
+ <script>
+ // Mobile menu toggle
+ function toggleMobileMenu() {
+ const menu = document.getElementById('mobile-nav-menu');
+ if (menu) {
+ menu.classList.toggle('hidden');
+ }
+ }
+
+ // Initialize copyright year
+ document.addEventListener('DOMContentLoaded', function() {
+ const year = new Date().getFullYear();
+ const copyrightText = document.getElementById('copyright-text');
+ if (copyrightText) {
+ copyrightText.textContent = `© ${year} vevahamatrimony. All rights reserved.`;
+ }
+ });
+
+ // Copy to clipboard function
+ function copyToClipboard(text, message) {
+ navigator.clipboard.writeText(text).then(() => {
+ // Optionally show a success message
+ const notificationContainer = document.createElement('div');
+ notificationContainer.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg bg-green-500 text-white z-50';
+ notificationContainer.innerHTML = `
+ <div class="flex items-center">
+ <i class="fas fa-check-circle mr-2"></i>
+ <span>${message}</span>
+ </div>
+ `;
+ document.body.appendChild(notificationContainer);
+ setTimeout(() => {
+ notificationContainer.remove();
+ }, 2000);
+ }).catch(err => {
+ console.error('Failed to copy text: ', err);
+ // Optionally show an error message
+ });
+ }
+
+ // Search suggestions functionality
+ function showSearchSuggestions() {
+ const suggestions = document.getElementById('searchSuggestions');
+ if (suggestions) {
+ suggestions.classList.remove('hidden');
+ }
+ }
+
+ function hideSearchSuggestions() {
+ setTimeout(() => {
+ const suggestions = document.getElementById('searchSuggestions');
+ if (suggestions) {
+ suggestions.classList.add('hidden');
+ }
+ }, 150);
+ }
+
+ function navigateToPage(url) {
+ window.location.href = url;
+ }
+
+ // Handle search key press for desktop search
+ function handleSearchKeyPress(event) {
+ if (event.key === 'Enter') {
+ performSearch();
+ }
+ }
+
+ // Mobile search functionality
+ function handleMobileSearchKeyPress(event) {
+ if (event.key === 'Enter') {
+ performMobileSearch();
+ }
+ }
+
+ function performMobileSearch() {
+ const mobileSearchInput = document.getElementById('mobileSearchInput');
+ if (mobileSearchInput) {
+ const query = mobileSearchInput.value.trim();
+ if (query) {
+ const mainSearchInput = document.getElementById('searchInput');
+ if (mainSearchInput) {
+ mainSearchInput.value = query;
+ performSearch();
+ }
+ } else {
+ showNotification('Please enter a search term', 'error');
+ }
+ }
+ }
+
+ // Enhanced search functionality
+ function performSearch() {
+ const searchInput = document.getElementById('searchInput');
+ if (!searchInput) return;
+
+ const searchTerm = searchInput.value.trim().toLowerCase();
+
+ if (!searchTerm) {
+ showNotification('Please enter a search term', 'error');
+ return;
+ }
+
+ // Navigation mappings
+ const navigationMappings = {
+ 'home': 'index.html',
+ 'homepage': 'index.html',
+ 'register': 'register.html',
+ 'signup': 'register.html',
+ 'sign up': 'register.html',
+ 'membership': 'membership.html',
+ 'plans': 'membership.html',
+ 'premium': 'membership.html',
+ 'pricing': 'membership.html',
+ 'contact': 'contact.html',
+ 'contact us': 'contact.html',
+ 'about': 'about.html',
+ 'about us': 'about.html',
+ 'faq': 'faq.html',
+ 'help': 'faq.html',
+ 'login': 'login.html',
+ 'signin': 'login.html',
+ 'sign in': 'login.html',
+ 'find': 'advanced-search.html',
+ 'search': 'advanced-search.html',
+ 'find match': 'advanced-search.html',
+ 'search match': 'advanced-search.html',
+ 'matches': 'matches.html',
+ 'messages': 'messages.html',
+ 'chat': 'messages.html',
+ 'dashboard': 'home.html',
+ 'profile': 'profile.html',
+ 'requests': 'requests.html',
+ 'active members': 'active-members-dash.html',
+ 'members': 'active-members-dash.html',
+ 'privacy': 'privacy-policy.html',
+ 'privacy policy': 'privacy-policy.html',
+ 'terms': 'terms.html',
+ 'terms and conditions': 'terms.html',
+ 'safety': 'safety-tips.html',
+ 'safety tips': 'safety-tips.html',
+ 'settings': 'settings.html'
+ };
+
+ // Check if search term matches any page
+ const targetPage = navigationMappings[searchTerm];
+ if (targetPage) {
+ window.location.href = targetPage;
+ return;
+ }
+
+ // Check for partial matches
+ for (const [key, value] of Object.entries(navigationMappings)) {
+ if (key.includes(searchTerm) || searchTerm.includes(key)) {
+ showNotification(`Redirecting to ${key}...`, 'info');
+ setTimeout(() => {
+ window.location.href = value;
+ }, 1000);
+ return;
+ }
+ }
+
+ // Redirect to search results
+ showNotification('Redirecting to search results...', 'info');
+ setTimeout(() => {
+ window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
+ }, 1000);
+ }
+
+ // Notification system
+ function showNotification(message, type = 'info') {
+ const notification = document.createElement('div');
+ notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+ type === 'success' ? 'bg-green-500' :
+ type === 'error' ? 'bg-red-500' :
+ 'bg-blue-500'
+ } text-white max-w-sm`;
+ notification.innerHTML = `
+ <div class="flex items-center">
+ <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'} mr-2"></i>
+ <span>${message}</span>
+ </div>
+ `;
+
+ document.body.appendChild(notification);
+
+ setTimeout(() => {
+ notification.remove();
+ }, 3000);
+ }
+ </script>
+ <script src="vevaha-ai-widget.js"></script>
+ <script src="premium-member-actions.js"></script>
+<script src="global-search.js"></script>
+</body>
+
+
+<script src="language.js"></script>
+</body>
+</html>
+

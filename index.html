@@ -1,0 +1,538 @@
+<!-- Test commit -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ec4899"><meta name="msapplication-navbutton-color" content="#ec4899"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>vevahamatrimony - Find Your Perfect Life Partner</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"><link href="style.css" rel="stylesheet"><script src="load-public-navbar.js"></script><!-- Legacy auth removed --></head><body class="bg-gradient-to-br from-pink-50 to-white page-load-animation min-h-screen flex flex-col">
+<!-- Navigation --><nav class="bg-white shadow-lg"><div class="w-full"><div class="flex justify-between items-center h-16"><div class="flex items-center flex-shrink-0"><a class="navbar-brand flex items-center text-xl sm:text-2xl font-bold text-pink-600"><img src="images/vevaha-logo.png" alt="VPS Logo" class="w-10 h-10 mr-2">
+                        vevahamatrimony
+                    </a></div><!-- Desktop Navigation --><div class="hidden md:flex items-center space-x-4" id="navbarContent"><a href="index.html"
+                        class="text-pink-600 font-semibold px-3 py-2 rounded-md border-b-2 border-pink-600"><span>Home</span></a><a href="register.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Register</span></a><a href="membership.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Premium Plans</span></a><a href="login.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Active Members</span></a><a href="horoscopic-chatbot.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Astro AI</span></a><!-- Search Bar --><div class="relative hidden md:block"><input type="text" id="searchInput" placeholder="Search..."
+                            class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-48 transition-all duration-300"
+                            onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()"
+                            onkeypress="handleSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performSearch()"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button><!-- Search Suggestions Dropdown --><div id="searchSuggestions"
+                            class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 search-suggestions hidden"
+                            style="min-width: 300px;"><div class="p-2"><div onmousedown="navigateToPage('advanced-search.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-heart text-pink-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Search your match</span></div><div class="text-sm text-gray-500"><span>Find your perfect life partner</span></div></div></div><div onmousedown="navigateToPage('login.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-users text-blue-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Browse profiles</span></div><div class="text-sm text-gray-500"><span>View active members</span></div></div></div><div onmousedown="navigateToPage('membership.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-crown text-purple-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Premium members</span></div><div class="text-sm text-gray-500"><span>View premium profiles</span></div></div></div><div onmousedown="navigateToPage('settings.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-cog text-gray-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>⚙️ Settings</span></div><div class="text-sm text-gray-500"><span>Customize your experience</span></div></div></div><div onmousedown="navigateToPage('about.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-info-circle text-orange-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>About Us</span></div><div class="text-sm text-gray-500"><span>Learn more about vevahamatrimony</span></div></div></div><div onmousedown="navigateToPage('contact.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-envelope text-green-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Contact us</span></div><div class="text-sm text-gray-500"><span>Get in touch with vevahamatrimony</span></div></div></div></div></div></div><a href="login.html" class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700"><span>Login</span></a></div><!-- Mobile menu button --><div class="md:hidden"><button id="mobile-menu-button" class="text-gray-700 hover:text-pink-600 focus:outline-none"
+                        onclick="toggleMobileMenu()"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div></div></div></nav><!-- Mobile Navigation Menu --><div id="mobile-nav-menu" class="hidden md:hidden bg-white shadow-lg border-t"><div class="px-4 py-2 space-y-2"><a href="index.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Home</span></a><a href="register.html" class="block text-pink-600 font-semibold px-3 py-2 rounded-md"><span
+                   >Register</span></a><a href="membership.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Premium Plans</span></a><a href="login.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Active Members</span></a><a href="horoscopic-chatbot.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Astro AI</span></a><!-- Search Bar (Mobile) --><div class="relative"><input type="text" id="mobileSearchInput" placeholder="Search..."
+                    class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-full transition-all duration-300"
+                    onkeypress="handleMobileSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performMobileSearch()"
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button></div><a href="login.html"
+                class="block bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 text-center"><span
+                   >Login</span></a></div></div><script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle')?.addEventListener('click', function () {
+            const menu = document.getElementById('mobileMenu');
+            menu?.classList.toggle('hidden');
+        });
+
+        // Close menu when link clicked
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', function () {
+                document.getElementById('mobileMenu')?.classList.add('hidden');
+            });
+        });
+    </script><!-- Main Content --><main class="page-load-animation flex-1"><!-- Hero Section --><section class="hero-section relative py-20 slide-in-left overflow-hidden"><!-- Background Image --><div class="absolute inset-0 z-0"><img src="images/hero-section.jpg" alt="Wedding Ceremony" class="w-full h-full object-cover"><!-- Dark overlay for text readability --><div class="absolute inset-0 bg-black bg-opacity-40"></div></div><!-- Content --><div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center"><div class="text-center lg:text-left"><h1 class="text-5xl font-bold text-white mb-6 drop-shadow-lg">Find Your Perfect Life Partner</h1><p class="text-xl text-white mb-8 drop-shadow-md">Join thousands of successful couples who found their soulmate through vevahamatrimony. Traditional values, modern approach.</p><div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"><a href="register.html"
+                                class="bg-pink-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-pink-700 transition duration-300 text-center shadow-lg">Register Free</a><a href="membership.html"
+                                class="border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-pink-600 transition duration-300 text-center shadow-lg">Premium
+                                plans</a></div></div></div></div></section><!-- Our Members Section (Live from DB) --><style>
+#publicProfilesGrid::-webkit-scrollbar { display: none; }
+#publicProfilesGrid .member-card, #publicProfilesGrid .member-skeleton { flex: 0 0 300px; width: 300px; min-width: 300px; }
+.members-scroll-arrow:hover { background: #ec4899 !important; }
+.members-scroll-arrow:hover i { color: white !important; }
+</style><section id="our-members" class="py-20 bg-white relative"><!-- Background decorative blobs --><div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none"><div class="absolute top-10 left-10 w-32 h-32 bg-pink-500 rounded-full blur-3xl"></div><div class="absolute bottom-10 right-10 w-40 h-40 bg-purple-500 rounded-full blur-3xl"></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"><!-- Header --><div class="text-center mb-12"><div
+                        class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl mb-6 shadow-lg"><i class="fas fa-users text-white text-2xl"></i></div><h2 class="text-4xl font-bold text-gray-800 mb-4">Our <span class="text-pink-600">Members</span></span></h2><p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                        Verified profiles from real people looking for their life partner.
+                    </p><div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-pink-600 mx-auto mt-6 rounded-full"></div></div><!-- Cards Scroll Row --><div id="members-scroll-wrapper" class="relative"><button id="scroll-left" onclick="document.getElementById('publicProfilesGrid').scrollBy({left:-320,behavior:'smooth'})" style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);z-index:20;width:44px;height:44px;border-radius:50%;background:white;box-shadow:0 4px 14px rgba(0,0,0,0.15);border:2px solid #f9a8d4;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="fas fa-chevron-left" style="color:#ec4899;font-size:16px;"></i></button><button id="scroll-right" onclick="document.getElementById('publicProfilesGrid').scrollBy({left:320,behavior:'smooth'})" style="position:absolute;right:-16px;top:50%;transform:translateY(-50%);z-index:20;width:44px;height:44px;border-radius:50%;background:white;box-shadow:0 4px 14px rgba(0,0,0,0.15);border:2px solid #f9a8d4;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="fas fa-chevron-right" style="color:#ec4899;font-size:16px;"></i></button><div id="publicProfilesGrid"
+                     style="display:flex;flex-direction:row;gap:24px;overflow-x:auto;overflow-y:visible;scroll-behavior:smooth;padding:20px 8px 28px 8px;scrollbar-width:none;-ms-overflow-style:none;"><!-- Skeleton loaders shown while fetching --><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72"></div><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72"></div><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72"></div><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72"></div><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72 hidden sm:block"></div><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72 hidden md:block"></div><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72 hidden lg:block"></div><div class="member-skeleton animate-pulse bg-gray-100 rounded-2xl h-72 hidden lg:block"></div></div></div><!-- Empty state (hidden by default) --><div id="publicProfilesEmpty" class="hidden text-center py-16"><i class="fas fa-heart text-pink-300 text-5xl mb-4"></i><p class="text-gray-500 text-lg">Be the first to join! Register to create your profile.</p></div><!-- CTA --><div class="text-center mt-12"><a href="register.html"
+                        class="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-pink-700 text-white px-8 py-3 rounded-xl text-lg font-semibold hover:from-pink-700 hover:to-pink-800 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"><i class="fas fa-user-plus"></i>
+                        Register &amp; View All Members
+                    </a></div></div></section><script>
+            (function () {
+                const BACKEND = '';
+
+                const planMeta = {
+                    silver: { label: 'Silver', icon: 'fa-medal', color: 'from-gray-400 to-gray-600' },
+                    gold: { label: 'Gold', icon: 'fa-trophy', color: 'from-yellow-400 to-yellow-600' },
+                    diamond: { label: 'Diamond', icon: 'fa-gem', color: 'from-blue-400 to-blue-600' },
+                    vip: { label: 'VIP', icon: 'fa-crown', color: 'from-purple-500 to-purple-700' },
+                    free: { label: '', icon: '', color: '' }
+                };
+
+                function avatarUrl(name, gender) {
+                    const bg = gender === 'male' ? '0ea5e9' : 'ec4899';
+                    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${bg}&color=fff&size=160`;
+                }
+
+                function formatDetails(p) {
+                    const parts = [];
+                    if (p.age) parts.push(p.age + ' Yrs');
+                    if (p.caste) parts.push(p.caste);
+                    if (p.education) parts.push(p.education);
+                    if (p.job_roles) parts.push(p.job_roles);
+                    if (p.city) parts.push(p.city);
+                    return parts.join(', ') || 'Details hidden';
+                }                function buildCard(p) {
+                    const plan = planMeta[p.plan_name] || planMeta.free;
+                    const imgSrc = p.profile_picture_url || avatarUrl(p.full_name || 'VM', p.gender);
+
+                    const isPhotoLocked = p.hide_photo === true || 
+                                          p.hide_photo === 'true' || 
+                                          p.profile_photo_locked === true || 
+                                          p.profile_photo_locked === 'true';
+
+                    const badgeHtml = plan.label
+                        ? `<div class="absolute -top-2 -left-2 bg-gradient-to-r ${plan.color} text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md z-20 flex items-center gap-1"><i class="fas ${plan.icon} text-[10px]"></i> ${plan.label} Member</div>` : '';
+
+                    return `<div class="member-card bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-visible relative" style="background:#fdfdfc;border-radius:15px;">
+                ${badgeHtml}
+                <!-- Top Right Icons -->
+                <div class="absolute top-3 right-3 flex flex-col gap-2 z-10">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center shadow-md" title="Verified Profile"><i class="fas fa-check text-white text-sm"></i></div>
+                    <button class="shortlist-btn w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center shadow-md hover:bg-pink-600 transition-colors" title="Add to shortlist"><i class="fas fa-bookmark text-white text-sm"></i></button>
+                </div>
+                <!-- Profile Photo Circle -->
+                <div class="flex justify-center pt-6 pb-3">
+                    <div class="relative">
+                        <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-gray-200 bg-gray-100 shadow">
+                            <img src="${imgSrc}" alt="${p.full_name}" class="w-full h-full object-cover" style="${isPhotoLocked ? 'filter: blur(12px) grayscale(50%); pointer-events: none; -webkit-user-drag: none;' : ''}" onerror="this.src='${avatarUrl(p.full_name || 'VM', p.gender)}'">
+                        </div>
+                        ${isPhotoLocked ? `
+                        <div class="absolute bottom-1 right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center border-2 border-gray-300 shadow"><i class="fas fa-lock text-gray-600 text-xs"></i></div>
+                        ` : ''}
+                    </div>
+                </div>
+                <!-- Profile Info -->
+                <div class="px-4 pb-4">
+                    <!-- Name + Contact Icons -->
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-xl font-bold text-gray-900 flex-1 truncate">${p.full_name}</h3>
+                        <div class="flex gap-2 ml-2">
+                            <button class="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center shadow hover:bg-green-600 transition-colors" onclick="showPremiumAction()" title="WhatsApp"><i class="fab fa-whatsapp text-white text-base"></i></button>
+                            <button class="w-9 h-9 rounded-full bg-red-500 flex items-center justify-center shadow hover:bg-red-600 transition-colors" onclick="showPremiumAction()" title="Call"><i class="fas fa-phone text-white text-base"></i></button>
+                        </div>
+                    </div>
+                    <!-- Matrimony ID -->
+                    <p class="text-pink-500 font-semibold text-sm mb-2">${p.member_id}</p>
+                    <!-- Details -->
+                    <p class="text-gray-700 text-sm leading-relaxed mb-3 min-h-[40px]">${formatDetails(p)}</p>
+                    <!-- VIEW MORE -->
+                    <div class="text-right mb-3">
+                        <a href="register.html" class="text-cyan-500 font-semibold text-sm hover:text-cyan-600 transition-colors">VIEW MORE</a>
+                    </div>
+                    <!-- Action Buttons -->
+                     <div style="display:flex;flex-direction:row;gap:10px;">
+                         <button onclick="showPremiumAction()" style="flex:1;padding:10px 6px;border-radius:25px;border:2px solid #ef4444;color:#ef4444;font-weight:600;font-size:13px;background:transparent;cursor:pointer;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">Decline</button>
+                         <button onclick="showPremiumAction()" style="flex:1;padding:10px 6px;border-radius:25px;border:2px solid #22c55e;color:#16a34a;font-weight:600;font-size:13px;background:transparent;cursor:pointer;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='transparent'">Interest</button>
+                     </div>
+                </div>
+            </div>`;
+                }
+
+                async function loadPublicProfiles() {
+                    const grid = document.getElementById('publicProfilesGrid');
+                    const empty = document.getElementById('publicProfilesEmpty');
+                    if (!grid) return;
+
+                    try {
+                        const res = await fetch(`${BACKEND}/api/profile/public?limit=20`);
+                        const json = await res.json();
+                        const profiles = json.profiles || [];
+
+                        // Remove skeletons
+                        grid.querySelectorAll('.member-skeleton').forEach(el => el.remove());
+
+                        if (profiles.length === 0) {
+                            grid.classList.add('hidden');
+                            empty.classList.remove('hidden');
+                            return;
+                        }
+
+                        grid.innerHTML = profiles.map(buildCard).join('');
+                    } catch (err) {
+                        console.warn('Could not load public profiles:', err.message);
+                        // On error just remove skeletons gracefully
+                        grid.querySelectorAll('.member-skeleton').forEach(el => el.remove());
+                        empty.classList.remove('hidden');
+                    }
+                }
+
+                // Run on DOM ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', loadPublicProfiles);
+                } else {
+                    loadPublicProfiles();
+                }
+            })();
+
+                // Scroll arrow buttons + auto-scroll for members row
+                document.addEventListener('DOMContentLoaded', function() {
+                    var grid = document.getElementById('publicProfilesGrid');
+                    var leftBtn = document.getElementById('scroll-left');
+                    var rightBtn = document.getElementById('scroll-right');
+                    var scrollAmt = 324;
+                    if (leftBtn) leftBtn.addEventListener('click', function() { grid.scrollBy({ left: -scrollAmt, behavior: 'smooth' }); });
+                    if (rightBtn) rightBtn.addEventListener('click', function() { grid.scrollBy({ left: scrollAmt, behavior: 'smooth' }); });
+
+                    // Auto-scroll: advance one card every 3 seconds
+                    var autoScrollTimer = null;
+                    var isPaused = false;
+
+                    function startAutoScroll() {
+                        autoScrollTimer = setInterval(function() {
+                            if (isPaused || !grid) return;
+                            var maxScroll = grid.scrollWidth - grid.clientWidth;
+                            if (grid.scrollLeft >= maxScroll - 10) {
+                                // Loop back to start smoothly
+                                grid.scrollTo({ left: 0, behavior: 'smooth' });
+                            } else {
+                                grid.scrollBy({ left: scrollAmt, behavior: 'smooth' });
+                            }
+                        }, 3000);
+                    }
+
+                    // Pause on hover
+                    if (grid) {
+                        grid.addEventListener('mouseenter', function() { isPaused = true; });
+                        grid.addEventListener('mouseleave', function() { isPaused = false; });
+                        grid.addEventListener('touchstart', function() { isPaused = true; }, { passive: true });
+                        grid.addEventListener('touchend', function() { setTimeout(function(){ isPaused = false; }, 2000); }, { passive: true });
+                    }
+
+                    // Start after profiles load (slight delay)
+                    setTimeout(startAutoScroll, 1500);
+                });        </script><!-- Why Choose Vevahamatrimony --><section class="py-20 bg-gradient-to-br from-gray-50 to-white modern-section relative overflow-hidden"><!-- Background decorative elements --><div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none"><div class="absolute top-20 left-20 w-32 h-32 bg-pink-500 rounded-full blur-3xl animate-pulse"></div><div class="absolute bottom-20 right-20 w-40 h-40 bg-purple-500 rounded-full blur-3xl animate-pulse"
+                    style="animation-delay: 1s;"></div></div><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"><div class="text-center mb-20"><h2 class="text-4xl font-bold text-gray-800 mb-6">Why Choose <!-- --><span
+                            style="color: #E91E63;">vevahamatrimony?</span></h2><p class="text-xl text-gray-600 max-w-3xl mx-auto">Discover what makes us different from other
+                        matrimonial platforms</p><div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-pink-600 mx-auto mt-6 rounded-full"></div></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"><!-- Row 1, Col 1: 100% Manually Screened Verified Profiles --><div
+                        class="feature-card group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 p-8 text-center border border-gray-100 relative overflow-hidden"><div
+                            class="absolute inset-0 bg-gradient-to-br from-pink-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><div class="relative z-10"><div
+                                class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-50 rounded-full group-hover:bg-gradient-to-br group-hover:from-pink-200 group-hover:to-pink-100 transition-all duration-300"><img src="images/screened-profiles.png" alt="100% Manually Screened Verified Profiles"
+                                    class="w-16 h-16 object-contain transform group-hover:scale-110 transition-transform duration-300"></div><h4
+                                class="text-xl font-bold text-gray-800 mb-4 group-hover:text-pink-600 transition-colors duration-300">
+                                100% Manually Screened Verified Profiles</h4><p class="text-gray-600 leading-relaxed">Every profile is manually verified by our team to
+                                ensure authenticity and security.</p></div></div><!-- Row 1, Col 2: 100% Verified Government IDs --><div
+                        class="feature-card group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 p-8 text-center border border-gray-100 relative overflow-hidden"><div
+                            class="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><div class="relative z-10"><div
+                                class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-50 rounded-full group-hover:bg-gradient-to-br group-gradient-to-br group-hover:from-blue-200 group-hover:to-blue-100 transition-all duration-300"><img src="images/government-ids.png" alt="100% Verified Government IDs"
+                                    class="w-16 h-16 object-contain transform group-hover:scale-110 transition-transform duration-300"></div><h4
+                                class="text-xl font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors duration-300">
+                                100% Verified Government IDs</h4><p class="text-gray-600 leading-relaxed">All identities are cross-checked and validated
+                                through official government records.</p></div></div><!-- Row 1, Col 3: 100% Control over Privacy --><div
+                        class="feature-card group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 p-8 text-center border border-gray-100 relative overflow-hidden"><div
+                            class="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><div class="relative z-10"><div
+                                class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-green-100 to-green-50 rounded-full group-hover:bg-gradient-to-br group-hover:from-green-200 group-hover:to-green-100 transition-all duration-300"><img src="images/privacy-icon.png" alt="100% Control over Privacy"
+                                    class="w-16 h-16 object-contain transform group-hover:scale-110 transition-transform duration-300"></div><h4
+                                class="text-xl font-bold text-gray-800 mb-4 group-hover:text-green-600 transition-colors duration-300">
+                                100% Control over Privacy</h4><p class="text-gray-600 leading-relaxed">Your personal information is completely secure with
+                                advanced privacy controls.</p></div></div><!-- Row 2, Col 1: Verification by Personal Visit --><div
+                        class="feature-card group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 p-8 text-center border border-gray-100 relative overflow-hidden"><div
+                            class="absolute inset-0 bg-gradient-to-br from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><div class="relative z-10"><div
+                                class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-purple-100 to-purple-50 rounded-full group-hover:bg-gradient-to-br group-hover:from-purple-200 group-hover:to-purple-100 transition-all duration-300"><img src="images/verified-profiles.png" alt="Verification by Personal Visit"
+                                    class="w-16 h-16 object-contain transform group-hover:scale-110 transition-transform duration-300"></div><h4
+                                class="text-xl font-bold text-gray-800 mb-4 group-hover:text-purple-600 transition-colors duration-300">
+                                Verification by Personal Visit</h4><p class="text-gray-600 leading-relaxed">Special listing of profiles verified by our agents
+                                through personal visits.</p></div></div><!-- Row 2, Col 2: Personal Matchmaking --><div
+                        class="feature-card group bg-white rounded-2xl shadow-lg hover:shadow-24xl transition-all duration-500 transform hover:-translate-y-3 p-8 text-center border border-gray-100 relative overflow-hidden"><div
+                            class="absolute inset-0 bg-gradient-to-br from-pink-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><div class="relative z-10"><div
+                                class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-50 rounded-full group-hover:bg-gradient-to-br group-hover:from-pink-200 group-hover:to-pink-100 transition-all duration-300"><img src="images/Personal-Matchmaking.png" alt="Personal Matchmaking"
+                                    class="w-16 h-16 object-contain transform group-hover:scale-110 transition-transform duration-300"></div><h4
+                                class="text-xl font-bold text-gray-800 mb-4 group-hover:text-pink-600 transition-colors duration-300">
+                                Personal Matchmaking</h4><p class="text-gray-600 leading-relaxed">Our expert matchmakers provide personalized
+                                assistance to find your perfect match.</p></div></div><!-- Row 2, Col 3: 24/7 Support --><div
+                        class="feature-card group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 p-8 text-center border border-gray-100 relative overflow-hidden"><div
+                            class="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><div class="relative z-10"><div
+                                class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-50 rounded-full group-hover:bg-gradient-to-br group-hover:from-orange-200 group-hover:to-orange-100 transition-all duration-300"><img src="images/247 Support.png" alt="24/7 Support"
+                                    class="w-16 h-16 object-contain transform group-hover:scale-110 transition-transform duration-300"></div><h4
+                                class="text-xl font-bold text-gray-800 mb-4 group-hover:text-orange-600 transition-colors duration-300">
+                                24/7 Support</h4><p class="text-gray-600 leading-relaxed">Round-the-clock customer support to assist you at
+                                every step of your journey.</p></div></div></div></div></section><!-- Ready to Join Premium Section --><section class="py-12 bg-gradient-to-br from-gray-50 to-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800 mb-4">Ready to <span class="text-pink-600">Join
+                            Premium?</span></h2><p class="text-lg text-gray-600 max-w-3xl mx-auto">Get access to verified profiles and exclusive
+                        features to find your perfect life partner faster</p></div><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Verified Profiles --><div class="text-center p-6"><div
+                            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="fas fa-shield-alt text-white text-2xl"></i></div><h4 class="text-lg font-bold text-gray-800 mb-3">Verified Profiles</h4><p class="text-sm text-gray-600 leading-relaxed">Access to 100% verified and authentic member
+                            profiles</p></div><!-- Priority Features --><div class="text-center p-6"><div
+                            class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="fas fa-bolt text-white text-2xl"></i></div><h4 class="text-lg font-bold text-gray-800 mb-3">Priority Features</h4><p class="text-sm text-gray-600 leading-relaxed">Advanced search, messaging, and profile
+                            highlights</p></div><!-- Dedicated Support --><div class="text-center p-6"><div
+                            class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="fas fa-headset text-white text-2xl"></i></div><h4 class="text-lg font-bold text-gray-800 mb-3">Dedicated Support</h4><p class="text-sm text-gray-600 leading-relaxed">Personal relationship manager and 24/7 premium
+                            support</p></div></div><!-- CTA Section --><div class="text-center mt-10"><div class="bg-white rounded-2xl shadow-lg p-8 max-w-md mx-auto border border-gray-100"><div
+                            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4"><i class="fas fa-crown text-white text-2xl"></i></div><h3 class="text-xl font-bold text-gray-800 mb-2">Start Your Premium Journey</h3><p class="text-gray-600 mb-6 text-sm">Starting from <span
+                                class="font-bold text-pink-600 rupee-symbol">Rs. 999/month</span></p><a href="membership.html"
+                            class="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-pink-700 text-white px-8 py-3 rounded-xl text-lg font-semibold hover:from-pink-700 hover:to-pink-800 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            Upgrade to Premium
+                            <i class="fas fa-arrow-right"></i></a></div></div></div></section><!-- Testimonials Section --><section class="py-20 bg-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center mb-16"><h2 class="text-4xl font-bold text-gray-800 mb-4">Happy <span class="text-pink-600">Stories</span></span></h2><p class="text-xl text-gray-600">Real couples, real love stories</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="bg-pink-50 p-6 rounded-lg"><div class="flex items-center justify-between mb-4"><div><h4 class="font-semibold text-gray-800">Rahul & Anjali</h4><div class="text-yellow-400">★★★★★</div></div><div
+                                class="w-12 h-12 rounded-full overflow-hidden border-2 border-pink-300 shadow-md flex-shrink-0"><img src="images/Rahul&Anjali-dummy.jpg" alt="Rahul & Anjali"
+                                    class="w-full h-full object-cover"></div></div><p class="text-gray-600">"We found each other through VevahaMatrimony and couldn't be happier.
+                            The platform made it so easy to connect with like-minded people."</p></div><div class="bg-pink-50 p-6 rounded-lg"><div class="flex items-center justify-between mb-4"><div><h4 class="font-semibold text-gray-800">Vikram & Priya</h4><div class="text-yellow-400">★★★★★</div></div><div
+                                class="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-300 shadow-md flex-shrink-0"><img src="images/Vikram&Priya-dummy.jpg" alt="Vikram & Priya"
+                                    class="w-full h-full object-cover"></div></div><p class="text-gray-600">"Excellent service and genuine profiles. We got married last year and
+                            are grateful to VevahaMatrimony for bringing us together."</p></div><div class="bg-pink-50 p-6 rounded-lg"><div class="flex items-center justify-between mb-4"><div><h4 class="font-semibold text-gray-800">Arjun & Sunita</h4><div class="text-yellow-400">★★★★★</div></div><div
+                                class="w-12 h-12 rounded-full overflow-hidden border-2 border-green-300 shadow-md flex-shrink-0"><img src="images/Arjun&Sunita-dummy.jpg" alt="Arjun & Sunita"
+                                    class="w-full h-full object-cover"></div></div><p class="text-gray-600">"The best matrimonial site we've used. Professional, secure, and full
+                            of genuine people looking for serious relationships."</p></div></div></div></section></main><!-- CTA Section --><section class="py-16 bg-gradient-to-r from-pink-600 to-pink-700"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h2 class="text-3xl font-bold text-white mb-4"><span>Ready to Find Your Life Partner?</span></h2><p class="text-xl text-pink-100 mb-8"><span>Join VevahaMatrimony with confidence, knowing your safety and privacy are our
+                    priority</span></p><div class="flex justify-center space-x-4"><a href="register.html"
+                    class="bg-white text-pink-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-pink-50 transition duration-300"><span>Start Your Journey</span></a><a href="about.html"
+                    class="border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-pink-600 transition duration-300"><span>About Us</span></a></div></div></section><!-- Footer --><footer class="bg-gray-800 text-white py-12 w-full mt-auto"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"><div class="sm:col-span-2 md:col-span-1"><div class="flex items-center mb-4"><span class="text-xl sm:text-2xl font-bold">vevahamatrimony</span></div><p class="text-gray-400 text-sm sm:text-base leading-relaxed">Connecting hearts, creating families. Your trusted partner in finding true love.</p></div><div><h3 class="text-lg font-semibold mb-4">Quick Links</h3><ul class="space-y-2"><li><a href="about.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">About
+                                Us</a></li><li><a href="membership.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Premium
+                                Plans</a></li><li><a href="contact.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Contact</a></li><li><a href="terms.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Terms &
+                                Conditions</a></li></ul></div><div><h3 class="text-lg font-semibold mb-4">Support</h3><ul class="space-y-2"><li><a href="privacy-policy.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Privacy
+                                Policy</a></li><li><a href="faq.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">FAQ</a></li><li><a href="help-center.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Help
+                                Center</a></li><li><a href="safety-tips.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm:text-base">Safety
+                                Tips</a></li></ul></div><div><h3 class="text-lg font-semibold mb-4">Contact Info</h3><div class="space-y-3 text-gray-400"><div class="flex items-center"><i class="fas fa-phone mr-2 text-pink-400 flex-shrink-0"></i><span class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm:text-base"
+                                onclick="copyToClipboard('+91 9487161672', 'Phone number copied!')"
+                                title="Click to copy">
+                                +91 9487161672
+                            </span></div><div class="flex items-center"><i class="fas fa-envelope mr-2 text-pink-400 flex-shrink-0"></i><a href="mailto:vevahamatrimonydb@gmail.com"
+                                class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm:text-base break-all"
+                                onclick="copyToClipboard('vevahamatrimonydb@gmail.com', 'Email copied!')"
+                                title="Click to copy or send email">
+                                vevahamatrimonydb@gmail.com
+                            </a></div><div class="flex items-center space-x-3 mt-4 pt-2"><span class="text-sm text-gray-400">Follow us:</span><a href="https://www.instagram.com/vevahamatrimony/" target="_blank"
+                                rel="noopener noreferrer"
+                                class="bg-pink-500 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-pink-600 transition duration-300 transform hover:scale-110"><i class="fab fa-instagram text-sm:text-base"></i></a><a href="https://www.youtube.com/@VevahaMatrimony" target="_blank" rel="noopener noreferrer"
+                                class="bg-red-600 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-red-700 transition duration-300 transform hover:scale-110"><i class="fab fa-youtube text-sm:text-base"></i></a></div></div></div></div><div class="border-t border-gray-700 mt-8 pt-6 text-center"><p class="text-xs sm:text-sm text-pink-300" id="copyright-text"></p></div></div></footer><!-- Legacy auth removed --><script src="global-settings.js"></script><script src="watermark-system.js"></script><script src="script.js"></script><!-- Domain AI Service Verification --><!-- Swiper.js Script --><script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script><script>
+        // Initialize Premium Members Swiper
+        document.addEventListener('DOMContentLoaded', function () {
+            const premiumSwiper = new Swiper('.premium-members-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 15,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    bulletActiveClass: 'swiper-pagination-bullet-active',
+                },
+                loop: true,
+                centeredSlides: true,
+                grabCursor: true,
+                touchRatio: 1,
+                touchAngle: 45,
+                preventInteractionOnTransition: true,
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 15,
+                    },
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 25,
+                    },
+                },
+                effect: 'slide',
+                speed: 400,
+                resistance: true,
+                resistanceRatio: 0.85,
+            });
+        });
+    </script><script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-nav-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // Initialize copyright year
+        document.addEventListener('DOMContentLoaded', function () {
+            const year = new Date().getFullYear();
+            const copyrightText = document.getElementById('copyright-text');
+            if (copyrightText) {
+                copyrightText.textContent = `© ${year} vevahamatrimony. All rights reserved.`;
+            }
+        });
+
+        // Copy to clipboard function
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Optionally show a success message
+                const notificationContainer = document.createElement('div');
+                notificationContainer.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg bg-green-500 text-white z-50';
+                notificationContainer.innerHTML = `
+                    <div class="flex items-center"><i class="fas fa-check-circle mr-2"></i><span>${message}</span></div>
+                `;
+                document.body.appendChild(notificationContainer);
+                setTimeout(() => {
+                    notificationContainer.remove();
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                // Optionally show an error message
+            });
+        }
+
+        // Search suggestions functionality
+        function showSearchSuggestions() {
+            const suggestions = document.getElementById('searchSuggestions');
+            if (suggestions) {
+                suggestions.classList.remove('hidden');
+            }
+        }
+
+        function hideSearchSuggestions() {
+            setTimeout(() => {
+                const suggestions = document.getElementById('searchSuggestions');
+                if (suggestions) {
+                    suggestions.classList.add('hidden');
+                }
+            }, 150);
+        }
+
+        function navigateToPage(url) {
+            window.location.href = url;
+        }
+
+        // Handle search key press for desktop search
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
+        // Mobile search functionality
+        function handleMobileSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                performMobileSearch();
+            }
+        }
+
+        function performMobileSearch() {
+            const mobileSearchInput = document.getElementById('mobileSearchInput');
+            if (mobileSearchInput) {
+                const query = mobileSearchInput.value.trim();
+                if (query) {
+                    const mainSearchInput = document.getElementById('searchInput');
+                    if (mainSearchInput) {
+                        mainSearchInput.value = query;
+                        performSearch();
+                    }
+                } else {
+                    showNotification('Please enter a search term', 'error');
+                }
+            }
+        }
+
+        // Enhanced search functionality
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            if (!searchTerm) {
+                showNotification('Please enter a search term', 'error');
+                return;
+            }
+
+            // Navigation mappings
+            const navigationMappings = {
+                'home': 'index.html',
+                'homepage': 'index.html',
+                'register': 'register.html',
+                'signup': 'register.html',
+                'sign up': 'register.html',
+                'membership': 'membership.html',
+                'plans': 'membership.html',
+                'premium': 'membership.html',
+                'pricing': 'membership.html',
+                'contact': 'contact.html',
+                'contact us': 'contact.html',
+                'about': 'about.html',
+                'about us': 'about.html',
+                'faq': 'faq.html',
+                'help': 'faq.html',
+                'login': 'login.html',
+                'signin': 'login.html',
+                'sign in': 'login.html',
+                'find': 'advanced-search.html',
+                'search': 'advanced-search.html',
+                'find match': 'advanced-search.html',
+                'search match': 'advanced-search.html',
+                'matches': 'matches.html',
+                'messages': 'messages.html',
+                'chat': 'messages.html',
+                'dashboard': 'home.html',
+                'profile': 'profile.html',
+                'requests': 'requests.html',
+                'active members': 'active-members.html',
+                'members': 'active-members.html',
+                'privacy': 'privacy-policy.html',
+                'privacy policy': 'privacy-policy.html',
+                'terms': 'terms.html',
+                'terms and conditions': 'terms.html',
+                'safety': 'safety-tips.html',
+                'safety tips': 'safety-tips.html',
+                'settings': 'settings.html'
+            };
+
+            // Check if search term matches any page
+            const targetPage = navigationMappings[searchTerm];
+            if (targetPage) {
+                window.location.href = targetPage;
+                return;
+            }
+
+            // Check for partial matches
+            for (const [key, value] of Object.entries(navigationMappings)) {
+                if (key.includes(searchTerm) || searchTerm.includes(key)) {
+                    showNotification(`Redirecting to ${key}...`, 'info');
+                    setTimeout(() => {
+                        window.location.href = value;
+                    }, 1000);
+                    return;
+                }
+            }
+
+            // Redirect to search results
+            showNotification('Redirecting to search results...', 'info');
+            setTimeout(() => {
+                window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
+            }, 1000);
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${type === 'success' ? 'bg-green-500' :
+                    type === 'error' ? 'bg-red-500' :
+                        'bg-blue-500'
+                } text-white max-w-sm`;
+            notification.innerHTML = `
+                <div class="flex items-center"><i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'} mr-2"></i><span>${message}</span></div>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script><script src="vevaha-ai-widget.js"></script><script src="premium-member-actions.js"></script><script src="global-search.js"></script>
+<script src="language.js"></script>
+</body></html>

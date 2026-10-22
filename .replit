@@ -1,0 +1,492 @@
+entrypoint = "server.js"
+modules = ["nodejs-23", "postgresql-16"]
+
+[nix]
+channel = "stable-24_11"
+packages = ["nodejs_18", "npm-9_x"]
+
+[deployment]
+run = ["sh", "-c", "node server.js"]
+deploymentTarget = "cloudrun"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Serve static"
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+echo \"Serving HTML, open the Preview to see your output.
+To see changes you make, you can hit the refresh button in the preview, you do \u001B[1mnot\u001B[0m have to stop and run again.
+Console logs are available in the Preview devtools or your browser devtools.\" && static-web-server -w ./.config/static-web-server.toml > /dev/null 2>&1
+"""
+waitForPort = 80
+
+[[workflows.workflow]]
+name = "Full Stack Server"
+author = 44029347
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Starting Node.js backend server on port 3000...\" && node server.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Serving HTML, open the Preview to see your output.\" && static-web-server -w ./.config/static-web-server.toml > /dev/null 2>&1"
+
+[[workflows.workflow]]
+name = "OTP Server"
+author = 44029347
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Starting VevahaMatrimony OTP Server on port 3000...\" && node server.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Serving static files...\" && static-web-server -w ./.config/static-web-server.toml > /dev/null 2>&1"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Server"
+author = 44029347
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js && PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Fixed"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony with enhanced debugging...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📋 Environment check:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-env.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔧 Testing database connection:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-db-connection.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📄 Initializing database schema:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting web server:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "Database Setup"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔧 Setting up database connection...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-db-connection.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📄 Initializing database schema...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"✅ Database setup complete!\""
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony Production Server...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting unified server on port 3000...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony Production Server...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔧 Testing database connection...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-db-connection.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📄 Ensuring database schema is ready...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting unified server on port 3000...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production Clean"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony Production Server...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting unified server on port 3000...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production Fixed"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony with OTP fixes...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔍 Validating configuration...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Server"
+
+[[workflows.workflow]]
+name = "Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server.js"
+waitForPort = 5000
+
+[[ports]]
+localPort = 80
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[agent]
+expertMode = true
+entrypoint = "server.js"
+modules = ["nodejs-23", "postgresql-16"]
+
+[nix]
+channel = "stable-24_11"
+packages = ["nodejs_18", "npm-9_x"]
+
+[deployment]
+run = ["sh", "-c", "node server.js"]
+deploymentTarget = "cloudrun"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Serve static"
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+echo \"Serving HTML, open the Preview to see your output.
+To see changes you make, you can hit the refresh button in the preview, you do \u001B[1mnot\u001B[0m have to stop and run again.
+Console logs are available in the Preview devtools or your browser devtools.\" && static-web-server -w ./.config/static-web-server.toml > /dev/null 2>&1
+"""
+waitForPort = 80
+
+[[workflows.workflow]]
+name = "Full Stack Server"
+author = 44029347
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Starting Node.js backend server on port 3000...\" && node server.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Serving HTML, open the Preview to see your output.\" && static-web-server -w ./.config/static-web-server.toml > /dev/null 2>&1"
+
+[[workflows.workflow]]
+name = "OTP Server"
+author = 44029347
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Starting VevahaMatrimony OTP Server on port 3000...\" && node server.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"Serving static files...\" && static-web-server -w ./.config/static-web-server.toml > /dev/null 2>&1"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Server"
+author = 44029347
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js && PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Fixed"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony with enhanced debugging...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📋 Environment check:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-env.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔧 Testing database connection:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-db-connection.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📄 Initializing database schema:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting web server:\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "Database Setup"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔧 Setting up database connection...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-db-connection.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📄 Initializing database schema...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"✅ Database setup complete!\""
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony Production Server...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting unified server on port 3000...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony Production Server...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔧 Testing database connection...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node test-db-connection.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📄 Ensuring database schema is ready...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/init-db.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting unified server on port 3000...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production Clean"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony Production Server...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting unified server on port 3000...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "VevahaMatrimony Production Fixed"
+author = 44029347
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 Starting VevahaMatrimony with OTP fixes...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🔍 Validating configuration...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=3000 node server.js"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Server"
+
+[[workflows.workflow]]
+name = "Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server.js"
+waitForPort = 5000
+
+[[ports]]
+localPort = 80
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[agent]
+expertMode = true

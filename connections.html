@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en"><head><script src="auth-guard.js"></script><meta charset="UTF-8"><link rel="icon" type="image/png" href="/images/vevaha-logo.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Connections - VevahaMatrimony</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link href="style.css" rel="stylesheet"><style>
+        * { font-family: 'Poppins', sans-serif; }
+
+        /* ── Page entry animation ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .page-load-animation { animation: fadeInUp 0.5s ease-out both; }
+
+        /* ── Online pulse ── */
+        @keyframes pulse-green {
+            0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70%  { box-shadow: 0 0 0 7px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .pulse-online { animation: pulse-green 2s infinite; }
+
+        /* ── Connection card ── */
+        .connection-card {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid #fce7f3;
+            box-shadow: 0 2px 12px rgba(219,39,119,0.06);
+            overflow: hidden;
+            transition: box-shadow .25s, transform .25s;
+        }
+        .connection-card:hover {
+            box-shadow: 0 8px 28px rgba(219,39,119,0.13);
+            transform: translateY(-3px);
+        }
+
+        /* ── Avatar ring ── */
+        .avatar-ring {
+            padding: 3px;
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            border-radius: 50%;
+        }
+        .avatar-ring img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 3px solid #fff;
+            display: block;
+        }
+
+        /* ── Action buttons ── */
+        .btn-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 8px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            border: none;
+            outline: none;
+        }
+        .btn-message {
+            background: #fff0f6;
+            color: #db2777;
+            border: 1.5px solid #fbcfe8;
+        }
+        .btn-message:hover { background: #fce7f3; border-color: #f9a8d4; transform: translateY(-1px); }
+
+        .btn-audio {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1.5px solid #bfdbfe;
+        }
+        .btn-audio:hover { background: #dbeafe; border-color: #93c5fd; transform: translateY(-1px); }
+
+        .btn-video {
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(168,85,247,0.25);
+        }
+        .btn-video:hover { opacity: .92; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(168,85,247,0.35); }
+
+        /* ── Badge ── */
+        .status-online  { background:#dcfce7; color:#16a34a; }
+        .status-offline { background:#f3f4f6; color:#6b7280; }
+
+        /* ── Modal overlay ── */
+        #upgradeModal { transition: opacity .3s; }
+        #upgradeModal .modal-box { transition: transform .3s; }
+    
+@media (min-width: 768px) {
+    #appSidebar { transform: translateX(0) !important; top: 4rem; }
+    #sidebarToggle { display: none !important; }
+}
+</style>
+<style id="vm-sidebar-css">
+* { font-family: 'Poppins', sans-serif; }
+body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%); background-attachment: fixed; }
+.sidebar-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; border-radius: 0.75rem;
+    color: #475569; font-weight: 500; text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden;
+}
+.sidebar-link::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    height: 100%; width: 3px;
+    background: linear-gradient(180deg, #ec4899, #db2777);
+    transform: scaleY(0); transition: transform 0.3s;
+}
+.sidebar-link:hover::before, .sidebar-link.active::before { transform: scaleY(1); }
+.sidebar-link i { color: inherit; transition: transform 0.3s; }
+.sidebar-link:hover { background: linear-gradient(90deg, #fdf2f8 0%, transparent 100%); color: #db2777; transform: translateX(5px); }
+.sidebar-link:hover i { transform: scale(1.2); }
+.sidebar-link.active { background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%); color: #db2777; font-weight: 600; box-shadow: 0 4px 15px rgba(236,72,153,0.1); }
+</style>
+</head><body class="min-h-screen" data-active-nav="connections">
+
+
+<nav class="bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <button id="sidebarToggle" class="md:hidden text-gray-600 hover:text-pink-600 focus:outline-none" aria-label="Open navigation">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <a href="home.html" class="flex items-center text-xl font-semibold text-pink-600">
+                <img src="images/vevaha-logo.png" alt="Vevaha" class="w-10 h-10 mr-2">VevahaMatrimony
+            </a>
+        </div>
+        <div class="relative hidden md:block">
+            <input type="text" id="searchInput" placeholder="Search..."
+                class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-64 transition-all duration-300"
+                onfocus="if(window.showSearchSuggestions)showSearchSuggestions();"
+                onblur="if(window.hideSearchSuggestions)hideSearchSuggestions();"
+                onkeypress="if(window.handleSearchKeyPress)handleSearchKeyPress(event);">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <button onclick="if(window.performSearch)performSearch();" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200">
+                <span class="text-xs font-semibold" id="onlineStatusBadge">Online</span>
+                <button id="onlineToggleBtn" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    style="background-color: #22c55e;" onclick="if(window.handleOnlineToggleClick)handleOnlineToggleClick();">
+                    <span id="toggleSlider" class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm" style="margin-left: 0.125rem;"></span>
+                </button>
+            </div>
+            <div class="relative">
+                <button id="userMenuButton" class="flex items-center space-x-3 px-3 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white flex items-center justify-center font-bold" id="userInitials">VM</div>
+                    <div class="text-left hidden sm:block">
+                        <p id="navUserName" class="text-sm font-semibold text-gray-900">Member</p>
+                        <p class="text-xs text-gray-500" id="navPlanLabel">Free plan</p>
+                    </div>
+                    <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                </button>
+                <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                    <a href="profile.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-id-badge mr-3 text-pink-500"></i> Profile
+                    </a>
+                    <a href="settings.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-sliders mr-3 text-pink-500"></i> Settings
+                    </a>
+                    <button onclick="if(window.handleLogout)handleLogout();" class="w-full text-left flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50">
+                        <i class="fas fa-arrow-right-from-bracket mr-3 text-pink-500"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="relative flex">
+<aside id="appSidebar" class="fixed top-0 md:top-16 left-0 bottom-0 w-60 bg-white border-r border-gray-100 z-40 shadow-lg md:shadow-none" style="transform: translateX(-100%); transition: transform 0.3s; --tw-md: 768px;">
+    <div class="flex items-center justify-between px-4 py-4 border-b border-gray-100 md:hidden">
+        <span class="text-sm font-semibold text-gray-700">Navigation</span>
+        <button id="sidebarClose" class="text-gray-500 hover:text-pink-600" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="px-4 py-6 space-y-1 overflow-y-auto h-full">
+        <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="active-members-dash.html" class="sidebar-link"><i class="fas fa-users"></i><span>Active Members</span></a>
+        <a href="messages.html" class="sidebar-link"><i class="fas fa-comments"></i><span>Messages</span></a>
+        <a href="interested-profiles.html" class="sidebar-link"><i class="fas fa-star"></i><span>Interested</span></a>
+        <a href="requests.html" class="sidebar-link"><i class="fas fa-handshake"></i><span>Requests</span></a>
+        <a href="horoscopic-chatbot.html" class="sidebar-link"><i class="fas fa-moon"></i><span>Astro AI</span></a>
+        <a href="connections.html" class="sidebar-link active"><i class="fas fa-user-friends"></i><span>My Connections</span></a>
+        <a href="account-settings.html" class="sidebar-link"><i class="fas fa-user-edit"></i><span>Edit Profile</span></a>
+        <a href="settings.html" class="sidebar-link"><i class="fas fa-user-cog"></i><span>Settings</span></a>
+        <a href="billing.html" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Billing</span></a>
+    </div>
+</aside>
+<div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden md:hidden"></div>
+<main class="flex-1 md:ml-60 px-4 sm:px-6 lg:px-8 py-8 pt-24 min-h-screen"><div class="page-load-animation max-w-5xl mx-auto py-4"><!-- ── Page Header ── --><div class="mb-8 rounded-2xl overflow-hidden relative"
+                 style="background: linear-gradient(135deg,#fff 60%,#fdf2f8); border:1px solid #fce7f3; box-shadow:0 2px 12px rgba(219,39,119,0.07);"><div class="absolute right-0 top-0 w-56 h-56 rounded-full opacity-20 blur-3xl"
+                     style="background:radial-gradient(circle,#f9a8d4,transparent); pointer-events:none;"></div><div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6"><div><h1 class="text-2xl sm:text-3xl font-bold text-gray-800 flex items-center gap-3 mb-1"><span class="w-11 h-11 rounded-xl flex items-center justify-center"
+                                  style="background:linear-gradient(135deg,#ec4899,#a855f7);"><i class="fas fa-user-friends text-white text-lg"></i></span>
+                            My Connections
+                        </h1><p class="text-gray-500 text-sm ml-14">Members who mutually accepted your interest</p></div><div id="countBadge"
+                         class="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm"
+                         style="background:#fdf2f8; color:#be185d; border:1.5px solid #fbcfe8;"><i class="fas fa-link"></i><span id="connectionsCount">0</span> Connections
+                    </div></div></div><!-- ── Loading ── --><div id="loadingState" class="flex flex-col items-center justify-center py-24 gap-4"><div class="w-16 h-16 rounded-full border-4 border-pink-200 border-t-pink-500 animate-spin"></div><p class="text-gray-400 font-medium text-sm animate-pulse">Loading your connections…</p></div><!-- ── Empty State ── --><div id="emptyState" class="hidden text-center py-20"><div class="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-6"
+                     style="background:linear-gradient(135deg,#fce7f3,#f3e8ff);"><i class="fas fa-users text-5xl" style="color:#e879a0;"></i></div><h3 class="text-2xl font-bold text-gray-800 mb-2">No connections yet</h3><p class="text-gray-500 text-sm max-w-sm mx-auto mb-8">Send interests from the Matches page to start building your connections!</p><a href="matches.html"
+                   class="inline-flex items-center gap-2 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 transform"
+                   style="background:linear-gradient(135deg,#ec4899,#a855f7);"><i class="fas fa-search"></i> Find Matches
+                </a></div><!-- ── Connections Grid ── --><!--
+                Uses a single-column list on mobile, 2-col on md screens.
+                max-w-5xl + proper padding ensures cards never overflow.
+            --><div id="connectionsGrid" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6"><!-- Cards injected by connections.js --></div></div><!-- ════════════════ UPGRADE MODAL ════════════════ --><div id="upgradeModal"
+         class="fixed inset-0 z-50 hidden items-center justify-center p-4"
+         style="background:rgba(17,24,39,0.6); backdrop-filter:blur(4px); opacity:0;"><div class="modal-box bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl relative overflow-hidden"
+             style="transform:scale(.95);"><!-- Decorative blobs --><div class="absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-20 blur-2xl pointer-events-none"
+                 style="background:linear-gradient(135deg,#c084fc,#ec4899);"></div><div class="absolute -bottom-16 -left-16 w-40 h-40 rounded-full opacity-20 blur-2xl pointer-events-none"
+                 style="background:linear-gradient(135deg,#ec4899,#fb923c);"></div><div class="relative z-10 text-center"><div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-5 -rotate-6"
+                     style="background:linear-gradient(135deg,#fce7f3,#f3e8ff);"><i class="fas fa-crown text-4xl" style="color:#a855f7;"></i></div><h3 class="text-xl font-bold text-gray-800 mb-2">Premium Feature</h3><p id="upgradeModalMessage" class="text-gray-500 text-sm mb-7 leading-relaxed">
+                    This feature is reserved for premium members. Upgrade your plan to connect instantly!
+                </p><div class="flex flex-col gap-3"><a href="membership.html"
+                       class="block w-full text-white font-semibold py-3.5 rounded-xl text-center transition-all hover:opacity-90"
+                       style="background:linear-gradient(135deg,#ec4899,#a855f7);">
+                        View Premium Plans
+                    </a><button onclick="closeUpgradeModal()"
+                            class="w-full bg-gray-100 text-gray-600 font-medium py-3.5 rounded-xl hover:bg-gray-200 transition-colors">
+                        Maybe Later
+                    </button></div></div></div></div><!-- Scripts --><script src="global-settings.js"></script><script src="incoming-call-listener.js"></script><script src="navbar-init.js"></script>
+<script src="language.js"></script>
+</main>
+</div>
+
+
+<script src="api-client.js?v=2"></script>
+<script src="full-profile-modal.js"></script>
+<script src="vevaha-ai-widget.js"></script>
+<script src="mobile-bottom-nav.js"></script>
+<script src="connections.js"></script>
+</body></html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/images/vevaha-logo.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Login - vevahamatrimony</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"><link href="style.css" rel="stylesheet"><!-- Supabase JS (v2) and config must load before auth guard --><script src="load-public-navbar.js"></script><!-- Legacy auth removed --><style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .page-load-animation {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style></head><body class="bg-gradient-to-br from-pink-50 to-white min-h-screen page-load-animation">
+<!-- Navigation --><nav class="bg-white shadow-lg"><div class="w-full"><div class="flex justify-between items-center h-16"><div class="flex items-center flex-shrink-0"><a href="index.html"
+                        class="navbar-brand flex items-center text-xl sm:text-2xl font-bold text-pink-600"><img src="images/vevaha-logo.png" alt="VPS Logo" class="w-10 h-10 mr-2">
+                        vevahamatrimony
+                    </a></div><!-- Desktop Navigation --><div class="hidden md:flex items-center space-x-4" id="navbarContent"><a href="index.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Home</span></a><a href="register.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Register</span></a><a href="membership.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Premium Plans</span></a><a href="login.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Active Members</span></a><a href="horoscopic-chatbot.html" class="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span>Astro AI</span></a><!-- Search Bar --><div class="relative hidden md:block"><input type="text" id="searchInput" placeholder="Search..."
+                            class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-48 transition-all duration-300"
+                            onfocus="showSearchSuggestions()" onblur="hideSearchSuggestions()"
+                            onkeypress="handleSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performSearch()"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button><!-- Search Suggestions Dropdown --><div id="searchSuggestions"
+                            class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 search-suggestions hidden"
+                            style="min-width: 300px;"><div class="p-2"><div onmousedown="navigateToPage('advanced-search.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-heart text-pink-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Search your match</span></div><div class="text-sm text-gray-500"><span>Find your perfect life partner</span></div></div></div><div onmousedown="navigateToPage('login.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-users text-blue-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Browse profiles</span></div><div class="text-sm text-gray-500"><span>View active members</span></div></div></div><div onmousedown="navigateToPage('membership.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-crown text-purple-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Premium members</span></div><div class="text-sm text-gray-500"><span>View premium profiles</span></div></div></div><div onmousedown="navigateToPage('settings.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-cog text-gray-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>⚙️ Settings</span></div><div class="text-sm text-gray-500"><span>Customize your experience</span></div></div></div><div onmousedown="navigateToPage('about.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-info-circle text-orange-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>About us</span></div><div class="text-sm text-gray-500"><span>Learn more about vevahamatrimony</span></div></div></div><div onmousedown="navigateToPage('contact.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-envelope text-green-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Contact us</span></div><div class="text-sm text-gray-500"><span>Get in touch with vevahamatrimony</span></div></div></div></div></div></div><a href="login.html" class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700"><span>Login</span></a></div><!-- Mobile menu button --><div class="md:hidden"><button id="mobile-menu-button" class="text-gray-700 hover:text-pink-600 focus:outline-none"
+                        onclick="toggleMobileMenu()"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div></div></div></nav><!-- Mobile Navigation Menu --><div id="mobile-nav-menu" class="hidden md:hidden bg-white shadow-lg border-t"><div class="px-4 py-2 space-y-2"><a href="index.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Home</span></a><a href="register.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Register</span></a><a href="membership.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Premium Plans</span></a><a href="login.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Active Members</span></a><a href="horoscopic-chatbot.html" class="block text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md"><span
+                   >Astro AI</span></a><!-- Search Bar (Mobile) --><div class="relative"><input type="text" id="mobileSearchInput" placeholder="Search..."
+                    class="bg-gray-100 text-gray-700 rounded-full px-4 py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white w-full transition-all duration-300"
+                    onkeypress="handleMobileSearchKeyPress(event)"><i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><button onclick="performMobileSearch()"
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-pink-600"><i class="fas fa-arrow-right"></i></button></div><a href="login.html"
+                class="block bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 text-center"><span
+                   >Login</span></a></div></div><!-- Header Section --><section class="bg-gradient-to-r from-pink-100 to-pink-200 py-16"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h1 class="text-4xl font-bold text-gray-800 mb-4"><span><span class="lang-en">Welcome Back!</span><span class="lang-ta hidden">மணடம வரவறகறம!</span></span></h1><p class="text-xl text-gray-600"><span><span class="lang-en">Sign in to continue your matrimonial journey</span><span class="lang-ta hidden">உஙகள தரமண பயணதத தடர உளநழயஙகள</span></span></p></div></section><div class="flex items-center justify-center py-6 lg:py-12 px-4 sm:px-6 lg:px-8"><div class="max-w-md w-full space-y-8"><div><div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-pink-100"><i class="fas fa-user text-pink-600 text-xl"></i></div><h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    <span class="lang-en">Sign in to your account</span><span class="lang-ta hidden">உஙகள கணககல உளநழக</span>
+                </h2><p class="mt-2 text-center text-sm text-gray-600">
+                    <span class="lang-en">Welcome back to vevahamatrimony</span><span class="lang-ta hidden">வேவஹா மேட்ரிமோனியில் மீண்டும் வரவேற்கிறோம்</span>
+                </p></div><form class="mt-8 space-y-6" id="loginForm"><input type="hidden" name="remember" value="true"><div class="rounded-md shadow-sm -space-y-px"><div><label for="email-address" class="sr-only">Email address</label><input id="email-address" name="email" type="email" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
+                            placeholder="Email address"></div><div class="relative"><label for="password" class="sr-only">Password</label><input id="password" name="password" type="password" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 pr-12 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
+                            placeholder="Password"><button type="button" id="togglePassword"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-pink-600 focus:outline-none cursor-pointer p-1 z-20"
+                            onclick="togglePasswordVisibility('password', 'passwordIcon')"><i class="fas fa-eye" id="passwordIcon"></i></button></div></div><div class="flex items-center justify-between"><div class="flex items-center"><input id="remember-me" name="remember-me" type="checkbox"
+                            class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"><label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                            Remember me
+                        </label></div><div class="text-sm"><a href="forgot-password.html" class="font-medium text-pink-600 hover:text-pink-500">
+                            <span class="lang-en">Forgot your password?</span><span class="lang-ta hidden">கடவுச்சொல் மறந்துவிட்டதா?</span>
+                        </a></div></div><div><button type="submit" id="loginBtn"
+                        class="w-full bg-pink-600 text-white py-3 px-4 rounded-lg hover:bg-pink-700 transition duration-200 font-medium"><span class="lang-en">Login</span><span class="lang-ta hidden">உள்நுழை</span></button></div><div class="text-center"><p class="text-sm text-gray-600">
+                        <span class="lang-en">New to vevahamatrimony?</span><span class="lang-ta hidden">வேவஹாவில் புதியவரா?</span>
+                        <a href="register.html" class="font-medium text-pink-600 hover:text-pink-500">
+                            Register here
+                        </a></p></div></form></div></div><!-- Footer --><footer class="bg-gray-800 text-white py-12 w-full mt-auto"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"><div class="sm:col-span-2 md:col-span-1"><div class="flex items-center mb-4"><span class="text-xl sm:text-2xl font-bold">vevahamatrimony</span></div><p class="text-gray-400 text-sm sm:text-base leading-relaxed">Connecting hearts, creating families.
+                        Your trusted partner in finding true love.</p></div><div><h3 class="text-lg font-semibold mb-4">Quick Links</h3><ul class="space-y-2"><li><a href="about.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">About
+                                Us</a></li><li><a href="membership.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">Premium
+                                Plans</a></li><li><a href="contact.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">Contact</a></li><li><a href="terms.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">Terms
+                                & Conditions</a></li></ul></div><div><h3 class="text-lg font-semibold mb-4">Support</h3><ul class="space-y-2"><li><a href="privacy-policy.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">Privacy
+                                Policy</a></li><li><a href="faq.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">FAQ</a></li><li><a href="help-center.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">Help
+                                Center</a></li><li><a href="safety-tips.html"
+                                class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">Safety
+                                Tips</a></li></ul></div><div><h3 class="text-lg font-semibold mb-4">Contact Info</h3><div class="space-y-3 text-gray-400"><div class="flex items-center"><i class="fas fa-phone mr-2 text-pink-400 flex-shrink-0"></i><span
+                                class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm sm:text-base"
+                                onclick="copyToClipboard('+91 9487161672', 'Phone number copied!')"
+                                title="Click to copy">
+                                +91 9487161672
+                            </span></div><div class="flex items-center"><i class="fas fa-envelope mr-2 text-pink-400 flex-shrink-0"></i><a href="mailto:vevahamatrimonydb@gmail.com"
+                                class="cursor-pointer hover:text-pink-300 transition duration-300 text-sm sm:text-base break-all"
+                                onclick="copyToClipboard('vevahamatrimonydb@gmail.com', 'Email copied!')"
+                                title="Click to copy or send email">
+                                vevahamatrimonydb@gmail.com
+                            </a></div><div class="flex items-center space-x-3 mt-4 pt-2"><span class="text-sm text-gray-400">Follow us:</span><a href="https://www.instagram.com/vevahamatrimony/" target="_blank"
+                                rel="noopener noreferrer"
+                                class="bg-pink-500 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-pink-600 transition duration-300 transform hover:scale-110"><i class="fab fa-instagram text-sm sm:text-base"></i></a><a href="https://www.youtube.com/@VevahaMatrimony" target="_blank" rel="noopener noreferrer"
+                                class="bg-red-600 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-red-700 transition duration-300 transform hover:scale-110"><i class="fab fa-youtube text-sm sm:text-base"></i></a></div></div></div></div><div class="border-t border-gray-700 mt-8 pt-6 text-center"><p class="text-xs sm:text-sm text-pink-300" id="copyright-text"></p></div></div></footer><!-- Google Sign-In Library --><script src="https://accounts.google.com/gsi/client" async defer></script><!-- Supabase disabled for local run --><!--  --><!--  --><script src="mobile-menu.js"></script><script src="api-client.js"></script><script>
+        // -- VevahaMatrimony Login © connected to Node.js backend ----------
+        document.addEventListener('DOMContentLoaded', function () {
+            // If redirected back with pending payment message
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('pending_payment') === 'true') {
+                setTimeout(() => {
+                    if (window.VM && window.VM.toast) {
+                        window.VM.toast('Registration complete but membership payment is pending. Please login to complete payment.', 'warning');
+                    } else {
+                        alert('Registration complete but membership payment is pending. Please login to complete payment.');
+                    }
+                }, 1000);
+            }
+
+            // If already logged in, go to dashboard
+            if (window.VMAuth && window.VMAuth.isLoggedIn()) {
+                window.location.href = 'home.html';
+                return;
+            }
+
+            window.togglePasswordVisibility = function (fieldId, iconId) {
+                var input = document.getElementById(fieldId || 'password');
+                var icon = document.getElementById(iconId || 'passwordIcon');
+                if (input) {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        if (icon) {
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        }
+                    } else {
+                        input.type = 'password';
+                        if (icon) {
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        }
+                    }
+                }
+            };
+
+            // -- Email / Password login -------------------------------------
+            var form = document.getElementById('loginForm');
+            var loginBtn = document.getElementById('loginBtn');
+
+            if (form) {
+                form.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    var email = (document.getElementById('email-address') || document.querySelector('[name="email"]'))?.value?.trim();
+                    var password = document.getElementById('password')?.value;
+
+                    if (!email || !password) {
+                        VM.toast('Please enter email and password', 'error');
+                        return;
+                    }
+
+                    VM.setLoading(loginBtn, true, 'Login');
+                    try {
+                        var data = await VM.auth.login(email, password);
+                        VMAuth.save(data);
+                        VM.toast('Welcome back, ' + (data.user?.full_name || 'Member') + '!', 'success');
+                        setTimeout(() => window.location.href = 'home.html', 800);
+                    } catch (err) {
+                        VM.toast(err.message || 'Login failed. Check your credentials.', 'error');
+                        VM.setLoading(loginBtn, false, 'Login');
+                    }
+                });
+            }
+
+            // -- Google Sign-In callback ------------------------------------
+            // Supabase handles OAuth redirect © after redirect back, sync profile
+            window.handleGoogleLogin = async function () {
+                try {
+                    var res = await fetch(window.VMAPI_BASE + '/api/auth/google-url');
+                    var data = await res.json();
+                    if (data.url) window.location.href = data.url;
+                } catch (err) {
+                    VM.toast('Google login unavailable. Try email login.', 'error');
+                }
+            };
+
+            // If redirected back from Google OAuth (?code= in URL), sync profile
+            if (window.location.hash.includes('access_token=') || new URLSearchParams(window.location.search).get('code')) {
+                // Supabase puts the access token in the hash fragment after OAuth
+                // The Supabase client on the frontend handles this automatically
+                // We call sync-google to ensure profile exists
+                var hashParams = new URLSearchParams(window.location.hash.substring(1));
+                var accessToken = hashParams.get('access_token');
+                if (accessToken) {
+                    localStorage.setItem('vm_token', accessToken);
+                    localStorage.setItem('vm_refresh', hashParams.get('refresh_token') || '');
+                    VM.auth.syncGoogle().then(function (syncData) {
+                        if (syncData.user) {
+                            localStorage.setItem('userData', JSON.stringify({
+                                ...syncData.user,
+                                access_token: accessToken
+                            }));
+                        }
+                        window.location.href = syncData.isNewUser ? 'account-settings.html' : 'home.html';
+                    }).catch(() => window.location.href = 'home.html');
+                }
+            }
+        });
+    </script><script src="mobile-optimization.js"></script><script src="script.js"></script><script src="vevaha-ai-widget.js"></script><script src="global-search.js"></script><script src="language.js"></script>
+</body></html>
