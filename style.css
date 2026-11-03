@@ -2939,3 +2939,163 @@ ol li {
 @media (max-width: 767px) {
     .mobile-bottom-nav { display: flex !important; }
 }
+
+/* --- Base: prevent horizontal scroll & safe touch targets --- */
+@media (max-width: 767px) {
+    html, body { overflow-x: hidden !important; max-width: 100vw !important; }
+    button, a[href], [role="button"], .ctrl-btn, .btn-end {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        -webkit-tap-highlight-color: transparent;
+    }
+    img, video { max-width: 100% !important; height: auto !important; display: block; }
+    section, .container, .max-w-7xl, .mx-auto { padding-left: 1rem !important; padding-right: 1rem !important; }
+    .text-5xl, .text-4xl, .text-3xl, .text-2xl { line-height: 1.25 !important; }
+}
+
+/* --- Stack multi-column grids & flex rows into single column --- */
+@media (max-width: 767px) {
+    .grid.grid-cols-2,
+    .grid.grid-cols-3,
+    .grid.grid-cols-4,
+    .grid-cols-2, .grid-cols-3, .grid-cols-4 {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    .flex.flex-row, .flex.flex-row-wrap,
+    .sm\\:flex-row, .md\\:flex-row, .lg\\:flex-row {
+        flex-direction: column !important;
+    }
+    .gap-8, .gap-6, .gap-4 { gap: 1rem !important; }
+}
+
+/* --- Dashboard (logged-in): sidebar overlay + full-width main --- */
+@media (max-width: 767px) {
+    main.md\\:ml-60,
+    div.md\\:ml-60,
+    .flex-1.md\\:ml-60,
+    [class*="md:ml-60"] { margin-left: 0 !important; margin-right: 0 !important; }
+    main { padding-bottom: 78px !important; }
+    #appSidebar { top: 0 !important; z-index: 60 !important; width: 280px !important; }
+    #sidebarBackdrop { z-index: 55 !important; }
+    .field-group, .form-section, .profile-card, .stat-card, .checklist-item {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* --- Cards: full width on mobile --- */
+@media (max-width: 767px) {
+    .member-card, .profile-card, .stat-card, .activity-card, .match-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+    .member-card, .profile-card { margin-left: 0 !important; margin-right: 0 !important; }
+}
+
+/* --- Forms: full width, 16px font (stops iOS zoom), stacked --- */
+@media (max-width: 767px) {
+    input, select, textarea {
+        width: 100% !important;
+        font-size: 16px !important;
+        padding: 0.75rem !important;
+        box-sizing: border-box !important;
+    }
+    .form-input, input.form-input, select.form-input, textarea.form-input {
+        font-size: 16px !important;
+        width: 100% !important;
+    }
+    form, .form-wrapper, .settings-form, .profile-form {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 1rem !important;
+    }
+    .field-row, .flex.fields, .grid.form-grid {
+        flex-direction: column !important;
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+    }
+    button[type="submit"], .btn-submit, .btn-save, .btn-update {
+        width: 100% !important;
+        min-height: 48px !important;
+        font-size: 1rem !important;
+    }
+}
+
+/* --- Buttons: full width & touch-friendly on mobile --- */
+@media (max-width: 767px) {
+    button.w-full, a.w-full { width: 100% !important; display: block !important; text-align: center !important; }
+    button, a[href].bg-pink-600, a[href].bg-pink-500, .btn-primary {
+        min-height: 46px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1rem !important;
+    }
+}
+
+/* --- Modals & overlays: friendly on mobile --- */
+@media (max-width: 767px) {
+    .modal, .modal-content, .fixed.inset-0,
+    [id*="Modal"] > div, [id*="-modal"] > div, [role="dialog"] > div {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        max-height: 92vh !important;
+        margin: auto !important;
+        border-radius: 1rem !important;
+        overflow-y: auto !important;
+        padding: 1rem !important;
+        box-sizing: border-box !important;
+    }
+    .fixed.inset-0, .bg-black\\/60, .bg-gray-900\\/80 {
+        padding: 1rem !important;
+    }
+}
+
+/* --- Tables: horizontal scroll on mobile --- */
+@media (max-width: 767px) {
+    table { display: block !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+    th, td { white-space: nowrap !important; }
+}
+
+/* --- Remove sticky hover transforms on mobile --- */
+@media (max-width: 767px) {
+    .profile-card:hover, .stat-card:hover, .member-card:hover,
+    .sidebar-link:hover, .checklist-item:hover, .activity-item:hover,
+    .card:hover { transform: none !important; }
+}
+
+/* --- Video / Audio call pages: mobile-friendly --- */
+@media (max-width: 767px) {
+    #localVideoWrap {
+        top: auto !important;
+        bottom: 10px !important;
+        left: 10px !important;
+        right: auto !important;
+        width: 90px !important;
+        height: 120px !important;
+        z-index: 35 !important;
+    }
+    #topBar { padding: 10px 12px !important; }
+    #bottomBar { padding: 14px 12px 34px !important; gap: 10px !important; }
+    .ctrl-btn { width: 50px !important; height: 50px !important; font-size: 18px !important; }
+    .btn-end { width: 60px !important; height: 60px !important; font-size: 22px !important; }
+    #remoteVideo { object-fit: cover !important; }
+    #waitingOverlay .w-32, #waitingOverlay .h-32 { width: 80px !important; height: 80px !important; }
+    #waitName { font-size: 1.5rem !important; }
+    .blob1 { width: 300px !important; height: 300px !important; }
+    .blob2 { width: 240px !important; height: 240px !important; }
+    #waitTimer { font-size: 1.5rem !important; }
+}
+
+/* --- Extra small phones (<= 480px) --- */
+@media (max-width: 480px) {
+    html { font-size: 14px; }
+    .text-4xl { font-size: 1.6rem !important; }
+    .text-3xl { font-size: 1.4rem !important; }
+    .navbar-brand { font-size: 1rem !important; }
+    #localVideoWrap { width: 75px !important; height: 100px !important; }
+    .ctrl-btn { width: 44px !important; height: 44px !important; font-size: 16px !important; }
+    .btn-end { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+    button[type="submit"], .btn-submit, .btn-save, .btn-update { min-height: 44px !important; }
+    table { font-size: 13px !important; }
+}
