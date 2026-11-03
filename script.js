@@ -909,7 +909,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Cookie consent (GDPR compliance)
     if (!localStorage.getItem('cookieConsent')) {
         const cookieBanner = document.createElement('div');
-        cookieBanner.className = 'fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 z-50';
+        cookieBanner.id = 'cookieConsentBanner';
+cookieBanner.className = 'fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 z-50';
         cookieBanner.innerHTML = `
             <div class="max-w-7xl mx-auto flex items-center justify-between">
                 <p class="text-sm">We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>

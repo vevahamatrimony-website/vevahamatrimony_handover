@@ -221,46 +221,64 @@
         const close    = document.getElementById('vm_sidebarClose');
         const menu     = document.getElementById('userMenu');
         const menuBtn  = document.getElementById('userMenuButton');
+        const mobileQuery = window.matchMedia('(max-width: 767px)');
 
-        function isMd() { return window.innerWidth >= 768; }
-
-        function updateLayout() {
+        function isMobile() { return mobileQuery.matches; }
+        function setOpen(open) {
             if (!sidebar) return;
-            if (isMd()) {
-                sidebar.style.transform = 'translateX(0)';
-                if (backdrop) backdrop.style.display = 'none';
-            } else {
-                sidebar.style.transform = 'translateX(-100%)';
+            const shouldOpen = Boolean(open) && isMobile();
+            sidebar.style.transform = shouldOpen ? 'translateX(0)' : (isMobile() ? 'translateX(-100%)' : 'translateX(0)');
+            sidebar.setAttribute('aria-hidden', isMobile() && !shouldOpen ? 'true' : 'false');
+            if (toggle) toggle.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+            if (backdrop) {
+                backdrop.style.display = shouldOpen ? 'block' : 'none';
+                backdrop.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
             }
+            document.body.classList.toggle('vm-sidebar-open', shouldOpen);
         }
+        function openSidebar() { setOpen(true); }
+        function closeSidebar() { setOpen(false); }
 
-        function openSidebar() {
-            if (!sidebar) return;
-            sidebar.style.transform = 'translateX(0)';
-            if (backdrop) backdrop.style.display = 'block';
+        if (toggle) {
+            toggle.style.display = '';
+            toggle.setAttribute('aria-controls', 'vm_appSidebar');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                setOpen(isMobile() ? sidebar?.getAttribute('aria-hidden') !== 'false' : true);
+            });
         }
-
-        function closeSidebar() {
-            if (isMd()) return;
-            if (sidebar) sidebar.style.transform = 'translateX(-100%)';
-            if (backdrop) backdrop.style.display = 'none';
-        }
-
-        if (toggle) toggle.addEventListener('click', openSidebar);
-        if (close)  close.addEventListener('click',  closeSidebar);
+        if (close) close.addEventListener('click', closeSidebar);
         if (backdrop) backdrop.addEventListener('click', closeSidebar);
 
-        // User menu toggle
+        if (sidebar) {
+            sidebar.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                if (isMobile()) closeSidebar();
+            }));
+        }
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                closeSidebar();
+                if (menu) menu.style.display = 'none';
+            }
+        });
+
         if (menuBtn && menu) {
-            menuBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
+            menuBtn.addEventListener('click', function (event) {
+                event.stopPropagation();
                 menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
             });
-            document.addEventListener('click', function () { menu.style.display = 'none'; });
+            document.addEventListener('click', function (event) {
+                if (!menu.contains(event.target) && !menuBtn.contains(event.target)) menu.style.display = 'none';
+            });
         }
 
-        updateLayout();
-        window.addEventListener('resize', updateLayout);
+        const onViewportChange = () => closeSidebar();
+        if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', onViewportChange);
+        else if (mobileQuery.addListener) mobileQuery.addListener(onViewportChange);
+        window.addEventListener('resize', () => { if (!isMobile()) setOpen(false); });
+        setOpen(false);
     }
 
     // ── Main init ─────────────────────────────────────────────────────────────

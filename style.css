@@ -2876,10 +2876,11 @@ ol li {
    ============================================================ */
 .mobile-bottom-nav {
     display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     background: white;
     border-top: 1px solid #f1f5f9;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
@@ -3056,7 +3057,7 @@ ol li {
     }
 
     /* Main content gets bottom padding for mobile nav */
-    main, #pageMain, .flex-1 {
+    main, #pageMain {
         padding-bottom: 86px !important;
     }
 
@@ -3213,8 +3214,7 @@ ol li {
         overflow-y: auto !important;
         order: 1 !important;
     }
-    [class*="chat-area"], .chat-area,
-    #messageInputContainer {
+    [class*="chat-area"], .chat-area {
         width: 100% !important;
         flex: 1 !important;
         order: 2 !important;
@@ -3407,4 +3407,650 @@ ol li {
     .blob1 { width: 300px !important; height: 300px !important; }
     .blob2 { width: 240px !important; height: 240px !important; }
     #waitTimer { font-size: 1.5rem !important; }
+}
+
+/* ================================================================
+   VevahaMatrimony responsive hardening (shared across all pages)
+   ================================================================ */
+html { width: 100%; max-width: 100%; overflow-x: clip; }
+body { width: 100%; max-width: 100%; overflow-x: clip; }
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, iframe, svg { max-width: 100%; }
+button, a, input, select, textarea { touch-action: manipulation; }
+button, [role="button"], a { -webkit-tap-highlight-color: transparent; }
+
+@media (max-width: 767px) {
+  body { min-width: 0 !important; }
+  main, #pageMain, .page-container, .container, .max-w-7xl, .max-w-6xl,
+  .max-w-5xl, .max-w-4xl, .max-w-3xl { max-width: 100% !important; }
+  main { min-width: 0 !important; padding-top: 5.5rem !important; padding-bottom: 6rem !important; }
+  .mobile-sidebar-open { overflow: hidden !important; }
+  #sidebarToggle { display: inline-flex !important; align-items: center; justify-content: center;
+    width: 42px; height: 42px; min-width: 42px; position: relative; z-index: 70; }
+  #appSidebar { width: min( min(84vw, 300px), 300px) !important; max-width: 300px !important;
+    height: 100dvh !important; top: 0 !important; bottom: 0 !important; overflow-y: auto !important;
+    overscroll-behavior: contain; z-index: 80 !important; }
+  #appSidebar.open, #appSidebar[data-open="true"] { transform: translateX(0) !important; }
+  #sidebarBackdrop { z-index: 75 !important; }
+  #sidebarBackdrop.open { display: block !important; }
+  nav.fixed { min-height: 64px; }
+  nav.fixed > div { min-width: 0; gap: .5rem !important; }
+  nav.fixed a { min-width: 0; }
+  nav.fixed a img { flex: 0 0 auto; }
+  nav.fixed .text-xl { font-size: .95rem !important; line-height: 1.2; }
+  nav.fixed .flex.items-center.gap-4 { gap: .4rem !important; }
+  #userMenuButton { padding: .25rem !important; gap: .25rem !important; }
+  #userMenuButton > div { flex: 0 0 auto; }
+  .grid, [class*="grid-cols-"] { min-width: 0; }
+  .flex { min-width: 0; }
+  .overflow-x-auto, .table-responsive { max-width: 100%; -webkit-overflow-scrolling: touch; }
+  table { min-width: 560px; }
+  .modal, .modal-content, [role="dialog"] { max-width: calc(100vw - 1rem) !important; }
+  input, select, textarea { max-width: 100%; min-width: 0; }
+  .sidebar-link { min-height: 44px; }
+  .plan-card { min-height: 0 !important; height: auto !important; padding: 1.1rem !important; }
+  .membership-plans-container { display: grid !important; grid-template-columns: minmax(0, 1fr) !important;
+    align-items: stretch !important; justify-items: stretch !important; gap: 1rem !important; }
+  .membership-plan-card { width: 100% !important; max-width: none !important; min-width: 0 !important;
+    height: auto !important; min-height: 0 !important; flex: none !important; padding: 1.1rem !important;
+    overflow: visible !important; }
+  .membership-plan-card .absolute { max-width: calc(100% - 1rem); white-space: normal !important; }
+  .membership-plan-card ul, .plan-card ul { padding-left: 0; }
+  /* Messages: keep the conversation list and chat usable without page-wide overflow. */
+  .chat-container { width: 100% !important; max-width: 100% !important; height: auto !important; min-height: 65vh; }
+  .chat-container > .grid { display: flex !important; flex-direction: column !important; height: auto !important; }
+  .chat-container > .grid > div:first-child { width: 100% !important; min-width: 0 !important; }
+  #threadsList, .thread-list { max-height: 30vh !important; overflow-y: auto !important; width: 100% !important; }
+  .chat-area { width: 100% !important; min-width: 0 !important; min-height: 42vh; overflow: hidden !important; }
+  #messagesContainer { min-height: 220px; max-height: 48vh; overflow-y: auto !important; overflow-x: hidden !important; }
+  #messageInputContainer { width: 100% !important; padding: .65rem !important; position: sticky !important; bottom: 0; }
+  #messageInputContainer > div { min-width: 0; }
+  #messageInput { min-width: 0; width: 100% !important; max-height: 120px; }
+  .msg-bubble, .message-bubble { overflow-wrap: anywhere; word-break: break-word; }
+  .chat-area .flex.items-center.justify-between { flex-wrap: wrap; }
+  /* Forms and controls should fit their parent rather than force horizontal scrolling. */
+  .form-row, .field-row, .form-grid { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; }
+  .flex.gap-2, .flex.gap-3, .flex.gap-4 { flex-wrap: wrap; }
+  .w-screen { width: 100% !important; }
+}
+
+@media (max-width: 420px) {
+  nav.fixed .text-xl { font-size: .82rem !important; }
+  nav.fixed a img { width: 2rem !important; height: 2rem !important; margin-right: .35rem !important; }
+  .membership-plan-card, .plan-card { padding: .9rem !important; border-radius: 1rem !important; }
+  .chat-container { border-radius: .75rem !important; }
+}
+
+@media (min-width: 768px) {
+  #appSidebar { transform: translateX(0) !important; }
+  #sidebarBackdrop { display: none !important; }
+}
+
+
+/* VevahaMatrimony mobile usability fixes - shared components */
+html, body { max-width: 100%; overflow-x: hidden; }
+body.vm-sidebar-open { overflow: hidden !important; }
+#vm_sidebarToggle { display: inline-flex !important; align-items: center; justify-content: center;
+  width: 42px; height: 42px; min-width: 42px; border-radius: 10px; }
+#vm_sidebarToggle:focus-visible, #vm_sidebarClose:focus-visible,
+#sidebarToggle:focus-visible, #sidebarClose:focus-visible {
+  outline: 3px solid rgba(219,39,119,.35); outline-offset: 2px;
+}
+#vm_appSidebar { box-sizing: border-box; width: min(84vw, 300px) !important;
+  max-width: 300px; padding-bottom: env(safe-area-inset-bottom); overscroll-behavior: contain; }
+#vm_appSidebar .vm-sidebar-link { min-height: 46px; }
+#vm_sidebarBackdrop { touch-action: none; }
+#vm_mainContent, .vm-page-main { min-width: 0; max-width: 100%; }
+#planGrid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem; }
+@media (max-width: 767px) {
+  body { min-width: 0 !important; }
+  main, #vm_mainContent, .vm-page-main { width: 100% !important; max-width: 100% !important;
+    min-width: 0 !important; margin-left: 0 !important; padding-left: 12px !important;
+    padding-right: 12px !important; padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)) !important; }
+  #vm_topNav > div { padding-left: 10px !important; padding-right: 10px !important; }
+  #vm_topNav a { min-width: 0; }
+  #vm_topNav a img { flex: 0 0 auto; }
+  #vm_appSidebar { top: 0 !important; bottom: 0 !important; height: 100dvh !important;
+    transform: translateX(-105%); z-index: 1002 !important; }
+  #vm_appSidebar[aria-hidden="false"] { transform: translateX(0) !important; }
+  #vm_sidebarBackdrop { z-index: 1001 !important; }
+  #vm_sidebarClose { min-width: 42px; min-height: 42px; }
+  /* Membership plans are authored as a flex row with fixed 600px cards. */
+  section .flex.flex-wrap.justify-center.gap-6 > div[class*="min-w-[280px]"] {
+    flex: 1 1 100% !important; width: 100% !important; max-width: 460px !important;
+    min-width: 0 !important; height: auto !important; min-height: 0 !important;
+    padding: 1.15rem !important; margin: 0 auto !important; }
+  section .flex.flex-wrap.justify-center.gap-6 { display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important; justify-items: center; gap: 1rem !important; }
+  section .flex.flex-wrap.justify-center.gap-6 > div ul { margin-bottom: 1.25rem !important; }
+  .chat-container { width: 100% !important; max-width: 100% !important; min-width: 0 !important;
+    min-height: 65dvh; height: auto !important; }
+  .chat-container > .grid { display: flex !important; flex-direction: column !important; height: auto !important; }
+  .chat-container > .grid > div:first-child { width: 100% !important; min-width: 0 !important; }
+  .thread-list, #threadsList { max-height: 28dvh; overflow-y: auto !important; overscroll-behavior: contain; }
+  .chat-area { display: none !important; min-width: 0 !important; width: 100% !important; min-height: 55dvh; }
+  .chat-container.vm-chat-active > .grid > div:first-child { display: none !important; }
+  .chat-container.vm-chat-active > .grid > .chat-area { display: flex !important; }
+  #messagesContainer { min-width: 0; max-width: 100%; overflow-x: hidden !important;
+    overflow-y: auto !important; overflow-wrap: anywhere; }
+  #messageInputContainer, #messageInputContainer > div { min-width: 0 !important; max-width: 100% !important; }
+  #messageInput { width: 100% !important; min-width: 0 !important; font-size: 16px !important; }
+  .msg-bubble, .message-bubble, #messagesContainer * { overflow-wrap: anywhere; }
+  input, select, textarea { max-width: 100%; min-width: 0; font-size: 16px; }
+  img, video, iframe, canvas { max-width: 100%; }
+  table { display: block; max-width: 100%; overflow-x: auto; }
+  .grid, [class*="grid-cols-"], .flex { min-width: 0; }
+  .flex.gap-2, .flex.gap-3, .flex.gap-4 { flex-wrap: wrap; }
+}
+@media (max-width: 390px) {
+  #vm_topNav a { font-size: .9rem !important; }
+  #vm_topNav a img { width: 1.9rem !important; height: 1.9rem !important; }
+  section .flex.flex-wrap.justify-center.gap-6 > div[class*="min-w-[280px]"] { padding: .9rem !important; }
+}
+
+@media (min-width: 768px) {
+  #vm_sidebarToggle { display: none !important; }
+  #vm_appSidebar { transform: translateX(0) !important; }
+  #vm_mainContent, .vm-page-main { margin-left: 15rem !important; }
+}
+
+/* ==========================================================================
+   APP-LIKE MOBILE ARCHITECTURE & WHATSAPP-STYLE MESSAGES (MOBILE-FIRST)
+   Only active on screens <= 767px — Desktop is 100% untouched.
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* Prevent horizontal scrolling and awkward bounce on all pages */
+  html, body {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-x: none !important;
+  }
+
+  /* Safe container widths */
+  .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl, .container {
+    max-width: 100% !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* General Main Content Padding for after-login pages */
+  main:not(.page-messages main) {
+    padding-top: 70px !important;
+    padding-bottom: 84px !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Fixed Top Navbar on Mobile */
+  nav.fixed, #vm_topNav {
+    height: 60px !important;
+    min-height: 60px !important;
+    padding: 0 !important;
+    z-index: 50 !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+  }
+
+  nav.fixed > div, #vm_topNav > div {
+    height: 100% !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Sidebar Toggle Button */
+  #sidebarToggle, #vm_sidebarToggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    border-radius: 8px !important;
+    color: #374151 !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* Sidebar Drawer: Full height modern native app drawer */
+  #appSidebar, #vm_appSidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100dvh !important;
+    height: 100vh !important;
+    background: #ffffff !important;
+    z-index: 10000 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.28s cubic-bezier(0.33, 1, 0.68, 1) !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    display: block !important;
+  }
+
+  #appSidebar.open, #appSidebar[data-open="true"],
+  #vm_appSidebar[aria-hidden="false"] {
+    transform: translateX(0) !important;
+  }
+
+  /* Sidebar Backdrop */
+  #sidebarBackdrop, #vm_sidebarBackdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.52) !important;
+    backdrop-filter: blur(2px) !important;
+    -webkit-backdrop-filter: blur(2px) !important;
+    z-index: 9999 !important;
+    display: none;
+    touch-action: none !important;
+  }
+
+  #sidebarBackdrop.open, #sidebarBackdrop[style*="block"],
+  #vm_sidebarBackdrop[style*="block"] {
+    display: block !important;
+  }
+
+  body.mobile-sidebar-open, body.vm-sidebar-open {
+    overflow: hidden !important;
+    touch-action: none !important;
+  }
+
+  /* ==========================================
+     WHATSAPP-STYLE MESSAGES (MOBILE SCREEN)
+     ========================================== */
+  body[data-active-nav="messages"] main,
+  body.page-messages main {
+    padding: 60px 0 0 0 !important;
+    margin: 0 !important;
+    height: calc(100dvh) !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+    background: #efeae2 !important;
+  }
+
+  body[data-active-nav="messages"] .chat-container {
+    height: calc(100dvh - 60px) !important;
+    height: calc(100vh - 60px) !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  body[data-active-nav="messages"] .chat-container > .grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* 1. Conversations List View (Default) */
+  body[data-active-nav="messages"] .chat-container:not(.vm-chat-active) > .grid > div:first-child {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: calc(100dvh - 120px) !important; /* 60px top nav + 60px bottom nav */
+    height: calc(100vh - 120px) !important;
+    background: #ffffff !important;
+    overflow: hidden !important;
+  }
+
+  body[data-active-nav="messages"] .chat-container:not(.vm-chat-active) > .grid > .chat-area {
+    display: none !important;
+  }
+
+  /* 2. Active Chat View (When chat with a person is open) */
+  body[data-active-nav="messages"] .chat-container.vm-chat-active > .grid > div:first-child {
+    display: none !important;
+  }
+
+  body[data-active-nav="messages"] .chat-container.vm-chat-active > .grid > .chat-area {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: calc(100dvh - 60px) !important;
+    height: calc(100vh - 60px) !important;
+    overflow: hidden !important;
+  }
+
+  /* Hide bottom nav during active chat view for maximum chat keyboard room */
+  body.vm-chat-active-nav-hidden .mobile-bottom-nav,
+  body:has(.chat-container.vm-chat-active) .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  /* WhatsApp Conversations List */
+  #threadsList, .thread-list {
+    flex: 1 !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0.25rem 0.5rem !important;
+    background: #ffffff !important;
+  }
+
+  #threadsList > div {
+    border-radius: 0.75rem !important;
+    margin-bottom: 2px !important;
+    padding: 0.75rem 0.5rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    transition: background-color 0.15s ease !important;
+  }
+
+  #threadsList > div:active {
+    background-color: #fce7f3 !important;
+  }
+
+  /* WhatsApp Chat Header */
+  #chatHeader {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 0.5rem 0.75rem !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+    z-index: 30 !important;
+    flex-shrink: 0 !important;
+  }
+
+  #vmMobileChatBack {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 9999px !important;
+    color: #475569 !important;
+    background: transparent !important;
+    margin-right: 0.25rem !important;
+    cursor: pointer !important;
+    border: none !important;
+  }
+
+  /* WhatsApp Chat Wallpaper Background */
+  .chat-area {
+    background-color: #efeae2 !important;
+    background-image: radial-gradient(#d4ccc3 0.75px, transparent 0.75px) !important;
+    background-size: 16px 16px !important;
+  }
+
+  #messagesContainer {
+    flex: 1 !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0.75rem 0.85rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+
+  /* WhatsApp Message Bubbles */
+  .msg-bubble {
+    position: relative !important;
+    max-width: 82% !important;
+    min-width: 85px !important;
+    padding: 6px 10px 18px 10px !important;
+    font-size: 14.5px !important;
+    line-height: 1.4 !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    box-shadow: 0 1px 0.5px rgba(11,20,26,0.13) !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* Sent Bubble - WhatsApp Signature Light Green */
+  .msg-mine {
+    align-self: flex-end !important;
+    background-color: #d9fdd3 !important;
+    color: #111b21 !important;
+    border-radius: 8px 8px 2px 8px !important;
+  }
+
+  .msg-mine::after {
+    content: "" !important;
+    position: absolute !important;
+    right: -6px !important;
+    top: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-left: 8px solid #d9fdd3 !important;
+    border-bottom: 8px solid transparent !important;
+  }
+
+  /* Received Bubble - Clean Crisp White */
+  .msg-other {
+    align-self: flex-start !important;
+    background-color: #ffffff !important;
+    color: #111b21 !important;
+    border-radius: 8px 8px 8px 2px !important;
+  }
+
+  .msg-other::after {
+    content: "" !important;
+    position: absolute !important;
+    left: -6px !important;
+    top: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-right: 8px solid #ffffff !important;
+    border-bottom: 8px solid transparent !important;
+  }
+
+  .msg-time {
+    position: absolute !important;
+    bottom: 3px !important;
+    right: 7px !important;
+    font-size: 10.5px !important;
+    color: rgba(102, 119, 129, 0.85) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+  }
+
+  .tick-blue { color: #53bdeb !important; }
+  .tick-gray { color: #8696a0 !important; }
+
+  /* WhatsApp Message Input Bar */
+  #messageInputContainer {
+    background: #f0f2f5 !important;
+    border-top: 1px solid #e2e8f0 !important;
+    padding: 0.5rem 0.75rem !important;
+    flex: 0 0 auto !important;
+    height: auto !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 30 !important;
+  }
+
+  #messageInput {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    padding: 8px 14px !important;
+    font-size: 15px !important;
+    max-height: 90px !important;
+    resize: none !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+    width: 100% !important;
+  }
+
+  #sendMessageBtn {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    border-radius: 9999px !important;
+    background: #ec4899 !important;
+    color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 2px 6px rgba(236,72,153,0.35) !important;
+  }
+
+  /* ==========================================
+     MOBILE BOTTOM NAVIGATION (APP-STYLE)
+     ========================================== */
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 60px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #f1f5f9 !important;
+    box-shadow: 0 -3px 16px rgba(0, 0, 0, 0.08) !important;
+    z-index: 999 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0) !important;
+  }
+
+  .mobile-bottom-nav-items {
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+  }
+
+  .mobile-bottom-nav-item {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 6px 0 !important;
+    color: #94a3b8 !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    min-height: 44px !important;
+    transition: color 0.15s ease !important;
+    position: relative !important;
+  }
+
+  .mobile-bottom-nav-item.active {
+    color: #ec4899 !important;
+    font-weight: 700 !important;
+  }
+
+  .mobile-bottom-nav-item .nav-icon-wrap {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .mobile-bottom-nav-item i {
+    font-size: 19px !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* ==========================================
+     APP-LIKE CARDS & UI ELEMENTS
+     ========================================== */
+  .glass-card, .profile-card, .member-card, .stat-card,
+  .activity-card, .dashboard-card {
+    border-radius: 1.25rem !important;
+    padding: 1rem !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Single column grids on mobile phones */
+  .grid.grid-cols-2, .grid.grid-cols-3, .grid.grid-cols-4,
+  [class*="grid-cols-"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+
+  /* Exception for quick stats grid: 2 columns */
+  .grid.grid-cols-2.md\:grid-cols-4,
+  #quickStatsGrid, .stat-cards-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.65rem !important;
+  }
+
+  /* Touch targets for all buttons */
+  button, a[href], [role="button"], input[type="submit"] {
+    min-height: 44px !important;
+    touch-action: manipulation !important;
+  }
+
+  /* Form inputs mobile styling */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS auto-zoom */
+    border-radius: 0.75rem !important;
+  }
+
+  /* Hide floating chat & translate widgets inside messages page so they never obstruct chat */
+  body[data-active-nav="messages"] .vevaha-ai-widget,
+  body[data-active-nav="messages"] #chatWidget,
+  body[data-active-nav="messages"] #vevaha-chat-widget,
+  body[data-active-nav="messages"] #vm-translate-widget,
+  body[data-active-nav="messages"] #cookieConsentBanner {
+    display: none !important;
+  }
+
+  /* Position floating widgets above the 60px bottom nav on other mobile pages */
+  #vevaha-chat-widget {
+    bottom: 72px !important;
+    right: 12px !important;
+    transform: scale(0.88) !important;
+    transform-origin: bottom right !important;
+    z-index: 40 !important;
+  }
+  #vm-translate-widget {
+    bottom: 130px !important;
+    right: 12px !important;
+    transform: scale(0.88) !important;
+    transform-origin: bottom right !important;
+    z-index: 40 !important;
+  }
+  #cookieConsentBanner {
+    bottom: 60px !important;
+    padding: 0.65rem 0.85rem !important;
+    font-size: 12px !important;
+    z-index: 998 !important;
+  }
+
+  /* Align WhatsApp message input and send button horizontally */
+  #messageInputContainer > div {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+  }
+  #messageInputContainer .flex-1 {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    flex: 1 1 auto !important;
+  }
 }

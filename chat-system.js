@@ -17,6 +17,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInputContainer = document.getElementById('messageInputContainer');
     const messageInput = document.getElementById('messageInput');
     const sendMessageBtn = document.getElementById('sendMessageBtn');
+    const chatContainer = document.querySelector('.chat-container');
+    // Mobile back control lets users return to the conversation list (WhatsApp mobile style)
+    const backBtn = document.getElementById('vmMobileChatBack');
+    if (backBtn) {
+        backBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (chatContainer) chatContainer.classList.remove('vm-chat-active');
+            const bNav = document.getElementById('mobileBottomNav');
+            if (bNav) bNav.style.removeProperty('display');
+            document.body.classList.remove('vm-chat-active-nav-hidden');
+        });
+    } else if (chatHeader && !document.getElementById('vmMobileChatBack')) {
+        const back = document.createElement('button');
+        back.id = 'vmMobileChatBack';
+        back.type = 'button';
+        back.className = 'inline-flex items-center gap-1.5 px-2.5 py-1.5 mr-2 rounded-full text-gray-700 hover:text-pink-600 md:hidden';
+        back.innerHTML = '<i class="fas fa-arrow-left text-lg"></i>';
+        back.addEventListener('click', () => {
+            if (chatContainer) chatContainer.classList.remove('vm-chat-active');
+            const bNav = document.getElementById('mobileBottomNav');
+            if (bNav) bNav.style.removeProperty('display');
+            document.body.classList.remove('vm-chat-active-nav-hidden');
+        });
+        chatHeader.prepend(back);
+    }
+
 
     // Add Enter key support for sending messages
     if (messageInput) {
@@ -108,6 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadThread(memberId, name, photo, hidePhoto) {
+        if (chatContainer) chatContainer.classList.add('vm-chat-active');
+        document.body.classList.add('vm-chat-active-nav-hidden');
+        const bNav = document.getElementById('mobileBottomNav');
+        if (bNav && window.innerWidth < 768) {
+            bNav.style.setProperty('display', 'none', 'important');
+        }
+
         if (currentActiveMemberId !== memberId) {
             currentActiveMemberId = memberId;
             currentHidePhoto = hidePhoto || false;

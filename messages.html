@@ -178,6 +178,7 @@ body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%
 .sidebar-link:hover i { transform: scale(1.2); }
 .sidebar-link.active { background: linear-gradient(90deg, #fdf2f8 0%, #fce7f3 100%); color: #db2777; font-weight: 600; box-shadow: 0 4px 15px rgba(236,72,153,0.1); }
 </style>
+    <script src="mobile-ux.js" defer></script>
 </head><body class="bg-gradient-to-br from-pink-50 to-white min-h-screen page-load-animation" data-active-nav="messages">
 
 
@@ -298,10 +299,13 @@ body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%
                     <!-- Chat Header -->
                     <div id="chatHeader" class="hidden p-4 border-b border-gray-200 bg-white shadow-sm z-10">
                         <div class="flex items-center justify-between gap-3">
-                            <!-- Left: Avatar + Name + Status -->
-                            <div class="flex items-center gap-3 flex-1 min-w-0">
-                                <div class="relative w-11 h-11 flex-shrink-0">
-                                    <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 shadow-sm">
+                            <!-- Left: Back Button + Avatar + Name + Status -->
+                            <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                                <button id="vmMobileChatBack" type="button" class="md:hidden text-gray-700 hover:text-pink-600 p-2 mr-1 rounded-full text-base flex items-center justify-center focus:outline-none" aria-label="Back to conversations">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                                <div class="relative w-10 h-10 sm:w-11 sm:h-11 flex-shrink-0">
+                                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 shadow-sm">
                                         <img id="chatUserAvatar" src="/images/placeholder-profile.svg" alt="User" class="w-full h-full object-cover cursor-pointer">
                                     </div>
                                     <div id="chatUserLockBadge" class="hidden absolute bottom-0 right-0 w-4 h-4 bg-white rounded-full flex items-center justify-center border border-gray-300 shadow z-10">
@@ -309,20 +313,20 @@ body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%
                                     </div>
                                 </div>
                                 <div class="min-w-0">
-                                    <h3 id="chatUserName" class="font-semibold text-gray-800 truncate cursor-pointer hover:text-pink-600 transition-colors">Select a conversation</h3>
+                                    <h3 id="chatUserName" class="font-semibold text-gray-800 truncate cursor-pointer hover:text-pink-600 transition-colors text-sm sm:text-base">Select a conversation</h3>
                                     <div class="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
-                                        <span id="chatUserPlan" class="px-2 py-0.5 rounded-full font-semibold bg-gray-100">Plan</span>
+                                        <span id="chatUserPlan" class="px-2 py-0.5 rounded-full font-semibold bg-gray-100 text-[10px]">Plan</span>
                                         <span id="chatUserStatus"></span>
                                     </div>
                                 </div>
                             </div>
                             <!-- Right: Call Buttons -->
                             <div id="callButtons" class="hidden flex items-center gap-2 flex-shrink-0">
-                                <button onclick="startVoiceCall()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pink-600 transition shadow-sm border border-gray-100" title="Voice Call">
-                                    <i class="fas fa-phone-alt"></i>
+                                <button onclick="startVoiceCall()" class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pink-600 transition shadow-sm border border-gray-100" title="Voice Call">
+                                    <i class="fas fa-phone-alt text-sm"></i>
                                 </button>
-                                <button onclick="startVideoCall()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pink-600 transition shadow-sm border border-gray-100" title="Video Call">
-                                    <i class="fas fa-video"></i>
+                                <button onclick="startVideoCall()" class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-pink-100 hover:text-pink-600 transition shadow-sm border border-gray-100" title="Video Call">
+                                    <i class="fas fa-video text-sm"></i>
                                 </button>
                             </div>
                         </div>
@@ -339,7 +343,7 @@ body { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%
                     </div>
 
                     <!-- Message Input -->
-                    <div id="messageInputContainer" class="hidden border-t border-gray-200 bg-white p-3 pr-20 sm:pr-24 flex-shrink-0 relative z-20">
+                    <div id="messageInputContainer" class="hidden border-t border-gray-200 bg-white p-3 flex-shrink-0 relative z-20">
                         <div class="flex items-end space-x-2">
                             <div class="flex-1 relative">
                                 <textarea id="messageInput" placeholder="Type your message..."
