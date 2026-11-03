@@ -2963,7 +2963,7 @@ ol li {
         gap: 1rem !important;
     }
     .flex.flex-row, .flex.flex-row-wrap,
-    .sm\\:flex-row, .md\\:flex-row, .lg\\:flex-row {
+    [class*="sm:flex-row"], [class*="md:flex-row"], [class*="lg:flex-row"] {
         flex-direction: column !important;
     }
     .gap-8, .gap-6, .gap-4 { gap: 1rem !important; }
@@ -2971,9 +2971,6 @@ ol li {
 
 /* --- Dashboard (logged-in): sidebar overlay + full-width main --- */
 @media (max-width: 767px) {
-    main.md\\:ml-60,
-    div.md\\:ml-60,
-    .flex-1.md\\:ml-60,
     [class*="md:ml-60"] { margin-left: 0 !important; margin-right: 0 !important; }
     main { padding-bottom: 78px !important; }
     #appSidebar { top: 0 !important; z-index: 60 !important; width: 280px !important; }
@@ -3046,7 +3043,7 @@ ol li {
         padding: 1rem !important;
         box-sizing: border-box !important;
     }
-    .fixed.inset-0, .bg-black\\/60, .bg-gray-900\\/80 {
+    .fixed.inset-0, [class*="bg-black/"], [class*="bg-gray-900/"] {
         padding: 1rem !important;
     }
 }
