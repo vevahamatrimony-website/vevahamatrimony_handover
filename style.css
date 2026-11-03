@@ -3096,3 +3096,144 @@ ol li {
     button[type="submit"], .btn-submit, .btn-save, .btn-update { min-height: 44px !important; }
     table { font-size: 13px !important; }
 }
+
+/* --- Aggressive horizontal overflow fix on mobile --- */
+@media (max-width: 767px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+        position: relative !important;
+    }
+    body { margin: 0 !important; }
+
+    /* Navbar: prevent brand + menu overflow */
+    nav,
+    nav > div,
+    nav .w-full,
+    nav .max-w-7xl {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+    .navbar-brand {
+        max-width: 60% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    .navbar-brand img {
+        width: 28px !important;
+        height: 28px !important;
+        margin-right: 4px !important;
+        flex-shrink: 0 !important;
+    }
+    .navbar-brand > * {
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* All containers: cap at viewport width */
+    section, .container, .max-w-7xl, .mx-auto,
+    [class*="max-w-"], [class*="px-"] {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hero headings */
+    .hero-section h1.text-5xl,
+    .hero-section h1.text-4xl,
+    .hero-section h1.text-3xl {
+        font-size: 1.75rem !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Stack hero CTA buttons */
+    .hero-section [class*="sm:flex-row"],
+    .hero-section [class*="sm:flex-col"] {
+        flex-direction: column !important;
+    }
+    .hero-section [class*="sm:flex-row"] > *,
+    .hero-section [class*="sm:flex-col"] > * {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .hero-section .bg-pink-600.text-white,
+    .hero-section .border-2.border-white.text-white {
+        width: 100% !important;
+        text-align: center !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Horizontal tab bars / filter pills: scroll instead of overflow */
+    .flex.space-x-4,
+    .flex.space-x-2,
+    .flex.gap-4,
+    .flex.gap-6,
+    .flex.gap-8 {
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .flex.space-x-4 > *,
+    .flex.space-x-2 > *,
+    .flex.gap-4 > *,
+    .flex.gap-6 > *,
+    .flex.gap-8 > * {
+        flex-shrink: 0 !important;
+    }
+    .flex.space-x-4::-webkit-scrollbar,
+    .flex.space-x-2::-webkit-scrollbar,
+    .flex.gap-4::-webkit-scrollbar,
+    .flex.gap-6::-webkit-scrollbar,
+    .flex.gap-8::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Search bar full width */
+    #searchInput {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* Fixed-width utility classes: cap at 100% */
+    [class*="w-48"], [class*="w-64"], [class*="w-80"], [class*="w-96"] {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* Primary action buttons: full width */
+    .bg-pink-600.text-white,
+    .bg-pink-500.text-white,
+    button[type="submit"],
+    .btn-submit, .btn-save, .btn-update {
+        width: 100% !important;
+        text-align: center !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Images & videos never overflow */
+    img, video {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
+
+/* --- Tables: horizontal scroll on mobile --- */
+@media (max-width: 767px) {
+    .overflow-x-auto,
+    table,
+    .grid.grid-cols-2,
+    .grid.grid-cols-3,
+    .grid.grid-cols-4 {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+}
