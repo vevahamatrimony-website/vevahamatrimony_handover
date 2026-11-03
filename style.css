@@ -2996,22 +2996,27 @@ ol li {
     }
 
     .navbar-brand {
-        max-width: 55% !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        max-width: calc(100vw - 64px) !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
         white-space: nowrap !important;
-        display: flex !important;
+        display: inline-flex !important;
         align-items: center !important;
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em !important;
+        color: #db2777 !important;
     }
     .navbar-brand img {
-        width: 28px !important;
-        height: 28px !important;
-        margin-right: 4px !important;
+        width: 32px !important;
+        height: 32px !important;
+        margin-right: 6px !important;
         flex-shrink: 0 !important;
     }
     .navbar-brand > * {
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        white-space: nowrap !important;
     }
 
     /* Online/Offline toggle - mobile sized */
@@ -3289,29 +3294,55 @@ ol li {
     }
 }
 
-/* --- Footer: mobile spacing --- */
+/* --- Footer: mobile spacing & layout correction --- */
 @media (max-width: 767px) {
     footer, .footer {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        padding-top: 2rem !important;
-        padding-bottom: 3rem !important;
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+        padding-top: 2.5rem !important;
+        padding-bottom: 5.5rem !important;
         overflow-x: hidden !important;
+        text-align: center !important;
     }
     footer .grid, footer [class*="grid-cols-"] {
         grid-template-columns: 1fr !important;
-        gap: 1.5rem !important;
+        gap: 2rem !important;
         text-align: center !important;
     }
-    footer [class*="flex"] {
-        flex-direction: column !important;
+    footer ul {
+        display: inline-block !important;
+        text-align: center !important;
+    }
+    footer ul li {
+        margin-bottom: 0.5rem !important;
+    }
+    footer ul li a {
+        display: inline-block !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+    /* Contact info items: keep icon & text in a neat row */
+    footer .space-y-3 > .flex,
+    footer .flex.items-center {
+        display: flex !important;
+        flex-direction: row !important;
         align-items: center !important;
-        gap: 0.75rem !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
         text-align: center !important;
     }
-    footer [class*="space-x-"] {
-        flex-direction: column !important;
+    /* Social icons: keep in a neat horizontal row */
+    footer [class*="space-x-"],
+    footer .space-x-3 {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
         gap: 0.75rem !important;
+        margin-top: 0.75rem !important;
+    }
+    footer [class*="space-x-"] > *,
+    footer .space-x-3 > * {
+        margin: 0 !important;
     }
 }
 
@@ -3376,7 +3407,7 @@ ol li {
     html { font-size: 14px; }
     .text-4xl { font-size: 1.6rem !important; }
     .text-3xl { font-size: 1.4rem !important; }
-    .navbar-brand { font-size: 0.95rem !important; }
+    .navbar-brand { font-size: 1.15rem !important; }
     #appSidebar { width: 240px !important; }
     button[type="submit"], .btn-submit, .btn-save, .btn-update {
         min-height: 44px !important;
@@ -4018,20 +4049,30 @@ body.vm-sidebar-open { overflow: hidden !important; }
     display: none !important;
   }
 
-  /* Position floating widgets above the 60px bottom nav on other mobile pages */
+  /* Position floating widgets on mobile (default: public pages without bottom nav) */
   #vevaha-chat-widget {
-    bottom: 72px !important;
+    bottom: 16px !important;
     right: 12px !important;
-    transform: scale(0.88) !important;
+    transform: scale(0.85) !important;
     transform-origin: bottom right !important;
     z-index: 40 !important;
   }
   #vm-translate-widget {
-    bottom: 130px !important;
+    bottom: 74px !important;
     right: 12px !important;
-    transform: scale(0.88) !important;
+    transform: scale(0.85) !important;
     transform-origin: bottom right !important;
     z-index: 40 !important;
+  }
+
+  /* When bottom nav exists (after-login pages) */
+  body:has(.mobile-bottom-nav) #vevaha-chat-widget,
+  body.has-bottom-nav #vevaha-chat-widget {
+    bottom: 72px !important;
+  }
+  body:has(.mobile-bottom-nav) #vm-translate-widget,
+  body.has-bottom-nav #vm-translate-widget {
+    bottom: 130px !important;
   }
   #cookieConsentBanner {
     bottom: 60px !important;

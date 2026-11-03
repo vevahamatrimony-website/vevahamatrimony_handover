@@ -1,4 +1,4 @@
-// Global variables for step navigation and form validation
+﻿// Global variables for step navigation and form validation
 var currentStep = 1;
 var totalSteps = 3;
 var otpSentEmail = null; // tracks the email OTP was sent to
@@ -724,8 +724,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const mobileMenu = document.querySelector('#mobile-nav-menu');
 
     if (mobileMenuButton && mobileMenu) {
-        mobileMenuButton.addEventListener('click', function () {
-            mobileMenu.classList.toggle('hidden');
+        mobileMenuButton.addEventListener('click', function (e) {
+            if (this.getAttribute('onclick') && this.getAttribute('onclick').indexOf('toggleMobileMenu') !== -1) {
+                return;
+            }
+            if (typeof window.toggleMobileMenu === 'function') {
+                window.toggleMobileMenu(e);
+            } else {
+                mobileMenu.classList.toggle('hidden');
+            }
         });
     }
 
@@ -1636,10 +1643,23 @@ window.toggleTheme = window.toggleTheme || function () {
 };
 
 // Mobile menu toggle function
-function toggleMobileMenu() {
-    const mobileMenu = document.getElementById('mobile-nav-menu');
-    if (mobileMenu) {
-        mobileMenu.classList.toggle('hidden');
+function toggleMobileMenu(e) {
+    if (window.VevahaMobile && typeof window.VevahaMobile.toggleMobileMenu === 'function') {
+        return window.VevahaMobile.toggleMobileMenu(e);
+    }
+    const mobileMenu = document.getElementById('mobile-nav-menu') || document.getElementById('mobileMenu') || document.getElementById('mobile-nav-menu-dash');
+    if (!mobileMenu) return;
+    const now = Date.now();
+    if (mobileMenu._lastToggleTime && (now - mobileMenu._lastToggleTime) < 120) return;
+    mobileMenu._lastToggleTime = now;
+    
+    const isClosed = mobileMenu.classList.contains('hidden') || mobileMenu.style.display === 'none';
+    if (isClosed) {
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.style.display = 'block';
+    } else {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.style.display = 'none';
     }
 }
 
