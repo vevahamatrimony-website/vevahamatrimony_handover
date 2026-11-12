@@ -33,7 +33,7 @@
             min-height: 100vh;
         }
 
-        /* ── Sidebar Link Styling (Standard) ───────────────── */
+        /* â”€â”€ Sidebar Link Styling (Standard) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         .sidebar-link {
             display: flex;
             align-items: center;
@@ -90,7 +90,7 @@
             transform: scaleY(1);
         }
 
-        /* ── Cards ────────────────────────────────────────── */
+        /* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         .glass-card {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
@@ -99,7 +99,7 @@
             box-shadow: 0 8px 32px rgba(236, 72, 153, 0.08);
         }
 
-        /* ── Current Plan Card ────────────────────────────── */
+        /* â”€â”€ Current Plan Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         .current-plan-card {
             background: linear-gradient(135deg, #7c3aed 0%, #ec4899 50%, #f97316 100%);
             border-radius: 24px;
@@ -159,7 +159,7 @@
             50% { opacity: 0.6; transform: scale(1.3); }
         }
 
-        /* ── Plan Upgrade Cards ───────────────────────────── */
+        /* â”€â”€ Plan Upgrade Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         .plan-card {
             background: rgba(255, 255, 255, 0.9);
             border: 2px solid transparent;
@@ -256,7 +256,7 @@
 
         .plan-feature i { color: #10b981; font-size: 0.7rem; }
 
-        /* ── Payment History Table ────────────────────────── */
+        /* â”€â”€ Payment History Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         .history-table { width: 100%; border-collapse: collapse; }
         .history-table th {
             font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
@@ -289,7 +289,7 @@
 
         .btn-invoice:hover { background: #ec4899; color: white; }
 
-        /* ── Stats Row ─────────────────────────────────────── */
+        /* â”€â”€ Stats Row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         .stat-card {
             background: rgba(255, 255, 255, 0.9);
             border-radius: 16px;
@@ -308,12 +308,12 @@
             font-size: 1.1rem;
         }
 
-        /* ── Mobile Logic Appended ─────────────────────────── */
+        /* â”€â”€ Mobile Logic Appended â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         @media (max-width: 768px) {
             .plans-grid { grid-template-columns: 1fr 1fr !important; }
         }
 
-        /* ── Animations ─────────────────────────────────────── */
+        /* â”€â”€ Animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -419,7 +419,7 @@
                     <p class="text-gray-500 text-sm mt-1">Manage your plan, view payment history and download invoices.</p>
                 </div>
 
-                <!-- ── Stat Tiles ───────────────────────────────────── -->
+                <!-- â”€â”€ Stat Tiles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-up delay-1">
                     <div class="stat-card flex items-center gap-3">
                         <div class="stat-icon" style="background:rgba(236,72,153,0.1)"><i class="fas fa-crown" style="color:#ec4899"></i></div>
@@ -432,14 +432,14 @@
                         <div class="stat-icon" style="background:rgba(168,85,247,0.1)"><i class="fas fa-calendar-check" style="color:#a855f7"></i></div>
                         <div>
                             <p class="text-xs text-gray-400 font-medium">Valid Until</p>
-                            <p class="font-bold text-gray-900 text-sm" id="statExpiry">—</p>
+                            <p class="font-bold text-gray-900 text-sm" id="statExpiry">â€”</p>
                         </div>
                     </div>
                     <div class="stat-card flex items-center gap-3">
                         <div class="stat-icon" style="background:rgba(16,185,129,0.1)"><i class="fas fa-rupee-sign" style="color:#10b981"></i></div>
                         <div>
                             <p class="text-xs text-gray-400 font-medium">Total Spent</p>
-                            <p class="font-bold text-gray-900 text-sm" id="statTotalSpent">₹0</p>
+                            <p class="font-bold text-gray-900 text-sm" id="statTotalSpent">â‚¹0</p>
                         </div>
                     </div>
                     <div class="stat-card flex items-center gap-3">
@@ -451,16 +451,16 @@
                     </div>
                 </div>
 
-                <!-- ── Current Plan Banner ─────────────────────────── -->
+                <!-- â”€â”€ Current Plan Banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
                 <div class="current-plan-card p-8 fade-up delay-2">
                     <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                         <div>
                             <div class="plan-badge mb-4"><span class="plan-status-active"></span><span id="planStatusLabel">Active Membership</span></div>
                             <h2 class="text-3xl md:text-4xl font-extrabold mb-1" id="currentPlanTitle">Free Discovery</h2>
-                            <p class="text-white text-opacity-80 text-sm mb-4" id="currentPlanDesc">Basic visibility — upgrade to unlock messaging, calls and more.</p>
+                            <p class="text-white text-opacity-80 text-sm mb-4" id="currentPlanDesc">Basic visibility â€” upgrade to unlock messaging, calls and more.</p>
                             <div class="flex flex-wrap gap-4 text-sm">
                                 <div class="flex items-center gap-2"><i class="fas fa-calendar-alt opacity-70"></i><span>Expires: <strong id="expiryDate">No Expiry</strong></span></div>
-                                <div class="flex items-center gap-2"><i class="fas fa-id-badge opacity-70"></i><span>Member ID: <strong id="memberIdDisplay">—</strong></span></div>
+                                <div class="flex items-center gap-2"><i class="fas fa-id-badge opacity-70"></i><span>Member ID: <strong id="memberIdDisplay">â€”</strong></span></div>
                             </div>
                         </div>
                         <div class="flex flex-col gap-3 flex-shrink-0">
@@ -474,14 +474,14 @@
                     </div>
                 </div>
 
-                <!-- ── New Registration Notice ────────────────────── -->
+                <!-- â”€â”€ New Registration Notice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
                 <div id="newRegistrationBanner" class="hidden fade-up delay-2 mb-6 p-5 rounded-2xl border-2" style="background:linear-gradient(135deg,#fdf2f8,#ede9fe);border-color:#db2777">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                         <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" style="background:#db2777">
                             <i class="fas fa-user-check text-white text-lg"></i>
                         </div>
                         <div class="flex-1">
-                            <h3 class="text-base font-bold text-gray-900 mb-0.5">🎉 Profile Created Successfully!</h3>
+                            <h3 class="text-base font-bold text-gray-900 mb-0.5">ðŸŽ‰ Profile Created Successfully!</h3>
                             <p class="text-gray-600 text-sm" id="newRegSubtext">Choose a membership plan to unlock full features and connect with matches.</p>
                         </div>
                         <button id="skipRegBtn" onclick="skipRegistrationFemale()" class="hidden flex-shrink-0 px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-pink-500 text-pink-600 bg-white hover:bg-pink-50 transition-all">
@@ -490,7 +490,7 @@
                     </div>
                 </div>
 
-                <!-- ── Plan Upgrade Options ────────────────────────── -->
+                <!-- â”€â”€ Plan Upgrade Options â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
                 <div class="fade-up delay-3">
                     <div class="flex items-center justify-between mb-5">
                         <div>
@@ -502,8 +502,8 @@
                         <div class="plan-card">
                             <div class="plan-icon" style="background:rgba(148,163,184,0.15)"><i class="fas fa-medal" style="color:#64748b"></i></div>
                             <p class="font-bold text-gray-800 text-sm mb-1">Silver</p>
-                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">999</span><small> + GST/mo</small></div>
-                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹1,179 incl. GST)</div>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">â‚¹</sup><span class="text-gray-800">999</span><small> + GST/mo</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: â‚¹1,179 incl. GST)</div>
                             <div class="mt-3 space-y-1">
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> Basic visibility</div>
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> 15 contacts views</div>
@@ -519,8 +519,8 @@
                         <div class="plan-card recommended">
                             <div class="plan-icon" style="background:rgba(234,179,8,0.15)"><i class="fas fa-crown" style="color:#ca8a04"></i></div>
                             <p class="font-bold text-gray-800 text-sm mb-1">Gold</p>
-                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">1,999</span><small> + GST/3mo</small></div>
-                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹2,359 incl. GST)</div>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">â‚¹</sup><span class="text-gray-800">1,999</span><small> + GST/3mo</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: â‚¹2,359 incl. GST)</div>
                             <div class="mt-3 space-y-1">
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> Extended messaging</div>
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> Priority listing</div>
@@ -536,8 +536,8 @@
                         <div class="plan-card">
                             <div class="plan-icon" style="background:rgba(99,102,241,0.15)"><i class="fas fa-gem" style="color:#6366f1"></i></div>
                             <p class="font-bold text-gray-800 text-sm mb-1">Diamond</p>
-                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">3,999</span><small> + GST/6mo</small></div>
-                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹4,719 incl. GST)</div>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">â‚¹</sup><span class="text-gray-800">3,999</span><small> + GST/6mo</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: â‚¹4,719 incl. GST)</div>
                             <div class="mt-3 space-y-1">
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> Unlimited messages</div>
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> Voice & video calls</div>
@@ -553,8 +553,8 @@
                         <div class="plan-card">
                             <div class="plan-icon" style="background:rgba(236,72,153,0.15)"><i class="fas fa-star" style="color:#ec4899"></i></div>
                             <p class="font-bold text-gray-800 text-sm mb-1">VIP</p>
-                            <div class="plan-price"><sup class="text-gray-500 text-xs">₹</sup><span class="text-gray-800">49,999</span><small> + GST/yr</small></div>
-                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: ₹58,999 incl. GST)</div>
+                            <div class="plan-price"><sup class="text-gray-500 text-xs">â‚¹</sup><span class="text-gray-800">49,999</span><small> + GST/yr</small></div>
+                            <div class="text-[10px] text-gray-400 -mt-1 mb-2">(Total: â‚¹58,999 incl. GST)</div>
                             <div class="mt-3 space-y-1">
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> Dedicated manager</div>
                                 <div class="plan-feature"><i class="fas fa-check-circle"></i> Curated matches</div>
@@ -570,7 +570,7 @@
                     </div>
                 </div>
 
-                <!-- ── Payment History ─────────────────────────────── -->
+                <!-- â”€â”€ Payment History â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
                 <div class="glass-card p-6 fade-up delay-4">
                     <div class="flex items-center justify-between mb-6">
                         <div>
@@ -634,9 +634,9 @@
                 <div class="rounded-2xl p-5 mb-6" style="background:linear-gradient(135deg,rgba(236,72,153,0.05),rgba(168,85,247,0.05));border:1px solid rgba(236,72,153,0.12)">
                     <p class="text-xs text-gray-500 font-medium mb-1">Selected Plan</p>
                     <p class="text-2xl font-extrabold text-gray-900" id="modalPlanName">Gold</p>
-                    <p class="text-3xl font-extrabold gradient-text mt-1" id="modalPlanPrice">₹2,999</p>
-                    <p class="text-xs text-gray-500 font-semibold mt-1" id="modalPlanTotal">Total: ₹2,359 (including 18% GST)</p>
-                    <p class="text-xs text-gray-400 mt-1" id="modalPlanDurationText">per month · auto-renews monthly</p>
+                    <p class="text-3xl font-extrabold gradient-text mt-1" id="modalPlanPrice">â‚¹2,999</p>
+                    <p class="text-xs text-gray-500 font-semibold mt-1" id="modalPlanTotal">Total: â‚¹2,359 (including 18% GST)</p>
+                    <p class="text-xs text-gray-400 mt-1" id="modalPlanDurationText">per month Â· auto-renews monthly</p>
                 </div>
                 <button onclick="proceedToPayment()" class="w-full py-4 rounded-2xl font-bold text-white text-base shadow-lg hover:-translate-y-1 transition-all" style="background:linear-gradient(135deg,#ec4899,#a855f7);box-shadow:0 8px 24px rgba(236,72,153,0.4)">
                     <i class="fas fa-lock mr-2"></i> Pay Securely Now
@@ -645,7 +645,7 @@
         </div>
     </div>
 
-    <!-- ── Registration Success Popup ─────────────────────── -->
+    <!-- â”€â”€ Registration Success Popup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
     <div id="regSuccessPopup" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4" style="background:rgba(0,0,0,0.65);backdrop-filter:blur(6px)">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center animate-in" style="animation:popIn 0.4s ease">
             <div class="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center" style="background:linear-gradient(135deg,#db2777,#9333ea)">
@@ -660,7 +660,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-gray-400 font-medium">Your Member ID</p>
-                        <p class="text-xl font-black text-pink-700 tracking-widest" id="popupMemberId">—</p>
+                        <p class="text-xl font-black text-pink-700 tracking-widest" id="popupMemberId">â€”</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -669,11 +669,11 @@
                     </div>
                     <div>
                         <p class="text-xs text-gray-400 font-medium">Registered Email</p>
-                        <p class="font-bold text-gray-800 text-sm break-all" id="popupEmail">—</p>
+                        <p class="font-bold text-gray-800 text-sm break-all" id="popupEmail">â€”</p>
                     </div>
                 </div>
             </div>
-            <p class="text-xs text-gray-400 mb-5">📋 Please note your Member ID — you'll need it to log in and for support.</p>
+            <p class="text-xs text-gray-400 mb-5">ðŸ“‹ Please note your Member ID â€” you'll need it to log in and for support.</p>
             <button onclick="closeRegSuccessPopup()" class="w-full py-3.5 rounded-2xl font-bold text-white text-base transition-all hover:opacity-90" style="background:linear-gradient(135deg,#db2777,#9333ea)">
                 <i class="fas fa-home mr-2"></i>Go to Dashboard
             </button>
@@ -726,7 +726,7 @@
             letterheadTemplate.src = 'images/VEVAHA_Matrimony_Letterhead_page-0001.jpg';
 
             const PLANS = {
-                free:    { label: 'Free Discovery',  price: 0,     desc: 'Basic visibility — upgrade to unlock messaging, calls and more.' },
+                free:    { label: 'Free Discovery',  price: 0,     desc: 'Basic visibility â€” upgrade to unlock messaging, calls and more.' },
                 silver:  { label: 'Silver',           price: 999,   desc: 'Enhanced visibility with 30-day contact access.' },
                 gold:    { label: 'Gold',             price: 1999,  desc: 'Extended messaging, priority listing, and 3-month reach.' },
                 diamond: { label: 'Diamond',          price: 3999,  desc: 'Unlimited messages, voice & video calls, and 6-month validity.' },
@@ -734,10 +734,10 @@
             };
 
             const PLAN_DATA = [
-                { key: 'silver',  name: 'Silver Plan',  price: '₹999 + GST',    duration: '1 Month'   },
-                { key: 'gold',    name: 'Gold Plan',    price: '₹1,999 + GST',  duration: '3 Months'  },
-                { key: 'diamond', name: 'Diamond Plan', price: '₹3,999 + GST',  duration: '6 Months'  },
-                { key: 'vip',     name: 'VIP Plan',     price: '₹49,999 + GST', duration: '12 Months' }
+                { key: 'silver',  name: 'Silver Plan',  price: 'â‚¹999 + GST',    duration: '1 Month'   },
+                { key: 'gold',    name: 'Gold Plan',    price: 'â‚¹1,999 + GST',  duration: '3 Months'  },
+                { key: 'diamond', name: 'Diamond Plan', price: 'â‚¹3,999 + GST',  duration: '6 Months'  },
+                { key: 'vip',     name: 'VIP Plan',     price: 'â‚¹49,999 + GST', duration: '12 Months' }
             ];
 
             const PLAN_FEATURES_DATA = {
@@ -747,9 +747,9 @@
                         { label: 'Profile Views', value: '15 Contacts', icon: 'fa-eye' },
                         { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
                         { label: 'Messaging', value: '15 / Day', icon: 'fa-comments' },
-                        { label: 'Voice Calls', value: '❌ Not Included', icon: 'fa-phone' },
-                        { label: 'Video Calls', value: '❌ Not Included', icon: 'fa-video' },
-                        { label: 'Horoscope AI', value: '✅ Included', icon: 'fa-moon' },
+                        { label: 'Voice Calls', value: 'âŒ Not Included', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: 'âŒ Not Included', icon: 'fa-video' },
+                        { label: 'Horoscope AI', value: 'âœ… Included', icon: 'fa-moon' },
                         { label: 'Duration', value: '1 Month', icon: 'fa-calendar' }
                     ]
                 },
@@ -759,9 +759,9 @@
                         { label: 'Profile Views', value: '30 Contacts', icon: 'fa-eye' },
                         { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
                         { label: 'Messaging', value: '10 / Day', icon: 'fa-comments' },
-                        { label: 'Voice Calls', value: '❌ Not Included', icon: 'fa-phone' },
-                        { label: 'Video Calls', value: '❌ Not Included', icon: 'fa-video' },
-                        { label: 'Horoscope AI', value: '✅ Included', icon: 'fa-moon' },
+                        { label: 'Voice Calls', value: 'âŒ Not Included', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: 'âŒ Not Included', icon: 'fa-video' },
+                        { label: 'Horoscope AI', value: 'âœ… Included', icon: 'fa-moon' },
                         { label: 'Duration', value: '3 Months', icon: 'fa-calendar' }
                     ]
                 },
@@ -771,9 +771,9 @@
                         { label: 'Profile Views', value: '50 Contacts', icon: 'fa-eye' },
                         { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
                         { label: 'Messaging', value: 'Unlimited', icon: 'fa-comments' },
-                        { label: 'Voice Calls', value: '✅ Unlimited', icon: 'fa-phone' },
-                        { label: 'Video Calls', value: '✅ Unlimited', icon: 'fa-video' },
-                        { label: 'Horoscope AI', value: '✅ Included', icon: 'fa-moon' },
+                        { label: 'Voice Calls', value: 'âœ… Unlimited', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: 'âœ… Unlimited', icon: 'fa-video' },
+                        { label: 'Horoscope AI', value: 'âœ… Included', icon: 'fa-moon' },
                         { label: 'Duration', value: '6 Months', icon: 'fa-calendar' }
                     ]
                 },
@@ -783,10 +783,10 @@
                         { label: 'Profile Views', value: 'Unlimited', icon: 'fa-eye' },
                         { label: 'Send Interest', value: 'Unlimited', icon: 'fa-heart' },
                         { label: 'Messaging', value: 'Unlimited', icon: 'fa-comments' },
-                        { label: 'Voice Calls', value: '✅ Unlimited', icon: 'fa-phone' },
-                        { label: 'Video Calls', value: '✅ Unlimited', icon: 'fa-video' },
-                        { label: 'Relationship Manager', value: '✅ Assigned', icon: 'fa-user-tie' },
-                        { label: 'Personal Matchmaking', value: '✅ Curated', icon: 'fa-star' },
+                        { label: 'Voice Calls', value: 'âœ… Unlimited', icon: 'fa-phone' },
+                        { label: 'Video Calls', value: 'âœ… Unlimited', icon: 'fa-video' },
+                        { label: 'Relationship Manager', value: 'âœ… Assigned', icon: 'fa-user-tie' },
+                        { label: 'Personal Matchmaking', value: 'âœ… Curated', icon: 'fa-star' },
                         { label: 'Duration', value: '12 Months', icon: 'fa-calendar' }
                     ]
                 }
@@ -798,12 +798,12 @@
             function getUser() { try { return JSON.parse(localStorage.getItem('userData') || '{}'); } catch (e) { return {}; } }
             
             function formatDate(str) {
-                if (!str) return '—';
+                if (!str) return 'â€”';
                 const d = new Date(str);
                 return isNaN(d) ? str : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
             }
 
-            function formatCurrency(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
+            function formatCurrency(n) { return 'â‚¹' + Number(n || 0).toLocaleString('en-IN'); }
 
             async function refreshMembershipDisplay() {
                 try {
@@ -826,11 +826,11 @@
                         if (isNewReg) {
                             document.getElementById('memberIdDisplay').textContent = 'Hidden until active';
                         } else {
-                            document.getElementById('memberIdDisplay').textContent = u.member_id || u.memberId || '—';
+                            document.getElementById('memberIdDisplay').textContent = u.member_id || u.memberId || 'â€”';
                         }
                     }
 
-                    const expiryText = mem.expiry_date ? formatDate(mem.expiry_date) : (planKey === 'free' ? 'No Expiry' : '—');
+                    const expiryText = mem.expiry_date ? formatDate(mem.expiry_date) : (planKey === 'free' ? 'No Expiry' : 'â€”');
                     if (document.getElementById('statExpiry')) document.getElementById('statExpiry').textContent = expiryText;
                     if (document.getElementById('expiryDate')) document.getElementById('expiryDate').textContent = expiryText;
                     
@@ -854,7 +854,7 @@
                 let durationDesc = 'One-time payment';
                 if (planKey === 'silver') {
                     total = 1179;
-                    durationDesc = '1 Month · Auto-renews monthly';
+                    durationDesc = '1 Month Â· Auto-renews monthly';
                 } else if (planKey === 'gold') {
                     total = 2359;
                     durationDesc = '3 Months reach';
@@ -948,7 +948,7 @@
                         }
                     }
 
-                    console.log('🐞 [DEBUG] Initiating Razorpay with options:', JSON.stringify(options, null, 2));
+                    console.log('ðŸž [DEBUG] Initiating Razorpay with options:', JSON.stringify(options, null, 2));
 
                     const rzp = new Razorpay(options);
                     rzp.on('payment.failed', function (response){
@@ -1024,8 +1024,8 @@
                         ctx.font = '22px Poppins, Arial, sans-serif';
                         ctx.fillStyle = '#475569'; // Slate 600
                         ctx.fillText('Name: ' + (u.full_name || u.fullName || 'Member'), 120, 885);
-                        ctx.fillText('Member ID: ' + (u.member_id || '—'), 120, 925);
-                        ctx.fillText('Email: ' + (u.email_address || u.email || '—'), 120, 965);
+                        ctx.fillText('Member ID: ' + (u.member_id || 'â€”'), 120, 925);
+                        ctx.fillText('Email: ' + (u.email_address || u.email || 'â€”'), 120, 965);
                         
                         // Divider
                         ctx.beginPath();
@@ -1134,7 +1134,7 @@
                         ctx.fillStyle = '#475569';
                         ctx.font = '22px Poppins, Arial, sans-serif';
                         ctx.fillText('Payment Mode: Razorpay', 380, 1425);
-                        ctx.fillText('Transaction ID: ' + (txId || '—'), 380, 1470);
+                        ctx.fillText('Transaction ID: ' + (txId || 'â€”'), 380, 1470);
                         
                         // Note / Footer text
                         ctx.fillStyle = '#94a3b8';
@@ -1192,8 +1192,8 @@
                     '',
                     'BILL TO:',
                     'Name     : ' + (u.full_name || u.fullName || 'Member'),
-                    'Member ID: ' + (u.member_id || '—'),
-                    'Email    : ' + (u.email_address || u.email || '—'),
+                    'Member ID: ' + (u.member_id || 'â€”'),
+                    'Email    : ' + (u.email_address || u.email || 'â€”'),
                     '',
                     '------------------------------------------',
                     'DESCRIPTION                AMOUNT (INR)   ',
@@ -1205,7 +1205,7 @@
                     '',
                     'Payment Status: PAID',
                     'Payment Mode  : Razorpay',
-                    'Transaction ID: ' + (txId || '—'),
+                    'Transaction ID: ' + (txId || 'â€”'),
                     '',
                     '==========================================',
                     '         Thank you for your trust!         ',
@@ -1258,7 +1258,7 @@
                         setTimeout(() => showRegSuccessPopup(), 600);
                     } else {
                         setTimeout(() => {
-                            VM.toast(`🎉 Payment successful! Your ${planName.toUpperCase()} plan is now active.`, 'success');
+                            VM.toast(`ðŸŽ‰ Payment successful! Your ${planName.toUpperCase()} plan is now active.`, 'success');
                         }, 500);
                     }
                     window.history.replaceState({}, document.title, window.location.pathname);
@@ -1290,7 +1290,7 @@
                                 <td class="text-xs text-gray-500">${p.method || 'Online'}</td>
                                 <td><span class="status-badge ${isPaid ? 'status-success' : 'status-failed'}">${p.status.toUpperCase()}</span></td>
                                 <td>
-                                    ${isPaid ? `<button onclick="downloadInvoice('${txId}','${p.plan_name}',${p.amount},'${date}')" class="btn-invoice">Invoice</button>` : '—'}
+                                    ${isPaid ? `<button onclick="downloadInvoice('${txId}','${p.plan_name}',${p.amount},'${date}')" class="btn-invoice">Invoice</button>` : 'â€”'}
                                 </td>
                             </tr>`;
                         }).join('');
@@ -1387,11 +1387,11 @@
             // Initial Load
             window.addEventListener('load', loadBillingData);
 
-            // ── Registration Success Popup Functions ──────────────────
+            // â”€â”€ Registration Success Popup Functions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             window.showRegSuccessPopup = function() {
                 const u = getUser();
-                const memberId = u.member_id || u.memberId || '—';
-                const email = u.email_address || u.email || '—';
+                const memberId = u.member_id || u.memberId || 'â€”';
+                const email = u.email_address || u.email || 'â€”';
                 const midEl = document.getElementById('popupMemberId');
                 const emailEl = document.getElementById('popupEmail');
                 if (midEl) midEl.textContent = memberId;
@@ -1410,7 +1410,7 @@
             };
 
             window.skipRegistrationFemale = function() {
-                // Female skipped payment — clear flags immediately
+                // Female skipped payment â€” clear flags immediately
                 localStorage.removeItem('reg_gender_hint');
                 localStorage.removeItem('pending_reg_popup');
                 // Try to show popup with member details
@@ -1422,7 +1422,7 @@
                         window.location.href = 'home.html';
                     }, 5000);
                 } else {
-                    // Popup not found — navigate directly
+                    // Popup not found â€” navigate directly
                     window.location.href = 'home.html';
                 }
             };
@@ -1438,6 +1438,7 @@
     <script src="language.js"></script>
 
     <script src="/pwa-register.js"></script>
+    <script src="/pwa-install-banner.js"></script>
 </body>
 
 </html>

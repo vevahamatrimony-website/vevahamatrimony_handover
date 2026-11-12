@@ -24,6 +24,7 @@
     window.addEventListener('beforeinstallprompt', function (e) {
         e.preventDefault();
         deferredPrompt = e;
+        window._vmPWAPromptAvailable = true; // Signal to pwa-install-banner.js
         console.log('[PWA] beforeinstallprompt captured');
     });
 

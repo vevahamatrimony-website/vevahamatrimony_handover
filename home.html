@@ -841,7 +841,7 @@
             const PLAN_DATA = [{
                 key: 'silver',
                 name: 'Silver Plan',
-                price: '₹1,179',
+                price: 'â‚¹1,179',
                 duration: '1 Month',
                 icon: 'fa-medal',
                 color: 'gray'
@@ -849,7 +849,7 @@
             {
                 key: 'gold',
                 name: 'Gold Plan',
-                price: '₹2,359',
+                price: 'â‚¹2,359',
                 duration: '3 Months',
                 icon: 'fa-award',
                 color: 'yellow',
@@ -858,7 +858,7 @@
             {
                 key: 'diamond',
                 name: 'Diamond Plan',
-                price: '₹4,719',
+                price: 'â‚¹4,719',
                 duration: '6 Months',
                 icon: 'fa-gem',
                 color: 'blue',
@@ -867,7 +867,7 @@
             {
                 key: 'vip',
                 name: 'VIP Plan',
-                price: '₹58,999',
+                price: 'â‚¹58,999',
                 duration: '12 Months',
                 icon: 'fa-crown',
                 color: 'pink'
@@ -1084,7 +1084,7 @@
                 if (urlParams.get('payment') === 'success') {
                     const planName = urlParams.get('plan') || 'Premium';
                     setTimeout(() => {
-                        VM.toast(`🎉 Payment successful! Your ${planName.toUpperCase()} plan is now active.`, 'success');
+                        VM.toast(`ðŸŽ‰ Payment successful! Your ${planName.toUpperCase()} plan is now active.`, 'success');
                     }, 500);
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
@@ -1378,7 +1378,7 @@
                         }
                     }
 
-                    console.log('🐞 [DEBUG] Initiating Razorpay with options:', JSON.stringify(options, null, 2));
+                    console.log('ðŸž [DEBUG] Initiating Razorpay with options:', JSON.stringify(options, null, 2));
 
                     const rzp = new Razorpay(options);
                     rzp.on('payment.failed', function (response) {
@@ -1615,7 +1615,7 @@
                         <img src="${p.profile_picture_url || 'https://ui-avatars.com/api/?name=User'}" class="h-48 w-full object-cover">
                         <div class="p-4 flex-1 flex flex-col">
                             <h3 class="font-bold text-gray-900">${p.full_name}</h3>
-                            <p class="text-xs text-gray-500">${p.age || '--'} Yrs • ${p.city || '--'}</p>
+                            <p class="text-xs text-gray-500">${p.age || '--'} Yrs â€¢ ${p.city || '--'}</p>
                             <div class="mt-4 pt-4 border-t border-gray-100 flex gap-2">
                                 <button onclick="openProfileModal('${p.id}')" class="flex-1 py-2 bg-gray-50 rounded-lg text-xs font-bold">View Profile</button>
                                 <button class="w-10 h-10 bg-pink-50 text-pink-600 rounded-lg"><i class="fas fa-video"></i></button>
@@ -1629,6 +1629,7 @@
         }
     </script>
     <script src="/pwa-register.js"></script>
+    <script src="/pwa-install-banner.js"></script>
 </body>
 
 </html>

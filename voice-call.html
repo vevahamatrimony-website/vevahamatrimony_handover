@@ -11,7 +11,7 @@
     <script src="auth-guard.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Call — VevahaMatrimony</title>
+    <title>Voice Call â€” VevahaMatrimony</title>
     <link rel="icon" type="image/png" href="/images/vevaha-logo.png">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -241,7 +241,7 @@
     <script src="vevaha-ai-widget.js"></script>
     <script src="webrtc-call.js"></script>
     <script>
-    // ─── Page Init ────────────────────────────────────────────────
+    // â”€â”€â”€ Page Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const params = new URLSearchParams(window.location.search);
     const receiverMemberId = params.get('receiver'); // caller mode: member_id of callee
     const incomingCallerId = params.get('caller');   // callee mode
@@ -260,7 +260,7 @@
     function showTimer() {
         document.getElementById('callTimer').classList.remove('hidden');
         activateWave();
-        document.getElementById('qualityText').textContent = 'Connected — encrypted WebRTC';
+        document.getElementById('qualityText').textContent = 'Connected â€” encrypted WebRTC';
         // Stop ripple rings
         ['ring1','ring2','ring3'].forEach(id => {
             const el = document.getElementById(id);
@@ -299,7 +299,7 @@
         }
 
         const me = VMAuth.user();
-        const myMemberId = me.member_id; // ✅ use member_id, not UUID
+        const myMemberId = me.member_id; // âœ… use member_id, not UUID
 
         if (!myMemberId) {
             setStatus('Profile not loaded. Please log in again.');
@@ -342,7 +342,7 @@
                 console.error(err);
             }
         } else {
-            // CALLEE MODE — came here after accepting from incoming-call-listener overlay
+            // CALLEE MODE â€” came here after accepting from incoming-call-listener overlay
             await loadRemoteProfile(incomingCallerId);
             setStatus('Connecting to call...');
             await VevahaWebRTC.initiateCallee(incomingCallerId, incomingCallId, 'audio', myMemberId);
@@ -379,5 +379,6 @@
 <script src="language.js"></script>
 
     <script src="/pwa-register.js"></script>
+    <script src="/pwa-install-banner.js"></script>
 </body>
 </html>

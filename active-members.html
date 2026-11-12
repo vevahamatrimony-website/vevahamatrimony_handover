@@ -24,7 +24,7 @@
                                     class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-heart text-pink-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Search your match</span></div><div class="text-sm text-gray-500"><span>Find your perfect life partner</span></div></div></div><div onmousedown="navigateToPage('/active-members.html'); return false;"
                                     class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-users text-blue-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Browse profiles</span></div><div class="text-sm text-gray-500"><span>View active members</span></div></div></div><div onmousedown="navigateToPage('/membership.html'); return false;"
                                     class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-crown text-purple-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Premium members</span></div><div class="text-sm text-gray-500"><span>View premium profiles</span></div></div></div><div onmousedown="navigateToPage('/settings.html'); return false;"
-                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-cog text-gray-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>⚙️ Settings</span></div><div class="text-sm text-gray-500"><span>Customize your experience</span></div></div></div><div onmousedown="navigateToPage('/about.html'); return false;"
+                                    class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-cog text-gray-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>âš™ï¸ Settings</span></div><div class="text-sm text-gray-500"><span>Customize your experience</span></div></div></div><div onmousedown="navigateToPage('/about.html'); return false;"
                                     class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-info-circle text-orange-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>About us</span></div><div class="text-sm text-gray-500"><span>Learn more about vevahamatrimony</span></div></div></div><div onmousedown="navigateToPage('/contact.html'); return false;"
                                     class="flex items-center p-3 hover:bg-pink-50 rounded-lg cursor-pointer"><i class="fas fa-envelope text-green-500 mr-3"></i><div><div class="font-medium text-gray-800"><span>Contact us</span></div><div class="text-sm text-gray-500"><span>Get in touch with vevahamatrimony</span></div></div></div></div></div></div><a href="/login.html" class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700"><span>Login</span></a></div><!-- Mobile menu button --><div class="md:hidden"><button id="mobile-menu-button" class="text-gray-700 hover:text-pink-600 focus:outline-none"
                         onclick="toggleMobileMenu()"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -141,7 +141,7 @@
             const year = new Date().getFullYear();
             const copyrightText = document.getElementById('copyright-text');
             if (copyrightText) {
-                copyrightText.textContent = `© ${year} vevahamatrimony. All rights reserved.`;
+                copyrightText.textContent = `Â© ${year} vevahamatrimony. All rights reserved.`;
             }
         });
 
@@ -418,10 +418,10 @@
                     <!-- Action Buttons -->
                     <div class="member-actions flex gap-3">
                         <button class="decline-btn flex-1 py-2.5 rounded-full border-2 border-red-500 text-red-500 font-semibold hover:bg-red-50 transition-all duration-200 flex items-center justify-center gap-2">
-                            <span style="font-size:18px">😞</span><span>Decline</span>
+                            <span style="font-size:18px">ðŸ˜ž</span><span>Decline</span>
                         </button>
                         <button class="interest-btn flex-1 py-2.5 rounded-full border-2 border-green-500 text-green-500 font-semibold hover:bg-green-50 transition-all duration-200 flex items-center justify-center gap-2">
-                            <span style="font-size:18px">💖</span><span>Interest</span>
+                            <span style="font-size:18px">ðŸ’–</span><span>Interest</span>
                         </button>
                     </div>
                     <div class="accepted-badge hidden mt-2 text-xs font-bold bg-green-100 text-green-700 px-3 py-1 rounded-md text-center">Accepted</div>
@@ -578,4 +578,5 @@
 <script src="language.js"></script>
 
     <script src="/pwa-register.js"></script>
+    <script src="/pwa-install-banner.js"></script>
 </body></html>

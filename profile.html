@@ -437,13 +437,13 @@
                     return;
                 }
 
-                // ── STEP 1: Always fetch fresh from backend (uses service key, bypasses RLS) ──
+                // â”€â”€ STEP 1: Always fetch fresh from backend (uses service key, bypasses RLS) â”€â”€
                 var u = null;
                 try {
                     var resp = await VM.profile.me(); // already has ?_t=Date.now() cache-busting
                     if (resp && resp.profile) {
                         u = resp.profile;
-                        console.log('✅ Profile loaded from backend. City:', u.city);
+                        console.log('âœ… Profile loaded from backend. City:', u.city);
                         // Update localStorage with fresh data
                         localStorage.setItem('userData', JSON.stringify(u));
                         if (window.VMAuth && VMAuth.save) {
@@ -458,7 +458,7 @@
                     console.warn('Backend fetch failed, trying Supabase direct:', err);
                 }
 
-                // ── STEP 2: If backend failed, fetch directly from Supabase ──
+                // â”€â”€ STEP 2: If backend failed, fetch directly from Supabase â”€â”€
                 if (!u) {
                     try {
                         var token = localStorage.getItem('vm_token');
@@ -479,7 +479,7 @@
                                     var rows = await profResp.json();
                                     if (rows && rows.length > 0) {
                                         u = rows[0];
-                                        console.log('✅ Profile loaded from Supabase direct. City:', u.city);
+                                        console.log('âœ… Profile loaded from Supabase direct. City:', u.city);
                                     }
                                 }
                             }
@@ -487,10 +487,10 @@
                     } catch (err2) { console.warn('Supabase direct fetch also failed:', err2); }
                 }
 
-                // ── STEP 3: Absolute last resort — use localStorage (may be stale) ──
+                // â”€â”€ STEP 3: Absolute last resort â€” use localStorage (may be stale) â”€â”€
                 if (!u) {
                     u = VMAuth.user() || {};
-                    console.warn('⚠️ Using stale localStorage data. City:', u.city);
+                    console.warn('âš ï¸ Using stale localStorage data. City:', u.city);
                 }
 
                 if (!u) return;
@@ -604,5 +604,6 @@
     <script src="language.js"></script>
 
     <script src="/pwa-register.js"></script>
+    <script src="/pwa-install-banner.js"></script>
 </body>
 </html>

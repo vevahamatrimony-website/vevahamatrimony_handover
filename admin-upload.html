@@ -130,7 +130,7 @@
  <i class="fas fa-cog text-gray-500 mr-3"></i>
  <div>
  <div class="font-medium text-gray-800">
- ⚙️ Settings
+ âš™ï¸ Settings
  
  </div>
  <div class="text-sm text-gray-500">
@@ -384,41 +384,41 @@
  <div class="space-y-2">
  <h3 class="font-semibold text-gray-700">Basic Information</h3>
  <ul class="text-sm text-gray-600 space-y-1">
- <li>• Gender</li>
- <li>• Name ()</li>
- <li>• Birth Date ( )</li>
- <li>• Birth Time ( )</li>
- <li>• Birth Place ( )</li>
- <li>• Age</li>
- <li>• Height ()</li>
+ <li>â€¢ Gender</li>
+ <li>â€¢ Name ()</li>
+ <li>â€¢ Birth Date ( )</li>
+ <li>â€¢ Birth Time ( )</li>
+ <li>â€¢ Birth Place ( )</li>
+ <li>â€¢ Age</li>
+ <li>â€¢ Height ()</li>
  </ul>
  </div>
  
  <div class="space-y-2">
  <h3 class="font-semibold text-gray-700">Family & Education</h3>
  <ul class="text-sm text-gray-600 space-y-1">
- <li>• Education ()</li>
- <li>• Job ()</li>
- <li>• Monthly Income</li>
- <li>• Father Name & Occupation</li>
- <li>• Mother Name & Occupation</li>
- <li>• Siblings</li>
- <li>• Property</li>
+ <li>â€¢ Education ()</li>
+ <li>â€¢ Job ()</li>
+ <li>â€¢ Monthly Income</li>
+ <li>â€¢ Father Name & Occupation</li>
+ <li>â€¢ Mother Name & Occupation</li>
+ <li>â€¢ Siblings</li>
+ <li>â€¢ Property</li>
  </ul>
  </div>
  
  <div class="space-y-2">
  <h3 class="font-semibold text-gray-700">Religious & Contact</h3>
  <ul class="text-sm text-gray-600 space-y-1">
- <li>• Caste</li>
- <li>• Gotra ()</li>
- <li>• Rasi ()</li>
- <li>• Star ()</li>
- <li>• Contact Address & Location</li>
- <li>• Phone Numbers</li>
- <li>• Whatsapp Numbers</li>
- <li>• Expectations</li>
- <li>• Others</li>
+ <li>â€¢ Caste</li>
+ <li>â€¢ Gotra ()</li>
+ <li>â€¢ Rasi ()</li>
+ <li>â€¢ Star ()</li>
+ <li>â€¢ Contact Address & Location</li>
+ <li>â€¢ Phone Numbers</li>
+ <li>â€¢ Whatsapp Numbers</li>
+ <li>â€¢ Expectations</li>
+ <li>â€¢ Others</li>
  </ul>
  </div>
  </div>
@@ -429,10 +429,10 @@
  <div class="text-sm text-yellow-800">
  <p class="font-semibold mb-1">Important Notes:</p>
  <ul class="space-y-1">
- <li>• First row should contain column headers</li>
- <li>• Tamil text is supported and will be preserved</li>
- <li>• Empty cells will be left blank (no "N/A" or "undefined")</li>
- <li>• Unique Matrimony IDs will be generated automatically</li>
+ <li>â€¢ First row should contain column headers</li>
+ <li>â€¢ Tamil text is supported and will be preserved</li>
+ <li>â€¢ Empty cells will be left blank (no "N/A" or "undefined")</li>
+ <li>â€¢ Unique Matrimony IDs will be generated automatically</li>
  </ul>
  </div>
  </div>
@@ -641,7 +641,7 @@
  updateUndoRedoButtons();
  undoRedoSection.classList.remove('hidden');
  
- console.log('✅ Operation saved to history:', operationId);
+ console.log('âœ… Operation saved to history:', operationId);
  }
 
  function addToRecentUploads(uploadData) {
@@ -672,7 +672,7 @@
  displayRecentFiles();
  recentFilesSection.classList.remove('hidden');
  
- console.log('✅ Upload added to recent files:', uploadId);
+ console.log('âœ… Upload added to recent files:', uploadId);
  }
 
  function displayRecentFiles() {
@@ -874,7 +874,7 @@
  
  showNotification('Upload history cleared successfully', 'success');
  
- console.log('✅ Upload history cleared completely');
+ console.log('âœ… Upload history cleared completely');
  } catch (error) {
  console.error('Clear history error:', error);
  showNotification('Error clearing history: ' + error.message, 'error');
@@ -967,7 +967,7 @@
  <div class="flex items-center">
  <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'} mr-2"></i>
  <span>${message}</span>
- <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">×</button>
+ <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">Ã—</button>
  </div>
  `;
 
@@ -1079,10 +1079,10 @@
  ${result.multiseriesDetails ? `
  <div class="mt-2 p-3 bg-blue-50 rounded border border-blue-200">
  <p class="font-semibold text-blue-800">Member ID Series Details:</p>
- <p class="text-sm text-blue-700">• Prefix: ${result.multiseriesDetails.prefix}</p>
- <p class="text-sm text-blue-700">• Description: ${result.multiseriesDetails.description}</p>
- <p class="text-sm text-blue-700">• Sample ID: ${result.multiseriesDetails.sampleId}</p>
- <p class="text-sm text-blue-700">• Status: ${result.multiseriesDetails.enabled ? 'Custom Series' : 'Default Series'}</p>
+ <p class="text-sm text-blue-700">â€¢ Prefix: ${result.multiseriesDetails.prefix}</p>
+ <p class="text-sm text-blue-700">â€¢ Description: ${result.multiseriesDetails.description}</p>
+ <p class="text-sm text-blue-700">â€¢ Sample ID: ${result.multiseriesDetails.sampleId}</p>
+ <p class="text-sm text-blue-700">â€¢ Status: ${result.multiseriesDetails.enabled ? 'Custom Series' : 'Default Series'}</p>
  </div>
  ` : ''}
  ${result.duplicatesRemoved> 0 ? `<p class="text-sm text-orange-600">Duplicates removed: ${result.duplicatesRemoved}</p>` : ''}
@@ -1164,7 +1164,7 @@
  card.innerHTML = `
  ${warningHTML}
  <h3 class="font-bold text-lg text-gray-800 mb-1">${member.full_name}</h3>
- <p class="text-sm text-gray-600 mb-4">${member.gender} • ${member.age || 'N/A'}</p>
+ <p class="text-sm text-gray-600 mb-4">${member.gender} â€¢ ${member.age || 'N/A'}</p>
  
  <div class="flex space-x-4 w-full">
  <div class="flex-1 flex flex-col items-center">
@@ -1408,7 +1408,7 @@
  const year = new Date().getFullYear();
  const copyrightText = document.getElementById('copyright-text');
  if (copyrightText) {
- copyrightText.textContent = `© ${year} vevahamatrimony. All rights reserved.`;
+ copyrightText.textContent = `Â© ${year} vevahamatrimony. All rights reserved.`;
  }
  });
 
@@ -1590,6 +1590,7 @@
 <script src="global-search.js"></script>
 
     <script src="/pwa-register.js"></script>
+    <script src="/pwa-install-banner.js"></script>
 </body>
 
 
