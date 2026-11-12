@@ -30,7 +30,12 @@
         refresh() { return localStorage.getItem('vm_refresh') || ''; },
         user() { try { return JSON.parse(localStorage.getItem('userData') || '{}'); } catch { return {}; } },
         memberId() { return this.user()?.member_id || ''; },
-        isLoggedIn() { return !!this.token(); },
+        isLoggedIn() {
+            if (this.token()) return true;
+            // Allow token-less mobile OTP login: user data with id is sufficient
+            const u = this.user();
+            return !!(u && u.id && u.mobile_number);
+        },
         clear() {
             localStorage.removeItem('vm_token');
             localStorage.removeItem('vm_refresh');

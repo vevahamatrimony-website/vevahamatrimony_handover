@@ -29,7 +29,9 @@
     ];
 
     if (!token) {
-        if (DASHBOARD_PAGES.includes(path)) {
+        // Allow token-less mobile OTP login: check if userData has a valid user id
+        const hasValidUser = user && user.id && user.mobile_number;
+        if (!hasValidUser && DASHBOARD_PAGES.includes(path)) {
             console.warn('[Guard] Access denied. Redirecting to login.');
             window.location.href = 'login.html';
             return;

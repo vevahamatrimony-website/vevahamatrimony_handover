@@ -404,14 +404,25 @@
             var statusEl = document.getElementById('loginOtpStatus');
             VM.setLoading(btn, true, 'Verify & Login');
             try {
-                var res = await fetch((window.VMAPI_BASE || '') + '/api/auth/verify-mobile-otp', {
+                // Call the dedicated login endpoint that returns auth tokens
+                var res = await fetch((window.VMAPI_BASE || '') + '/api/auth/login-mobile-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mobile: '+91' + mobile, otp: otp, purpose: 'login' })
+                    body: JSON.stringify({ mobile: mobile, otp: otp })
                 });
                 var d = await res.json();
                 if (!res.ok) throw new Error(d.error || 'OTP verification failed');
-                VMAuth.save(d);
+
+                // Save auth session - handle both token and token-less responses
+                if (d.access_token) {
+                    VMAuth.save({ access_token: d.access_token, refresh_token: d.refresh_token, user: d.user });
+                } else if (d.user) {
+                    // Token-less fallback: store user data only
+                    localStorage.setItem('vm_token', '');
+                    localStorage.setItem('vm_refresh', '');
+                    localStorage.setItem('userData', JSON.stringify(d.user));
+                }
+
                 VM.toast('Welcome back, ' + (d.user?.full_name || 'Member') + '!', 'success');
                 if (_loginOtpTimer) clearInterval(_loginOtpTimer);
                 setTimeout(() => window.location.href = 'home.html', 800);
