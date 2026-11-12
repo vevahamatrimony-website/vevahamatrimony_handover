@@ -60,23 +60,128 @@
                     <span class="lang-en">Sign in to your account</span><span class="lang-ta hidden">உஙகள கணககல உளநழக</span>
                 </h2><p class="mt-2 text-center text-sm text-gray-600">
                     <span class="lang-en">Welcome back to vevahamatrimony</span><span class="lang-ta hidden">வேவஹா மேட்ரிமோனியில் மீண்டும் வரவேற்கிறோம்</span>
-                </p></div><form class="mt-8 space-y-6" id="loginForm"><input type="hidden" name="remember" value="true"><div class="rounded-md shadow-sm -space-y-px"><div><label for="email-address" class="sr-only">Email address</label><input id="email-address" name="email" type="email" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                            placeholder="Email address"></div><div class="relative"><label for="password" class="sr-only">Password</label><input id="password" name="password" type="password" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 pr-12 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                            placeholder="Password"><button type="button" id="togglePassword"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-pink-600 focus:outline-none cursor-pointer p-1 z-20"
-                            onclick="togglePasswordVisibility('password', 'passwordIcon')"><i class="fas fa-eye" id="passwordIcon"></i></button></div></div><div class="flex items-center justify-between"><div class="flex items-center"><input id="remember-me" name="remember-me" type="checkbox"
-                            class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"><label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                            Remember me
-                        </label></div><div class="text-sm"><a href="forgot-password.html" class="font-medium text-pink-600 hover:text-pink-500">
-                            <span class="lang-en">Forgot your password?</span><span class="lang-ta hidden">கடவுச்சொல் மறந்துவிட்டதா?</span>
-                        </a></div></div><div><button type="submit" id="loginBtn"
-                        class="w-full bg-pink-600 text-white py-3 px-4 rounded-lg hover:bg-pink-700 transition duration-200 font-medium"><span class="lang-en">Login</span><span class="lang-ta hidden">உள்நுழை</span></button></div><div class="text-center"><p class="text-sm text-gray-600">
-                        <span class="lang-en">New to vevahamatrimony?</span><span class="lang-ta hidden">வேவஹாவில் புதியவரா?</span>
-                        <a href="register.html" class="font-medium text-pink-600 hover:text-pink-500">
-                            Register here
-                        </a></p></div></form></div></div><!-- Footer --><footer class="bg-gray-800 text-white py-12 w-full mt-auto"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"><div class="sm:col-span-2 md:col-span-1"><div class="flex items-center mb-4"><span class="text-xl sm:text-2xl font-bold">vevahamatrimony</span></div><p class="text-gray-400 text-sm sm:text-base leading-relaxed">Connecting hearts, creating families.
+                </p></div><!-- ══ Login Method Tabs ═════════════════════════════════ -->
+<div class="mt-8">
+  <!-- Tab buttons -->
+  <div class="flex rounded-xl overflow-hidden border border-gray-200 mb-6 text-xs sm:text-sm">
+    <button type="button" id="tab-email" onclick="switchLoginTab('email')"
+      class="flex-1 py-3 font-semibold transition-colors bg-pink-600 text-white">
+      <i class="fas fa-envelope mr-1"></i><span class="hidden sm:inline">Email</span><span class="sm:hidden">Email</span>
+    </button>
+    <button type="button" id="tab-mobile-pass" onclick="switchLoginTab('mobile-pass')"
+      class="flex-1 py-3 font-semibold transition-colors bg-white text-gray-600 hover:bg-pink-50">
+      <i class="fas fa-mobile-alt mr-1"></i><span class="hidden sm:inline">Mobile + Pass</span><span class="sm:hidden">M+Pass</span>
+    </button>
+    <button type="button" id="tab-mobile-otp" onclick="switchLoginTab('mobile-otp')"
+      class="flex-1 py-3 font-semibold transition-colors bg-white text-gray-600 hover:bg-pink-50">
+      <i class="fas fa-sms mr-1"></i><span class="hidden sm:inline">Mobile OTP</span><span class="sm:hidden">OTP</span>
+    </button>
+  </div>
+
+  <!-- Tab 1: Email + Password -->
+  <div id="login-panel-email">
+    <form class="space-y-4" id="loginForm">
+      <input type="hidden" name="remember" value="true">
+      <div>
+        <label for="email-address" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+        <input id="email-address" name="email" type="email" required
+          class="block w-full px-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 sm:text-sm"
+          placeholder="yourmail@gmail.com">
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <div class="relative">
+          <input id="password" name="password" type="password" required
+            class="block w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 sm:text-sm"
+            placeholder="Password">
+          <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-pink-600"
+            onclick="togglePasswordVisibility('password','passwordIcon')"><i class="fas fa-eye" id="passwordIcon"></i></button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-pink-600 border-gray-300 rounded">
+          Remember me
+        </label>
+        <a href="forgot-password.html" class="text-sm font-medium text-pink-600 hover:text-pink-500"><span class="lang-en">Forgot password?</span><span class="lang-ta hidden">கடவுச்சொல் மறந்துவிட்டதா?</span></a>
+      </div>
+      <button type="submit" id="loginBtn"
+        class="w-full bg-pink-600 text-white py-3 px-4 rounded-lg hover:bg-pink-700 transition font-semibold">
+        <span class="lang-en">Login</span><span class="lang-ta hidden">உள்நுழை</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Tab 2: Mobile + Password -->
+  <div id="login-panel-mobile-pass" class="hidden space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+      <div class="flex">
+        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50 text-gray-500 text-sm font-semibold">+91</span>
+        <input id="mp-mobile" type="tel" maxlength="10" pattern="[6-9][0-9]{9}"
+          class="flex-1 px-3 py-2 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+          placeholder="10-digit mobile number"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+      <div class="relative">
+        <input id="mp-password" type="password"
+          class="block w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+          placeholder="Password">
+        <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-pink-600"
+          onclick="togglePasswordVisibility('mp-password','mp-pass-icon')"><i class="fas fa-eye" id="mp-pass-icon"></i></button>
+      </div>
+    </div>
+    <a href="forgot-password.html" class="block text-sm font-medium text-pink-600 hover:text-pink-500 text-right">Forgot password?</a>
+    <button type="button" id="mpLoginBtn" onclick="loginWithMobilePassword()"
+      class="w-full bg-pink-600 text-white py-3 rounded-lg hover:bg-pink-700 transition font-semibold">Login</button>
+  </div>
+
+  <!-- Tab 3: Mobile + OTP -->
+  <div id="login-panel-mobile-otp" class="hidden space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+      <div class="flex gap-2">
+        <div class="flex flex-1">
+          <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50 text-gray-500 text-sm font-semibold">+91</span>
+          <input id="otp-mobile" type="tel" maxlength="10" pattern="[6-9][0-9]{9}"
+            class="flex-1 px-3 py-2 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+            placeholder="10-digit mobile number"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
+        </div>
+        <button type="button" id="sendLoginOtpBtn" onclick="sendLoginMobileOTP()"
+          class="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 text-sm font-semibold whitespace-nowrap">Send OTP</button>
+      </div>
+    </div>
+    <div id="login-otp-box" class="hidden space-y-3">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Enter 6-Digit OTP</label>
+        <div class="flex gap-2">
+          <input id="login-otp-input" type="text" maxlength="6"
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 text-center text-lg font-mono tracking-widest"
+            placeholder="000000" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6)">
+          <button type="button" id="verifyLoginOtpBtn" onclick="verifyLoginMobileOTP()"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-semibold whitespace-nowrap">Verify &amp; Login</button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs text-gray-500">
+        <span id="loginOtpTimer">OTP valid for 10 minutes</span>
+        <button type="button" id="resendLoginOtpBtn" onclick="sendLoginMobileOTP(true)" class="text-pink-600 underline hidden">Resend OTP</button>
+      </div>
+    </div>
+    <div id="loginOtpStatus" class="text-sm"></div>
+  </div>
+
+  <div class="text-center mt-6">
+    <p class="text-sm text-gray-600">
+      <span class="lang-en">New to vevahamatrimony?</span><span class="lang-ta hidden">வேவஹாவில் புதியவரா?</span>
+      <a href="register.html" class="font-medium text-pink-600 hover:text-pink-500 ml-1">Register here</a>
+    </p>
+  </div>
+</div>
+</div></div><!-- Footer --><footer class="bg-gray-800 text-white py-12 w-full mt-auto"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"><div class="sm:col-span-2 md:col-span-1"><div class="flex items-center mb-4"><span class="text-xl sm:text-2xl font-bold">vevahamatrimony</span></div><p class="text-gray-400 text-sm sm:text-base leading-relaxed">Connecting hearts, creating families.
                         Your trusted partner in finding true love.</p></div><div><h3 class="text-lg font-semibold mb-4">Quick Links</h3><ul class="space-y-2"><li><a href="about.html"
                                 class="text-gray-400 hover:text-white transition duration-300 text-sm sm:text-base">About
                                 Us</a></li><li><a href="membership.html"
@@ -207,6 +312,115 @@
                 }
             }
         });
+
+        // ── Tab switcher ─────────────────────────────────────────
+        window.switchLoginTab = function(tab) {
+            ['email','mobile-pass','mobile-otp'].forEach(function(t) {
+                var panel = document.getElementById('login-panel-' + t);
+                var btn   = document.getElementById('tab-' + t);
+                if (panel) panel.classList.toggle('hidden', t !== tab);
+                if (btn) {
+                    btn.classList.toggle('bg-pink-600', t === tab);
+                    btn.classList.toggle('text-white',  t === tab);
+                    btn.classList.toggle('bg-white',    t !== tab);
+                    btn.classList.toggle('text-gray-600', t !== tab);
+                }
+            });
+        };
+
+        // ── Mobile + Password login ───────────────────────────────
+        window.loginWithMobilePassword = async function() {
+            var mobile = (document.getElementById('mp-mobile')?.value || '').trim();
+            var password = document.getElementById('mp-password')?.value || '';
+            if (!mobile || mobile.length < 10) { VM.toast('Enter a valid 10-digit mobile number', 'error'); return; }
+            if (!password) { VM.toast('Enter your password', 'error'); return; }
+            var btn = document.getElementById('mpLoginBtn');
+            VM.setLoading(btn, true, 'Login');
+            try {
+                var data = await VM.auth.login('+91' + mobile, password);
+                VMAuth.save(data);
+                VM.toast('Welcome back, ' + (data.user?.full_name || 'Member') + '!', 'success');
+                setTimeout(() => window.location.href = 'home.html', 800);
+            } catch(err) {
+                // Fallback: try with just the number if +91 version fails
+                try {
+                    var data2 = await VM.auth.login(mobile, password);
+                    VMAuth.save(data2);
+                    VM.toast('Welcome back!', 'success');
+                    setTimeout(() => window.location.href = 'home.html', 800);
+                } catch(err2) {
+                    VM.toast(err2.message || 'Login failed. Check your mobile/password.', 'error');
+                    VM.setLoading(btn, false, 'Login');
+                }
+            }
+        };
+
+        // ── Mobile OTP login ──────────────────────────────────────
+        var _loginOtpTimer = null;
+
+        window.sendLoginMobileOTP = async function(isResend) {
+            var mobile = (document.getElementById('otp-mobile')?.value || '').trim();
+            if (!mobile || mobile.length < 10) { VM.toast('Enter a valid 10-digit mobile number', 'error'); return; }
+            var btn = document.getElementById('sendLoginOtpBtn');
+            var statusEl = document.getElementById('loginOtpStatus');
+            VM.setLoading(btn, true, 'Send OTP');
+            statusEl.innerHTML = '';
+            try {
+                var res = await fetch((window.VMAPI_BASE || '') + '/api/auth/send-mobile-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mobile: '+91' + mobile, purpose: 'login' })
+                });
+                var d = await res.json();
+                if (!res.ok) throw new Error(d.error || 'Failed to send OTP');
+                document.getElementById('login-otp-box').classList.remove('hidden');
+                statusEl.innerHTML = '<span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>OTP sent to +91 ' + mobile + '</span>';
+                // Countdown timer
+                if (_loginOtpTimer) clearInterval(_loginOtpTimer);
+                var secs = 600;
+                var timerEl = document.getElementById('loginOtpTimer');
+                var resendBtn = document.getElementById('resendLoginOtpBtn');
+                if (resendBtn) resendBtn.classList.add('hidden');
+                _loginOtpTimer = setInterval(function() {
+                    secs--;
+                    if (timerEl) timerEl.textContent = 'OTP valid for ' + Math.floor(secs/60) + 'm ' + (secs%60) + 's';
+                    if (secs <= 0) {
+                        clearInterval(_loginOtpTimer);
+                        if (timerEl) timerEl.textContent = 'OTP expired';
+                        if (resendBtn) resendBtn.classList.remove('hidden');
+                    }
+                }, 1000);
+            } catch(err) {
+                statusEl.innerHTML = '<span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>' + (err.message || 'Failed to send OTP') + '</span>';
+            }
+            VM.setLoading(btn, false, 'Send OTP');
+        };
+
+        window.verifyLoginMobileOTP = async function() {
+            var mobile = (document.getElementById('otp-mobile')?.value || '').trim();
+            var otp    = (document.getElementById('login-otp-input')?.value || '').trim();
+            if (!otp || otp.length < 6) { VM.toast('Enter the 6-digit OTP', 'error'); return; }
+            var btn = document.getElementById('verifyLoginOtpBtn');
+            var statusEl = document.getElementById('loginOtpStatus');
+            VM.setLoading(btn, true, 'Verify & Login');
+            try {
+                var res = await fetch((window.VMAPI_BASE || '') + '/api/auth/verify-mobile-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mobile: '+91' + mobile, otp: otp, purpose: 'login' })
+                });
+                var d = await res.json();
+                if (!res.ok) throw new Error(d.error || 'OTP verification failed');
+                VMAuth.save(d);
+                VM.toast('Welcome back, ' + (d.user?.full_name || 'Member') + '!', 'success');
+                if (_loginOtpTimer) clearInterval(_loginOtpTimer);
+                setTimeout(() => window.location.href = 'home.html', 800);
+            } catch(err) {
+                statusEl.innerHTML = '<span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>' + (err.message || 'Invalid OTP') + '</span>';
+                VM.setLoading(btn, false, 'Verify & Login');
+            }
+        };
+
     </script><script src="mobile-optimization.js"></script><script src="script.js"></script><script src="vevaha-ai-widget.js"></script><script src="global-search.js"></script><script src="language.js"></script>
 
     <script src="/pwa-register.js"></script>
