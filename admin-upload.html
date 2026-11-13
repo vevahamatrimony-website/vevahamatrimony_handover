@@ -1203,9 +1203,23 @@
  document.getElementById('swapImageInput').click();
  }
 
- document.getElementById('swapImageInput').addEventListener('change', function(e) {
- const file = e.target.files[0];
- if (!file || !currentSwapTarget) return;
+ document.getElementById('swapImageInput').addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file || !currentSwapTarget) return;
+
+  // Verify image does not contain mobile numbers
+  try {
+    const fd = new FormData();
+    fd.append('photo', file);
+    const checkRes = await fetch('/api/upload/check-image', { method: 'POST', body: fd }).then(r => r.json());
+    if (checkRes && checkRes.hasPhoneNumber) {
+      alert('⚠️ Mobile number detected on this image! Images containing phone numbers are not allowed.');
+      e.target.value = '';
+      return;
+    }
+  } catch (err) {
+    console.warn('Image phone pre-check skipped:', err.message);
+  }
 
  const reader = new FileReader();
  reader.onload = function(event) {

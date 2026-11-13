@@ -3,6 +3,7 @@ const path = require('path');
 const { supabaseAdmin } = require('../lib/supabase');
 const { requireAuth } = require('../middleware/auth');
 const { uploadPhoto, uploadDocument, uploadHoroscope, handleMulterError } = require('../middleware/multer');
+const { scanImageForPhoneNumber, rejectIfImageContainsPhone } = require('../lib/image-phone-detector');
 
 // Timeout constants
 const TIMEOUT_MS = {
@@ -52,10 +53,33 @@ async function uploadToSupabase(bucket, filePath, buffer, mimetype) {
 }
 
 // ══════════════════════════════════════════════════════════════
+// PRE-CHECK IMAGE FOR PHONE NUMBER — POST /api/upload/check-image
+// Used for instant frontend feedback during register & edit profile
+// ══════════════════════════════════════════════════════════════
+router.post('/check-image', handleMulterError(uploadPhoto), async (req, res) => {
+    try {
+        if (!req.file || !req.file.buffer) {
+            return res.status(400).json({ error: 'No image file provided' });
+        }
+        const check = await scanImageForPhoneNumber(req.file.buffer, req.file.mimetype);
+        if (check.hasPhoneNumber) {
+            return res.json({
+                hasPhoneNumber: true,
+                message: 'Phone number detected on this image. Phone numbers are strictly not permitted on profile photos or horoscopes.',
+                detectedNumber: check.detectedNumber
+            });
+        }
+        return res.json({ hasPhoneNumber: false, message: 'Image is clean' });
+    } catch (err) {
+        return res.json({ hasPhoneNumber: false, message: 'Check skipped', error: err.message });
+    }
+});
+
+// ══════════════════════════════════════════════════════════════
 // UPLOAD PROFILE PHOTO — POST /api/upload/photo
 // bucket: profile-pictures / member_id / profile.ext
 // ══════════════════════════════════════════════════════════════
-router.post('/photo', requireAuth, handleMulterError(uploadPhoto), async (req, res) => {
+router.post('/photo', requireAuth, handleMulterError(uploadPhoto), rejectIfImageContainsPhone('profile photo'), async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ error: 'No photo file uploaded' });
 
@@ -153,7 +177,7 @@ router.post('/document', requireAuth, handleMulterError(uploadDocument), async (
 // UPLOAD HOROSCOPE — POST /api/upload/horoscope
 // bucket: horoscopes / member_id / horoscope.ext
 // ══════════════════════════════════════════════════════════════
-router.post('/horoscope', requireAuth, handleMulterError(uploadHoroscope), async (req, res) => {
+router.post('/horoscope', requireAuth, handleMulterError(uploadHoroscope), rejectIfImageContainsPhone('horoscope image'), async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ error: 'No horoscope file uploaded' });
 

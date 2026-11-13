@@ -658,6 +658,28 @@
 
  // On page load, check local storage for language setting
  document.addEventListener('DOMContentLoaded', function () {
+
+    // Pre-check horoscope image for phone numbers
+    const horoInputEl = document.querySelector('input[name="horoscope"]');
+    if (horoInputEl) {
+        horoInputEl.addEventListener('change', function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (file && file.type && file.type.startsWith('image/')) {
+                const fd = new FormData();
+                fd.append('photo', file);
+                fetch('/api/upload/check-image', { method: 'POST', body: fd })
+                    .then(r => r.json())
+                    .then(res => {
+                        if (res && res.hasPhoneNumber) {
+                            alert('⚠️ Phone number detected on this horoscope image! Phone numbers are strictly not permitted on horoscope charts. Please upload an image without contact numbers.');
+                            e.target.value = '';
+                        }
+                    })
+                    .catch(err => console.warn('Horo check error:', err));
+            }
+        });
+    }
+
  let selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
  applyLanguage(selectedLanguage);
 
@@ -981,6 +1003,21 @@
  }
  
  closeCropModal();
+
+  // Pre-check cropped profile picture for phone numbers
+  try {
+    const fd = new FormData();
+    fd.append('photo', croppedFile);
+    fetch('/api/upload/check-image', { method: 'POST', body: fd })
+      .then(r => r.json())
+      .then(res => {
+        if (res && res.hasPhoneNumber) {
+          alert('⚠️ Phone number detected on this photo! Phone numbers are strictly not permitted on profile photos. Please upload a clear photo without contact numbers.');
+          removeProfilePicture();
+        }
+      })
+      .catch(e => console.warn('Photo phone check skipped:', e.message));
+  } catch (_) {}
  }, originalFile.type);
  };
 
