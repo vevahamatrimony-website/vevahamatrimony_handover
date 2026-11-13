@@ -380,7 +380,7 @@ router.post('/login-mobile-otp', async (req, res) => {
         const mobileFormats = [`+91${mobile}`, `91${mobile}`, mobile];
         let profile = null;
         for (const fmt of mobileFormats) {
-            const { data } = await supabaseAdmin.from('profiles').select('*').eq('mobile_number', fmt).single();
+            const { data } = await supabaseAdmin.from('profiles').select('*').eq('mobile_number', fmt).maybeSingle();
             if (data) { profile = data; break; }
         }
 
@@ -392,22 +392,55 @@ router.post('/login-mobile-otp', async (req, res) => {
             return res.status(403).json({ error: 'Your account has been suspended. Contact support.' });
         }
 
-        // ── Step 3: Generate a Supabase session for this user ─
-        // Use generateLink (magic link) which gives us a one-time token
-        // Then exchange it for a real session
-        const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
-            type: 'magiclink',
-            email: profile.email || `${mobile}@vevahamatrimony.phone`,
-        });
+        // ── Step 3: Determine user email for Supabase session ─
+        let userEmail = null;
 
-        if (!linkError && linkData?.properties?.hashed_token) {
-            // Exchange the magic link token for a session
+        // Try getting email from auth.users first
+        if (profile.id) {
             try {
+                const { data: authUser } = await supabaseAdmin.auth.admin.getUserById(profile.id);
+                if (authUser?.user?.email) {
+                    userEmail = authUser.user.email;
+                }
+            } catch (err) {
+                console.warn('[login-mobile-otp] getUserById failed:', err.message);
+            }
+        }
+
+        // Fallback to profile.email_address
+        if (!userEmail && profile.email_address) {
+            userEmail = profile.email_address;
+        }
+
+        // If still no email, set up a mobile placeholder email in auth
+        if (!userEmail) {
+            userEmail = `${mobile}@vevahamatrimony.phone`;
+            try {
+                if (profile.id) {
+                    await supabaseAdmin.auth.admin.updateUserById(profile.id, {
+                        email: userEmail,
+                        email_confirm: true
+                    });
+                }
+            } catch (err) {
+                console.warn('[login-mobile-otp] updateUserById email failed:', err.message);
+            }
+        }
+
+        // ── Step 4: Generate magic link and exchange for session ─
+        try {
+            const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
+                type: 'magiclink',
+                email: userEmail
+            });
+
+            if (!linkError && linkData?.properties?.hashed_token) {
                 const tokenHash = linkData.properties.hashed_token;
                 const { data: sessionData, error: sessionError } = await supabase.auth.verifyOtp({
                     type: 'magiclink',
-                    token_hash: tokenHash,
+                    token_hash: tokenHash
                 });
+
                 if (!sessionError && sessionData?.session) {
                     return res.json({
                         message: 'Login successful',
@@ -416,45 +449,19 @@ router.post('/login-mobile-otp', async (req, res) => {
                         user: profile
                     });
                 }
-            } catch(e) {
-                console.warn('Magic link exchange failed, using admin token approach:', e.message);
             }
+        } catch (linkErr) {
+            console.warn('[login-mobile-otp] Session token exchange failed:', linkErr.message);
         }
 
-        // ── Fallback: Create a custom JWT via admin API ──────
-        // Use supabaseAdmin to create a session directly for the user
-        const { data: adminSession, error: adminErr } = await supabaseAdmin.auth.admin.createSession({
-            user_id: profile.id
+        // ── Fallback: Token-less session ─────────────────────
+        return res.json({
+            message: 'Login successful',
+            access_token: null,
+            refresh_token: null,
+            user: profile,
+            _tokenless: true
         });
-
-        if (!adminErr && adminSession?.session) {
-            return res.json({
-                message: 'Login successful',
-                access_token: adminSession.session.access_token,
-                refresh_token: adminSession.session.refresh_token,
-                user: profile
-            });
-        }
-
-        // ── Last resort: return profile with a flag for token-less login ─
-        // Some Supabase versions don't support createSession — use impersonation
-        const { data: impData, error: impErr } = await supabaseAdmin.auth.admin.getUserById(profile.id);
-        if (!impErr && impData?.user) {
-            // Try signInWithOtp using phone (if phone auth enabled in Supabase)
-            // For now return the profile without a Supabase token — the site will
-            // work with the userData in localStorage only (non-authenticated API calls
-            // will fail but basic navigation will work)
-            console.warn(`[login-mobile-otp] Could not generate Supabase session for user ${profile.id}. Returning profile only.`);
-            return res.json({
-                message: 'Login successful',
-                access_token: null,
-                refresh_token: null,
-                user: profile,
-                _tokenless: true
-            });
-        }
-
-        return res.status(500).json({ error: 'OTP verified but could not create login session. Please try email login.' });
 
     } catch (err) {
         console.error('Login Mobile OTP Error:', err);
@@ -765,10 +772,40 @@ router.post('/register', async (req, res) => {
 // ══════════════════════════════════════════════════════════════
 router.post('/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password required' });
+            return res.status(400).json({ error: 'Email/Mobile and password required' });
+        }
+
+        email = String(email).trim();
+
+        // If identifier does not have '@', treat it as a mobile number and resolve to user's auth email
+        if (!email.includes('@')) {
+            let m = email.replace(/\D/g, '');
+            if (m.startsWith('91') && m.length === 12) m = m.slice(2);
+            if (m.startsWith('0') && m.length === 11) m = m.slice(1);
+
+            const formats = [`+91${m}`, `91${m}`, m];
+            let prof = null;
+            for (const fmt of formats) {
+                const { data } = await supabaseAdmin.from('profiles').select('id, email_address').eq('mobile_number', fmt).maybeSingle();
+                if (data) { prof = data; break; }
+            }
+
+            if (prof) {
+                // Try to get auth email from auth.users
+                try {
+                    const { data: aUser } = await supabaseAdmin.auth.admin.getUserById(prof.id);
+                    if (aUser?.user?.email) {
+                        email = aUser.user.email;
+                    }
+                } catch (_) {}
+
+                if (!email.includes('@') && prof.email_address) {
+                    email = prof.email_address;
+                }
+            }
         }
 
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
