@@ -88,15 +88,17 @@ router.post('/send-otp', async (req, res) => {
             try {
                 await sendEmailWithTimeout(mailOptions);
                 console.log(`OTP Email sent to ${email} (OTP: ${otp})`);
+                return res.json({ success: true, message: 'OTP sent successfully' });
             } catch (smtpErr) {
-                console.warn('Failed to send OTP email, falling back to console log:', smtpErr.message);
-                console.log(`[DEV FALLBACK] OTP for ${email} is ${otp}`);
+                console.error('Failed to send OTP email:', smtpErr.message);
+                return res.status(500).json({ 
+                    error: 'Unable to send OTP email. Please ensure your Gmail App Password (SMTP_PASS) is valid, or continue with Mobile OTP.' 
+                });
             }
         } else {
             console.log(`[DEV MODE] OTP for ${email} is ${otp} (SMTP_PASS not set)`);
+            return res.json({ success: true, message: 'OTP sent (Dev mode: check server logs)' });
         }
-
-        res.json({ success: true, message: 'OTP sent successfully' });
     } catch (err) {
         console.error('Send OTP Error:', err);
         // Expose the actual Nodemailer error so the user knows if it's an Auth issue or Port issue
