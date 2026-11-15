@@ -7,7 +7,18 @@
     <link rel="apple-touch-icon" href="/images/vevaha-logo.png">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
  <link rel="icon" type="image/png" href="/images/vevaha-logo.png"><title>Register - vevahamatrimony</title><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
- rel="stylesheet"><link href="style.css?v=2" rel="stylesheet"><!-- Nhost JS SDK (UMD browser build - sets window.NhostClient) --><script src="load-public-navbar.js"></script><!-- Load API config first for custom domain support --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script><script src="https://checkout.razorpay.com/v1/checkout.js"></script>    <script src="mobile-ux.js" defer></script>
+ rel="stylesheet"><link href="style.css?v=2" rel="stylesheet"><style>
+@keyframes consent-shake {
+    0%, 100% { transform: translateX(0); }
+    15%, 45%, 75% { transform: translateX(-6px); }
+    30%, 60%, 90% { transform: translateX(6px); }
+}
+.consent-shake { animation: consent-shake 0.5s ease-in-out; }
+.consent-error-highlight {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25), 0 0 0 6px rgba(236, 72, 153, 0.25) !important;
+}
+</style><!-- Nhost JS SDK (UMD browser build - sets window.NhostClient) --><script src="load-public-navbar.js"></script><!-- Load API config first for custom domain support --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script><script src="https://checkout.razorpay.com/v1/checkout.js"></script>    <script src="mobile-ux.js" defer></script>
 </head><body class="bg-gradient-to-br from-pink-50 to-white page-load-animation min-h-screen flex flex-col">
 <!-- Navigation --><nav class="bg-white shadow-lg"><div class="w-full"><div class="flex justify-between items-center h-16"><div class="flex items-center flex-shrink-0"><a href="index.html"
  class="navbar-brand flex items-center text-xl sm:text-2xl font-bold text-pink-600"><img src="images/vevaha-logo.png" alt="VPS Logo" class="w-10 h-10 mr-2">
@@ -491,7 +502,7 @@
  class="flex items-center justify-center space-x-3 bg-white p-4 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 transition-colors"><input type="checkbox" id="hidePhoto" name="hidePhoto"
  class="form-checkbox h-5 w-5 text-pink-600"><span class="text-gray-700 font-medium">Hide my photo from other
  members</span><i class="fas fa-eye-slash text-gray-400"></i></label><p class="text-xs text-gray-500 mt-2 text-center">Your photo will be blurred for
- privacy</p></div></div><div id="profilePictureError"
+ privacy</p></div></div><!-- Mandatory Profile Photo Promotion Consent Checkbox --><div id="photoPromoConsentContainer" class="mt-4 text-left transition-all duration-300"><label for="photoPromoConsent" id="photoPromoConsentLabel" class="flex items-start space-x-3 bg-white p-4 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 transition-all border border-gray-200"><input type="checkbox" id="photoPromoConsent" name="photoPromoConsent" class="form-checkbox h-5 w-5 text-pink-600 rounded focus:ring-pink-500 mt-0.5 flex-shrink-0 cursor-pointer" onchange="handlePhotoPromoConsentChange()"><span class="text-gray-700 font-medium text-sm leading-snug select-none">I agree to the use of my profile photo for Vevahamatrimony.com promotions and advertisements, even if hidden on my profile.</span></label><div id="photoPromoConsentError" class="hidden mt-2 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm flex items-center"><i class="fas fa-exclamation-circle mr-2 text-red-500 flex-shrink-0"></i><span>Please tick the checkbox to agree to the use of your profile photo for promotions to continue.</span></div></div><div id="profilePictureError"
  class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg"><i class="fas fa-exclamation-triangle mr-2"></i></div></div><!-- Removed the old profilePictureError div --><div class="mt-3 text-xs text-gray-500"><i class="fas fa-info-circle mr-1"></i>
  Your profile picture helps others recognize you. Choose a clear, recent photo where your
  face is visible.
@@ -508,12 +519,13 @@
  class="bg-gray-300 text-gray-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-400 transition duration-300"
  onclick="goToStep(1)"><i class="fas fa-arrow-left mr-2"></i>
  Back
- </button><button type="button" id="nextStep2"
+ </button><div id="nextStep2Wrapper" class="inline-block relative cursor-pointer"><button type="button" id="nextStep2"
  class="bg-gradient-to-r from-pink-600 to-pink-700 text-white px-12 py-4 rounded-xl font-bold text-lg hover:from-pink-700 hover:to-pink-800 transition duration-300 shadow-lg opacity-50 cursor-not-allowed"
  disabled
+ aria-disabled="true"
  onclick="validateAndGoToStep3()">
  Continue to Verification
- <i class="fas fa-arrow-right ml-2"></i></button></div></div><!-- Step 3: Final Verification --><div id="step3" class="step-content hidden"><div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800 mb-4">Almost Done!</h2><p class="text-gray-600 text-lg">Please review and confirm your registration</p></div><div
+ <i class="fas fa-arrow-right ml-2"></i></button></div></div></div><!-- Step 3: Final Verification --><div id="step3" class="step-content hidden"><div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-800 mb-4">Almost Done!</h2><p class="text-gray-600 text-lg">Please review and confirm your registration</p></div><div
  class="bg-gradient-to-r from-pink-50 to-pink-100 border border-pink-200 rounded-xl p-8 mb-8"><h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-shield-check text-pink-600 mr-3"></i>
  Verification Process
  </h3><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="flex items-center space-x-3"><div
@@ -1036,6 +1048,76 @@
  if (uploadArea) uploadArea.classList.remove('hidden');
  }
 
+ // Mandatory Photo Promotion Consent Checkbox Handlers
+ function highlightAndShowConsentError() {
+ const consent = document.getElementById('photoPromoConsent');
+ const container = document.getElementById('photoPromoConsentContainer');
+ const label = document.getElementById('photoPromoConsentLabel');
+ const errorEl = document.getElementById('photoPromoConsentError');
+
+ if (errorEl) {
+ errorEl.classList.remove('hidden');
+ }
+ if (label) {
+ label.classList.remove('border-gray-200');
+ label.classList.add('consent-error-highlight', 'consent-shake');
+ setTimeout(() => {
+ label.classList.remove('consent-shake');
+ }, 600);
+ }
+ if (container) {
+ container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ }
+ if (consent) {
+ setTimeout(() => {
+ try { consent.focus(); } catch (_) {}
+ }, 250);
+ }
+ }
+ window.highlightAndShowConsentError = highlightAndShowConsentError;
+
+ function handlePhotoPromoConsentChange() {
+ const consent = document.getElementById('photoPromoConsent');
+ const label = document.getElementById('photoPromoConsentLabel');
+ const errorEl = document.getElementById('photoPromoConsentError');
+
+ if (consent && consent.checked) {
+ if (errorEl) errorEl.classList.add('hidden');
+ if (label) {
+ label.classList.remove('consent-error-highlight', 'consent-shake');
+ label.classList.add('border-gray-200');
+ }
+ }
+
+ if (typeof window.validateStep2 === 'function') {
+ window.validateStep2();
+ } else if (typeof validateStep2 === 'function') {
+ validateStep2();
+ }
+ }
+ window.handlePhotoPromoConsentChange = handlePhotoPromoConsentChange;
+
+ document.addEventListener('DOMContentLoaded', function () {
+ const wrapper = document.getElementById('nextStep2Wrapper');
+ if (wrapper) {
+ wrapper.addEventListener('click', function (e) {
+ const btn = document.getElementById('nextStep2');
+ if (btn && btn.disabled) {
+ e.preventDefault();
+ e.stopPropagation();
+ const consent = document.getElementById('photoPromoConsent');
+ if (!consent || !consent.checked) {
+ highlightAndShowConsentError();
+ } else {
+ if (typeof window.validateAndGoToStep3 === 'function') {
+ window.validateAndGoToStep3();
+ }
+ }
+ }
+ });
+ }
+ });
+
  // Blur image utility for privacy
  async function blurImageFile(file) {
  return new Promise((resolve) => {
@@ -1101,6 +1183,15 @@
  // Validate current step before proceeding (except when going backwards)
  if (stepNumber> 1) {
  if (stepNumber === 3) {
+ const consent = document.getElementById('photoPromoConsent');
+ if (!consent || !consent.checked) {
+ if (typeof highlightAndShowConsentError === 'function') {
+ highlightAndShowConsentError();
+ } else {
+ showMessage('Please tick the checkbox to agree to the use of your profile photo for promotions to continue', 'error');
+ }
+ return;
+ }
  const profilePicture = document.getElementById('profilePicture');
  if (!window.profilePictureFile && (!profilePicture || profilePicture.files.length === 0)) {
  showMessage('Please upload a profile picture to continue', 'error');
@@ -1207,6 +1298,13 @@
  // Check identity verification state
  if (!window.isIdentityVerified) {
  console.log('Identity not verified');
+ isValid = false;
+ }
+
+ // Check mandatory photo promotion consent
+ const consent = document.getElementById('photoPromoConsent');
+ if (!consent || !consent.checked) {
+ console.log('Photo promotion consent not checked');
  isValid = false;
  }
 
@@ -1638,16 +1736,20 @@
  const nextBtn = document.getElementById('nextStep2');
  if (!nextBtn) return;
 
- // Step 2 is valid if isIdentityVerified is true AND profile picture is selected/uploaded
+ // Step 2 is valid if isIdentityVerified is true AND profile picture is selected/uploaded AND consent is checked
  const hasProfilePic = window.profilePictureFile !== null || (document.getElementById('profilePicture') && document.getElementById('profilePicture').files.length> 0);
+ const consent = document.getElementById('photoPromoConsent');
+ const hasConsent = consent && consent.checked;
 
- if (window.isIdentityVerified && hasProfilePic) {
+ if (window.isIdentityVerified && hasProfilePic && hasConsent) {
  nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
  nextBtn.removeAttribute('disabled');
+ nextBtn.setAttribute('aria-disabled', 'false');
  return true;
  } else {
  nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
  nextBtn.setAttribute('disabled', 'disabled');
+ nextBtn.setAttribute('aria-disabled', 'true');
  return false;
  }
  } catch (error) {
@@ -2029,6 +2131,17 @@
 
  // Validate Step 2 inputs then navigate to Step 3
  window.validateAndGoToStep3 = function () {
+ // Check mandatory photo promotion consent
+ const consent = document.getElementById('photoPromoConsent');
+ if (!consent || !consent.checked) {
+ if (typeof highlightAndShowConsentError === 'function') {
+ highlightAndShowConsentError();
+ } else {
+ alert('Please tick the checkbox to agree to the use of your profile photo for promotions to continue.');
+ }
+ return false;
+ }
+
  const profileFile = document.getElementById('profilePicture');
  const docType = document.getElementById('documentType');
  const docNumber = document.getElementById('documentNumber');

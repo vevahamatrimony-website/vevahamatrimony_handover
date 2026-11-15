@@ -5060,3 +5060,21 @@ body.vm-sidebar-open {
     color: #818cf8;
     opacity: 0.7;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PHOTO PROMO CONSENT CHECKBOX STYLES (register.html)
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes consent-shake {
+    0%, 100% { transform: translateX(0); }
+    15%, 45%, 75% { transform: translateX(-6px); }
+    30%, 60%, 90% { transform: translateX(6px); }
+}
+
+.consent-shake {
+    animation: consent-shake 0.5s ease-in-out;
+}
+
+.consent-error-highlight {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2), 0 0 0 6px rgba(236, 72, 153, 0.25) !important;
+}
