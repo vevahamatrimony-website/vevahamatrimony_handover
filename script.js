@@ -460,6 +460,12 @@ async function verifyMobileOTP() {
 
         // ✅ Success
         window.isMobileVerified = true;
+
+        // Unlock the rest of registration form
+        const lockedSections = document.getElementById('locked-sections');
+        const lockNotice = document.getElementById('otp-lock-notice');
+        if (lockedSections) lockedSections.classList.remove('hidden');
+        if (lockNotice) lockNotice.classList.add('hidden');
         sessionStorage.setItem('mobileVerified', 'true');
         sessionStorage.setItem('verifiedMobile', mobileOtpSentTo);
 
