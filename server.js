@@ -117,6 +117,7 @@ app.use('/api/payment', require('./routes/payment'));
 app.use('/api/membership', require('./routes/membership'));
 app.use('/api/signal', require('./routes/signal'));
 app.use('/api/contact-message', require('./routes/contact'));
+app.use('/api/astro-match', require('./routes/astro-match'));
 // Admin specialized API endpoints
 app.use('/api', require('./routes/admin-upload'));
 

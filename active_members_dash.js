@@ -142,18 +142,43 @@ async function initActiveMembers() {
 window.switchTab = function(tab) {
     currentTab = tab;
     
-    // Update tab classes
-    const tabs = ['explore', 'interested', 'declined'];
+    // All known tabs (including astro-match)
+    const tabs = ['explore', 'interested', 'declined', 'astro-match'];
     tabs.forEach(t => {
         const btn = document.getElementById(`tab-${t}`);
         if (btn) {
             if (t === tab) {
-                btn.className = "flex-1 md:px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-pink-600 bg-white shadow-sm";
+                if (t === 'astro-match') {
+                    btn.className = "flex-1 md:px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-indigo-600 bg-white shadow-sm";
+                } else {
+                    btn.className = "flex-1 md:px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-pink-600 bg-white shadow-sm";
+                }
             } else {
-                btn.className = "flex-1 md:px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-gray-500 hover:text-pink-600";
+                if (t === 'astro-match') {
+                    btn.className = "flex-1 md:px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-gray-500 hover:text-indigo-600";
+                } else {
+                    btn.className = "flex-1 md:px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 text-gray-500 hover:text-pink-600";
+                }
             }
         }
     });
+
+    if (tab === 'astro-match') {
+        // Hide the regular filter toggle panel (it's for other tabs)
+        const filterPanel = document.getElementById('filterPanel');
+        const filterToggle = document.getElementById('filterToggleBtn');
+        if (filterPanel) filterPanel.classList.add('hidden');
+        if (filterToggle) filterToggle.classList.add('hidden');
+        // Delegate to Astro Match module
+        if (typeof window.initAstroMatch === 'function') {
+            window.initAstroMatch();
+        }
+        return;
+    }
+
+    // Show filter toggle for non-astro tabs
+    const filterToggle = document.getElementById('filterToggleBtn');
+    if (filterToggle) filterToggle.classList.remove('hidden');
 
     renderTab(currentTab);
 };

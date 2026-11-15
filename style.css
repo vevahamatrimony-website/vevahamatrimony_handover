@@ -4991,3 +4991,72 @@ body.vm-sidebar-open {
         flex: 1 1 auto !important;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ASTRO MATCH FEATURE STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Astro Match tab active state */
+#tab-astro-match.active-astro,
+#tab-astro-match[class*="text-indigo-600"] {
+    background: linear-gradient(90deg, #eef2ff 0%, #f5f3ff 100%);
+    color: #4f46e5 !important;
+}
+
+/* Astro candidate card score badge */
+.astro-score-badge {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+}
+
+/* Astro detail modal porutham rows */
+.porutham-row {
+    transition: all 0.2s ease;
+}
+.porutham-row:hover {
+    transform: translateX(2px);
+}
+
+/* Astro match grid responsiveness */
+#astroCandidatesGrid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 768px) {
+    #astroCandidatesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (min-width: 1280px) {
+    #astroCandidatesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Astro match detail modal backdrop */
+#astroDetailModal .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+}
+
+/* Score circle animation */
+@keyframes score-reveal {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+}
+.astro-score-animate {
+    animation: score-reveal 0.4s ease-out forwards;
+}
+
+/* Astro tab indicator */
+#tab-astro-match {
+    position: relative;
+}
+#tab-astro-match::after {
+    content: '✦';
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 8px;
+    color: #818cf8;
+    opacity: 0.7;
+}
